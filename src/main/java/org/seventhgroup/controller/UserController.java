@@ -9,7 +9,6 @@ import javax.annotation.Resource;
 /**
  * 负责处理客户端提交的用户相关的请求处理
  * 承担控制器的角色
- *
  * */
 @Controller(value = "userController")
 public class UserController {
