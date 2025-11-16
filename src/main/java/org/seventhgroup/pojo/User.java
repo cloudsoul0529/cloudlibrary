@@ -1,5 +1,8 @@
 package org.seventhgroup.pojo;
 
+import org.springframework.stereotype.Component;
+
+@Component(value = "user")
 public class User {
     private int id;
     private String name;
