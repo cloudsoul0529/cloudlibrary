@@ -1,10 +1,10 @@
 package org.seventhgroup.pojo;
 
-import org.seventhgroup.pojo.enums.Status;
+import org.seventhgroup.pojo.enums.BookStatus;
 
 /**
  * @author oxygen
- * @time 2025.11.16
+ * @time 2025.11.17
  **/
 public class Book {
 
@@ -15,7 +15,7 @@ public class Book {
     private Integer pagination;
     private Double price;
     private String uploadTime;
-    private Status status;
+    private BookStatus status;
 
 
     public void setName(String name) {
@@ -46,7 +46,7 @@ public class Book {
         this.uploadTime = uploadTime;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(BookStatus status) {
         this.status = status;
     }
 
@@ -78,7 +78,7 @@ public class Book {
         return uploadTime;
     }
 
-    public Status getStatus() {
+    public BookStatus getStatus() {
         return status;
     }
 

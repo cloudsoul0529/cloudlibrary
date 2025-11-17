@@ -1,9 +1,7 @@
 package org.seventhgroup.pojo;
 
 import org.seventhgroup.pojo.enums.Role;
-import org.seventhgroup.pojo.enums.Status;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.seventhgroup.pojo.enums.UserStatus;
 
 /**
  * @author oxygen
@@ -17,7 +15,7 @@ public class User {
     private String passwordSalt;
     private String email;
     private Role role;
-    private Status status;
+    private UserStatus status;
     public Long getId() {
         return id;
     }
@@ -42,7 +40,7 @@ public class User {
         return role;
     }
 
-    public Status getStatus() {
+    public UserStatus getStatus() {
         return status;
     }
 
@@ -71,7 +69,7 @@ public class User {
         this.role = role;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(UserStatus status) {
         this.status = status;
     }
 

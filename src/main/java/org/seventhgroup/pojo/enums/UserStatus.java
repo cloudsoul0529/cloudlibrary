@@ -4,7 +4,7 @@ package org.seventhgroup.pojo.enums;
  *@author oxygen
  *@time 2025.11.16
  */
-public enum Status {
+public enum UserStatus {
     // 正常（可登录、借阅）
     ACTIVE,
     // 禁用（不可登录、借阅，由管理员操作）
