@@ -11,6 +11,7 @@ import org.seventhgroup.pojo.enums.UserStatus;
 public class User {
     private Long id;
     private String name;
+    private String password;
     private String passwordHash;
     private String passwordSalt;
     private String email;
@@ -22,6 +23,10 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getPasswordHash() {
@@ -51,6 +56,10 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setPasswordHash(String passwordHash) {
