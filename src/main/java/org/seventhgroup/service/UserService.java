@@ -4,4 +4,5 @@ import org.seventhgroup.pojo.User;
 
 public interface UserService {
     public String login(User user);
+
 }
