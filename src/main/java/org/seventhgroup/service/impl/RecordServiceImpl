@@ -1,0 +1,23 @@
+package org.seventhgroup.service.impl;
+
+import org.seventhgroup.entity.PageResult;
+import org.seventhgroup.pojo.Record;
+import org.seventhgroup.pojo.User;
+import org.seventhgroup.service.RecordService;
+
+/**
+ * @author DeadSoup
+ * @time 2025/11/19 17:28
+ */
+public class RecordServiceImpl implements RecordService {
+
+    @Override
+    public Integer addRecord(Record record) {
+        return 0;
+    }
+
+    @Override
+    public PageResult searchRecords(Record record, User user, Integer pageNum, Integer pageSize) {
+        return null;
+    }
+}

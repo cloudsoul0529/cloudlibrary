@@ -1,43 +1,85 @@
 package org.seventhgroup.pojo;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.seventhgroup.pojo.enums.Role;
+import org.seventhgroup.pojo.enums.UserStatus;
 
-@Component(value = "user")
+/**
+ * @author oxygen
+ * @time 2025.11.16
+ * */
+
 public class User {
-    @Value(value = "0721")
-    private int id;
-    @Value(value = "王成")
+    private Long id;
     private String name;
-    @Value(value = "114514 1919810")
     private String password;
+    private String passwordHash;
+    private String passwordSalt;
+    private String email;
+    private Role role;
+    private UserStatus status;
+    public Long getId() {
+        return id;
+    }
 
-    public  void setPassword(String password) {
-        this.password = password;
+    public String getName() {
+        return name;
     }
-    public void setName(String name) {
-        this.name = name;
+
+    public String getPassword() {
+        return password;
     }
-    public void setId(int id) {
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public String getPasswordSalt() {
+        return passwordSalt;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName(){
-        return this.name;
+    public void setName(String name) {
+        this.name = name;
     }
-    public String getPassword(){
-        return this.password;
+
+    public void setPassword(String password) {
+        this.password = password;
     }
-    public int getId(){
-        return this.id;
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+
+    public void setPasswordSalt(String passwordSalt) {
+        this.passwordSalt = passwordSalt;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
     }
 
 }

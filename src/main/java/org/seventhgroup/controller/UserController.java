@@ -7,20 +7,28 @@ import org.springframework.stereotype.Controller;
 import javax.annotation.Resource;
 
 /**
- * 负责处理客户端提交的用户相关的请求处理
- * 承担控制器的角色
+ * @author cloudsoul-ZX
+ * @time 2025.11.16
  * */
 @Controller(value = "userController")
 public class UserController {
-    //调用UserService来进行业务逻辑的处理
+    //利用注解注入userService
     @Resource(name = "userService")
     private UserService userService;
-    public String login(User user){
-        // 调用service(业务处理层)来处理用户登录的请求
-        return userService.login(user);
-    }
 
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
+
+    //用户登录
+    public String login(User user){
+        // 调用service(业务处理层)来处理用户登录的请求
+        return userService.login(user);
+    }
+    //用户注销
+    public void logout(){
+
+    }
+
+
 }
