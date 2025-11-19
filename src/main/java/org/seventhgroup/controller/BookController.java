@@ -1,10 +1,18 @@
 package org.seventhgroup.controller;
 
+import org.seventhgroup.service.BookService;
+
 /**
  * @author cloudsoul-ZX
  * @time 2025.11.16
  * */
 public class BookController {
+    private BookService bookService;
+
+    public void setBookService(BookService bookService) {
+        this.bookService = bookService;
+    }
+
     //新书推荐模块
     public void selectNewBooks(){
 

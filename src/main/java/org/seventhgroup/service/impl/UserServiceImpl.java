@@ -1,4 +1,4 @@
-package org.seventhgroup.service.imp;
+package org.seventhgroup.service.impl;
 
 import org.seventhgroup.dao.UserDao;
 import org.seventhgroup.pojo.User;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 @Service(value = "userService")
-public class UserServiceImp implements UserService {
+public class UserServiceImpl implements UserService {
 
     @Resource(name = "userDao")
     UserDao userDao;
