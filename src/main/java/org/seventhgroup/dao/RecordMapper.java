@@ -1,4 +1,4 @@
 package org.seventhgroup.dao;
 
-public interface BookMapperDao {
+public interface RecordMapper {
 }

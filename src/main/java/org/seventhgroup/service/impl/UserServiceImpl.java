@@ -1,9 +1,8 @@
 package org.seventhgroup.service.impl;
 
-import org.seventhgroup.dao.UserDao;
+import org.seventhgroup.dao.UserMapper;
 import org.seventhgroup.pojo.User;
 import org.seventhgroup.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -13,9 +12,9 @@ public class UserServiceImpl implements UserService {
 
 
     @Resource(name = "userDao")
-    UserDao userDao;
+    UserMapper userMapper;
     @Override
     public String login(User user){
-        return userDao.login(user);
+        return userMapper.login(user);
     }
 }
