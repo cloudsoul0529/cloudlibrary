@@ -11,5 +11,16 @@ public class PageResult implements Serializable {
         this.total = total;
         this.rows = rows;
     }
-    //…省略 getter/setter方法
+    public long getTotal() {
+        return total;
+    }
+    public void setTotal(long total) {
+        this.total = total;
+    }
+    public List getRows() {
+        return rows;
+    }
+    public void setRows(List rows) {
+        this.rows = rows;
+    }
 }

@@ -1,85 +1,82 @@
 package org.seventhgroup.pojo;
 
-import org.seventhgroup.pojo.enums.Role;
-import org.seventhgroup.pojo.enums.UserStatus;
+import java.io.Serializable;
 
 /**
  * @author oxygen
  * @time 2025.11.16
  * */
+public class User implements Serializable {
+    private Integer id;       //用户id
+    private String name;      //用户名称
+    private String password;  //用户密码
+    private String email;     //用户邮箱（用户账号）
+    private String role;      //用户角色
+    private String status;    //用户状态
+    private String hiredate;  //入职时间
+    private String departuredate;//离职时间
 
-public class User {
-    private Long id;
-    private String name;
-    private String password;
-    private String passwordHash;
-    private String passwordSalt;
-    private String email;
-    private Role role;
-    private UserStatus status;
-    public Long getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public String getPasswordSalt() {
-        return passwordSalt;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public UserStatus getStatus() {
-        return status;
-    }
-
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-
-    public void setPasswordSalt(String passwordSalt) {
-        this.passwordSalt = passwordSalt;
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public void setRole(Role role) {
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
         this.role = role;
     }
 
-    public void setStatus(UserStatus status) {
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
         this.status = status;
     }
 
+    public String getHiredate() {
+        return hiredate;
+    }
+
+    public void setHiredate(String hiredate) {
+        this.hiredate = hiredate;
+    }
+
+    public String getDeparturedate() {
+        return departuredate;
+    }
+
+    public void setDeparturedate(String departuredate) {
+        this.departuredate = departuredate;
+    }
 }

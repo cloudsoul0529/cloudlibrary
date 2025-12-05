@@ -2,6 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.seventhgroup.pojo.Record">
-
+<mapper namespace="org.seventhgroup.dao.RecordMapper">
+    <insert id="addRecord">
+        insert into record(record_id,record_bookname,record_bookisbn,record_borrower,record_borrowtime,record_remandtime)
+        values (#{id},#{bookname},#{bookisbn},#{borrower},#{borrowTime},#{remandTime})
+    </insert>
 </mapper>
