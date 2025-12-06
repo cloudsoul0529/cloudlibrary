@@ -1,10 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.seventhgroup.dao.RecordMapper">
+
+    <!-- 定义结果映射 -->
+    <resultMap id="recordMap" type="Record">
+        <id column="record_id" property="id"/>
+        <result column="record_bookname" property="bookname"/>
+        <result column="record_bookisbn" property="bookisbn"/>
+        <result column="record_borrower" property="borrower"/>
+        <result column="record_borrowtime" property="borrowTime"/>
+        <result column="record_remandtime" property="remandTime"/>
+    </resultMap>
+
+    <!-- 新增借阅记录 -->
     <insert id="addRecord">
         insert into record(record_id,record_bookname,record_bookisbn,record_borrower,record_borrowtime,record_remandtime)
         values (#{id},#{bookname},#{bookisbn},#{borrower},#{borrowTime},#{remandTime})
     </insert>
+
+    <!-- 查询借阅记录 -->
+    <select id="searchRecords" resultMap="recordMap">
+        SELECT
+        record_id,
+        record_bookname,
+        record_bookisbn,
+        record_borrower,
+        record_borrowtime,
+        record_remandtime
+        FROM record
+        WHERE 1 = 1
+        <if test="borrower != null">
+            AND record_borrower LIKE CONCAT('%', #{borrower}, '%')
+        </if>
+        <if test="bookname != null">
+            AND record_bookname LIKE CONCAT('%', #{bookname}, '%')
+        </if>
+        ORDER BY record_remandtime DESC
+    </select>
+
 </mapper>

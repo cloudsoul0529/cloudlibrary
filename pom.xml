@@ -15,6 +15,18 @@
                 </configuration>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.yml</include>
+                </includes>
+                <!-- 可选：启用过滤 -->
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
     <groupId>org.seventhgroup</groupId>
     <artifactId>cloudlibrary</artifactId>

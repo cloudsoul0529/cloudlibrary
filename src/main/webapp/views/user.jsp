@@ -121,7 +121,7 @@
 							<td>用户角色</td>
 							<td>
 								<select class="form-control" name="role" value="USER">
-									<option value="USER">普通员工</option>
+									<option value="USER">普通用户</option>
 									<option value="ADMIN">管理员</option>
 								</select>
 							</td>
@@ -171,7 +171,7 @@
 							<td>用户角色</td>
 							<td>
 								<select class="form-control" id="urole" name="role" >
-									<option value="USER">普通员工</option>
+									<option value="USER">普通用户</option>
 									<option value="ADMIN">管理员</option>
 								</select>
 							</td>

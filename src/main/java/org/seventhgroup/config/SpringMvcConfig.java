@@ -8,12 +8,10 @@ import java.util.List;
 
 @Configuration
 @PropertySource("classpath:ignoreUrl.properties")
-//等同于<context:component-scan base-package="org.seventhgroup.controller"/>
 @ComponentScan({"org.seventhgroup.controller"})
-/*@Import({MyWebMvcConfig.class})*/
 @EnableWebMvc
 public class SpringMvcConfig  implements WebMvcConfigurer {
-  @Value("#{'${ignoreUrl}'.split(',')}")
+    @Value("#{'${ignoreUrl}'.split(',')}")
     private List<String> ignoreUrl;
     @Bean
     public ResourcesInterceptor resourcesInterceptor(){

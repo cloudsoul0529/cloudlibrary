@@ -61,7 +61,7 @@ public class BookServiceImpl implements BookService {
         //设置当天为借阅时间
         book.setBorrowTime(dateFormat.format(new Date()));
         //设置所借阅的图书状态为借阅中
-        book.setStatus("1");
+        book.setStatus(Book.BORROWED);
         //将图书的价格设置在book对象中
         book.setPrice(b.getPrice());
         //将图书的上架设置在book对象中
@@ -141,7 +141,7 @@ public class BookServiceImpl implements BookService {
         //如果是同一个人，允许归还
         if(rb){
             //将图书借阅状态修改为归还中
-            book.setStatus("2");
+            book.setStatus(Book.RETURNING);
             bookMapper.editBook(book);
         }
         return rb;
@@ -160,7 +160,7 @@ public class BookServiceImpl implements BookService {
         //根据归还确认的图书信息，设置借阅记录
         Record record = this.setRecord(book);
         //将图书的借阅状态修改为可借阅
-        book.setStatus("0");
+        book.setStatus(Book.AVAILABLE);
         //清除当前图书的借阅人信息
         book.setBorrower("");
         //清除当前图书的借阅时间信息

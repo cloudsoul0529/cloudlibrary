@@ -7,6 +7,12 @@ import java.io.Serializable;
  * @time 2025.11.17
  **/
 public class Book implements Serializable {
+
+    public static final String AVAILABLE = "0";  // 可借阅
+    public static final String BORROWED = "1";   // 借阅中
+    public static final String RETURNING = "2";  // 归还中
+    public static final String REMOVED = "3";    // 已下架
+
     private Integer id;        //图书编号
     private String name;       //图书名称
     private String isbn;       //图书标准ISBN编号

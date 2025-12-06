@@ -1,37 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.seventhgroup.dao.UserMapper">
+
+    <!-- 定义结果映射 -->
+    <resultMap id="userMap" type="User">
+        <id column="user_id" property="id"/>
+        <result column="user_name" property="name"/>
+        <result column="user_password" property="password"/>
+        <result column="user_email" property="email"/>
+        <result column="user_hiredate" property="hiredate"/>
+        <result column="user_role" property="role"/>
+        <result column="user_status" property="status"/>
+        <result column="user_departuredate" property="departuredate"/>
+    </resultMap>
+
+    <!-- 用户登录查询 -->
+    <select id="login" resultMap="userMap">
+        SELECT
+            user_id,
+            user_name,
+            user_password,
+            user_email,
+            user_hiredate,
+            user_role,
+            user_status,
+            user_departuredate
+        FROM user
+        WHERE user_email = #{email}
+          AND user_password = #{password}
+          AND user_status != ${@org.seventhgroup.pojo.User@DELETED}
+    </select>
+
+    <!-- 用户搜索查询 -->
+    <select id="searchUsers" resultMap="userMap">
+        SELECT
+        user_id,
+        user_name,
+        user_password,
+        user_email,
+        user_hiredate,
+        user_role,
+        user_status,
+        user_departuredate
+        FROM user
+        WHERE 1 = 1
+        <if test="id != null">
+            AND user_id LIKE CONCAT('%', #{id}, '%')
+        </if>
+        <if test="name != null">
+            AND user_name LIKE CONCAT('%', #{name}, '%')
+        </if>
+        ORDER BY user_status
+    </select>
+
+    <!-- 根据用户id查询用户信息 -->
+    <select id="findById" resultMap="userMap">
+        SELECT
+            user_id,
+            user_name,
+            user_password,
+            user_email,
+            user_hiredate,
+            user_role,
+            user_status,
+            user_departuredate
+        FROM user
+        WHERE user_id = #{id}
+    </select>
+
+    <!-- 检查用户名是否已经存在 -->
+    <select id="checkName" resultType="java.lang.Integer">
+        SELECT COUNT(user_name)
+        FROM user
+        WHERE user_name = #{name}
+    </select>
+
+    <!-- 检查用户邮箱是否已经存在 -->
+    <select id="checkEmail" resultType="java.lang.Integer">
+        SELECT COUNT(user_email)
+        FROM user
+        WHERE user_email = #{email}
+    </select>
+
+    <!-- 添加用户 -->
     <insert id="addUser">
-        insert into user(user_id,user_name,user_password,user_email,user_hiredate,user_status,user_departuredate,user_role)
-        values (#{id},#{name},#{password},#{email},#{hiredate},#{status},#{departuredate},#{role})
+        INSERT INTO user (
+            user_id,
+            user_name,
+            user_password,
+            user_email,
+            user_hiredate,
+            user_status,
+            user_departuredate,
+            user_role
+        ) VALUES (
+                     #{id},
+                     #{name},
+                     #{password},
+                     #{email},
+                     #{hiredate},
+                     #{status},
+                     #{departuredate},
+                     #{role}
+                 )
     </insert>
-    <update id="editUser" parameterType="org.seventhgroup.pojo.User">
-        update user
-        <trim prefix="set" suffixOverrides=",">
-            <if test="name != null" >
+
+    <!-- 编辑用户信息 -->
+    <update id="editUser" parameterType="User">
+        UPDATE user
+        <set>
+            <if test="name != null">
                 user_name = #{name},
             </if>
-            <if test="password != null" >
+            <if test="password != null">
                 user_password = #{password},
             </if>
-            <if test="email != null" >
+            <if test="email != null">
                 user_email = #{email},
             </if>
-            <if test="hiredate != null" >
+            <if test="hiredate != null">
                 user_hiredate = #{hiredate},
             </if>
-            <if test="status != null" >
+            <if test="status != null">
                 user_status = #{status},
             </if>
-            <if test="role != null" >
+            <if test="role != null">
                 user_role = #{role},
             </if>
-            <if test="departuredate != null" >
-                user_departuredate = #{departuredate}
+            <if test="departuredate != null">
+                user_departuredate = #{departuredate},
             </if>
-        </trim>
-        where user_id = #{id}
+        </set>
+        WHERE user_id = #{id}
     </update>
+
 </mapper>

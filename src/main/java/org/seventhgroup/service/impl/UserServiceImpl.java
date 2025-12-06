@@ -30,7 +30,7 @@ public class UserServiceImpl  implements UserService {
     @Override
     public void addUser(User user) {
 //        新增的用户 默认状态都设置为0,即在职状态
-        user.setStatus("0");
+        user.setStatus(User.ACTIVE);
         userMapper.addUser(user);
     }
 
@@ -43,7 +43,7 @@ public class UserServiceImpl  implements UserService {
 //        根据id查询出用户的完整信息
         User user = this.findById(id);
 //设置用户为离职状态
-        user.setStatus("1");
+        user.setStatus(User.DELETED);
 //      设置当天为用户的离职时间
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         user.setDeparturedate(dateFormat.format(new Date()));

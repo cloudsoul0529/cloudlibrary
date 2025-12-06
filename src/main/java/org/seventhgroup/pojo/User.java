@@ -7,14 +7,28 @@ import java.io.Serializable;
  * @time 2025.11.16
  * */
 public class User implements Serializable {
-    private Integer id;       //用户id
-    private String name;      //用户名称
-    private String password;  //用户密码
-    private String email;     //用户邮箱（用户账号）
-    private String role;      //用户角色
-    private String status;    //用户状态
-    private String hiredate;  //入职时间
-    private String departuredate;//离职时间
+    public static final String ACTIVE = "0";//正常状态
+    public static final String DELETED = "1";//注销状态
+    //用户id
+    private Integer id;
+    //用户名称
+    private String name;
+    //密码盐值
+    private String password_salt;
+    //密码哈希值
+    private String password_hash;
+    //密码
+    private String password;
+    //用户邮箱
+    private String email;
+    //用户角色（管理员："ADMIN"，普通用户："USER"）
+    private String role;
+    //用户状态
+    private String status;
+    //注册时间
+    private String hiredate;
+    //注销时间
+    private String departuredate;
 
     public Integer getId() {
         return id;

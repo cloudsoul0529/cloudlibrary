@@ -7,43 +7,49 @@ import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.util.Properties;
 
 @Configuration
 public class MyBatisConfig {
+
     /**配置PageInterceptor分页插件*/
     @Bean
     public PageInterceptor getPageInterceptor() {
-        PageInterceptor pageIntercptor = new PageInterceptor();
+        PageInterceptor pageInterceptor = new PageInterceptor();
         Properties properties = new Properties();
         properties.setProperty("value", "true");
-        pageIntercptor.setProperties(properties);
-        return pageIntercptor;
+        pageInterceptor.setProperties(properties);
+        return pageInterceptor;
     }
-    /*
-    定义MyBatis的核心连接工厂bean，
-    等同于<bean class="org.mybatis.spring.SqlSessionFactoryBean">
-     参数使用自动装配的形式加载dataSource，
-    为set注入提供数据源，dataSource来源于JdbcConfig中的配置
-     */
+
     @Bean
-    public SqlSessionFactoryBean getSqlSessionFactoryBean(@Autowired DataSource dataSource,@Autowired PageInterceptor pageIntercptor){
+    public SqlSessionFactoryBean getSqlSessionFactoryBean(@Autowired DataSource dataSource,
+                                                          @Autowired PageInterceptor pageInterceptor) throws IOException {
         SqlSessionFactoryBean ssfb = new SqlSessionFactoryBean();
-        //等同于<property name="dataSource" ref="dataSource"/>
+
+        // 设置数据源
         ssfb.setDataSource(dataSource);
-        Interceptor[] plugins={pageIntercptor};
+
+        // 设置分页插件
+        Interceptor[] plugins = {pageInterceptor};
         ssfb.setPlugins(plugins);
+
+        // 🔥 关键配置：设置XML映射文件路径（resources目录下）
+        Resource[] resources = new PathMatchingResourcePatternResolver()
+                .getResources("classpath:mapper/*.xml");
+        ssfb.setMapperLocations(resources);
+
+        ssfb.setTypeAliasesPackage("org.seventhgroup.pojo");
         return ssfb;
     }
-    /*
-    定义MyBatis的映射扫描，
-    等同于<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-     */
+
     @Bean
     public MapperScannerConfigurer getMapperScannerConfigurer(){
         MapperScannerConfigurer msc = new MapperScannerConfigurer();
-        //等同于<property name="basePackage" value="org.seventhgroup.dao"/>
         msc.setBasePackage("org.seventhgroup.dao");
         return msc;
     }
