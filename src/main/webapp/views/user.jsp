@@ -51,8 +51,8 @@
             <th>工号</th>
             <th>姓名</th>
             <th>邮箱</th>
-            <th>入职时间</th>
-            <th>雇佣状态</th>
+            <th>注册时间</th>
+            <th>注册状态</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -62,13 +62,13 @@
                 <td>${user.id}</td>
                 <td>${user.name}</td>
                 <td>${user.email}</td>
-                <td>${user.hiredate}</td>
+                <td>${user.createdate}</td>
                 <td>
                     <c:if test="${user.status == 0}">
-                        在职
+                        已注册
                     </c:if>
                     <c:if test="${user.status == 1}">
-                        已离职
+                        已注销
                     </c:if>
 
                 </td>
@@ -78,7 +78,7 @@
                                 onclick="findUserById(${user.id})">修改
                         </button>
                         &nbsp&nbsp&nbsp&nbsp
-                        <button type="button" class="btn bg-olive btn-xs" onclick="delUser(${user.id})">离职</button>
+                        <button type="button" class="btn bg-olive btn-xs" onclick="delUser(${user.id})">注销</button>
                     </c:if>
 
                 </td>
@@ -112,8 +112,8 @@
                             <td><input class="form-control" placeholder="企业邮箱" id="adduemail" onblur="checkVal()" onfocus="changeVal()"name="email"></td>
                         </tr>
                         <tr>
-                            <td>入职时间</td>
-                            <td><input type="date" class="form-control" name="hiredate" id="time"  onchange="checkVal()"></td>
+                            <td>注册时间</td>
+                            <td><input type="date" class="form-control" name="createdate" id="time"  onchange="checkVal()" onfocus="changeVal()"name="createdate"></td>
                             <td>登录密码</td>
                             <td><input class="form-control" placeholder="登录密码" id="addPw" onblur="checkVal()" onfocus="changeVal()" name="password"></td>
                         </tr>
@@ -162,8 +162,8 @@
                             <td>企业邮箱</td>
                             <td><input class="form-control" readonly name="email" id="uemail" >
                             </td>
-                            <td>入职时间</td>
-                            <td><input class="form-control" readonly name="hiredate" id="uhire" ></td>
+                            <td>注册时间</td>
+                            <td><input class="form-control" readonly name="createdate" id="uhire" ></td>
                         </tr>
                         <tr>
                             <td>登录密码</td>

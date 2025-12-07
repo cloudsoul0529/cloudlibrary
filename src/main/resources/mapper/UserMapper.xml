@@ -8,28 +8,41 @@
     <resultMap id="userMap" type="User">
         <id column="user_id" property="id"/>
         <result column="user_name" property="name"/>
-        <result column="user_password" property="password"/>
+        <result column="user_salt" property="passwordSalt"/>
+        <result column="user_hash" property="passwordHash"/>
         <result column="user_email" property="email"/>
-        <result column="user_hiredate" property="hiredate"/>
+        <result column="user_createdate" property="createdate"/>
         <result column="user_role" property="role"/>
         <result column="user_status" property="status"/>
-        <result column="user_departuredate" property="departuredate"/>
+        <result column="user_deletedate" property="deletedate"/>
     </resultMap>
+
+    <!-- 获取用户密码盐与哈希值 -->
+    <select id="getSalt" resultType="java.lang.String">
+        SELECT user_salt
+        FROM user
+        WHERE user_email = #{email}
+    </select>
+    <select id="getHash" resultType="java.lang.String">
+        SELECT user_hash
+        FROM user
+        WHERE user_email = #{email}
+    </select>
 
     <!-- 用户登录查询 -->
     <select id="login" resultMap="userMap">
         SELECT
             user_id,
             user_name,
-            user_password,
+            user_salt,
+            user_hash,
             user_email,
-            user_hiredate,
+            user_createdate,
             user_role,
             user_status,
-            user_departuredate
+            user_deletedate
         FROM user
         WHERE user_email = #{email}
-          AND user_password = #{password}
           AND user_status != ${@org.seventhgroup.pojo.User@DELETED}
     </select>
 
@@ -38,12 +51,13 @@
         SELECT
         user_id,
         user_name,
-        user_password,
+        user_salt,
+        user_hash,
         user_email,
-        user_hiredate,
+        user_createdate,
         user_role,
         user_status,
-        user_departuredate
+        user_deletedate
         FROM user
         WHERE 1 = 1
         <if test="id != null">
@@ -60,12 +74,13 @@
         SELECT
             user_id,
             user_name,
-            user_password,
+            user_salt,
+            user_hash,
             user_email,
-            user_hiredate,
+            user_createdate,
             user_role,
             user_status,
-            user_departuredate
+            user_deletedate
         FROM user
         WHERE user_id = #{id}
     </select>
@@ -89,21 +104,23 @@
         INSERT INTO user (
             user_id,
             user_name,
-            user_password,
+            user_salt,
+            user_hash,
             user_email,
-            user_hiredate,
+            user_createdate,
+            user_role,
             user_status,
-            user_departuredate,
-            user_role
+            user_deletedate
         ) VALUES (
                      #{id},
                      #{name},
-                     #{password},
+                     #{passwordSalt},
+                     #{passwordHash},
                      #{email},
-                     #{hiredate},
+                     #{createdate},
+                     #{role},
                      #{status},
-                     #{departuredate},
-                     #{role}
+                     #{deletedate}
                  )
     </insert>
 
@@ -114,14 +131,17 @@
             <if test="name != null">
                 user_name = #{name},
             </if>
-            <if test="password != null">
-                user_password = #{password},
+            <if test="passwordSalt != null">
+                user_salt = #{passwordSalt},
+            </if>
+            <if test="passwordHash != null">
+                user_hash = #{passwordHash},
             </if>
             <if test="email != null">
                 user_email = #{email},
             </if>
-            <if test="hiredate != null">
-                user_hiredate = #{hiredate},
+            <if test="createdate != null">
+                user_createdate = #{createdate},
             </if>
             <if test="status != null">
                 user_status = #{status},
@@ -129,8 +149,8 @@
             <if test="role != null">
                 user_role = #{role},
             </if>
-            <if test="departuredate != null">
-                user_departuredate = #{departuredate},
+            <if test="deletedate != null">
+                user_deletedate = #{deletedate},
             </if>
         </set>
         WHERE user_id = #{id}

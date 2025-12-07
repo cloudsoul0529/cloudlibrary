@@ -6,8 +6,11 @@ import org.seventhgroup.dao.UserMapper;
 import org.seventhgroup.entity.PageResult;
 import org.seventhgroup.pojo.User;
 import org.seventhgroup.service.UserService;
+import org.seventhgroup.util.SHA256WithSaltUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,10 +20,15 @@ public class UserServiceImpl  implements UserService {
     //注入userMapper
     @Autowired
     private UserMapper userMapper;
-    //通过User的用户账号和用户密码查询用户信息
+    //根据用户邮箱获取盐和哈希值，然后验证
     @Override
     public User login(User user) {
-        return userMapper.login(user);
+        String salt = userMapper.getSalt(user);
+        String hash = userMapper.getHash(user);
+        if(SHA256WithSaltUtil.verify(user.getPassword(), salt, hash)){
+            return userMapper.login(user);
+        }
+        return null;
     }
 
     /**
@@ -29,24 +37,34 @@ public class UserServiceImpl  implements UserService {
      */
     @Override
     public void addUser(User user) {
-//        新增的用户 默认状态都设置为0,即在职状态
+        //新增的用户 默认状态都设置为0,即注册状态
         user.setStatus(User.ACTIVE);
+        //设置盐与哈希
+        try {
+            byte[] salt = SHA256WithSaltUtil.generate16ByteSalt();
+            String hash = SHA256WithSaltUtil.encryptWith16ByteSalt(user.getPassword(),salt);
+            String storedSalt = SHA256WithSaltUtil.bytesToBase64(salt);
+            user.setPasswordSalt(storedSalt);
+            user.setPasswordHash(hash);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
         userMapper.addUser(user);
     }
 
     /**
-     * 根据id办理用户离职
-     * @param id 离职用户的id
+     * 根据id办理用户注销
+     * @param id 注销用户的id
      */
     @Override
     public void delUser(Integer id) {
-//        根据id查询出用户的完整信息
+        //根据id查询出用户的完整信息
         User user = this.findById(id);
-//设置用户为离职状态
+        //设置用户为注销状态
         user.setStatus(User.DELETED);
-//      设置当天为用户的离职时间
+        //设置当天为用户的注销时间
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        user.setDeparturedate(dateFormat.format(new Date()));
+        user.setDeletedate(dateFormat.format(new Date()));
         userMapper.editUser(user);
     }
 
