@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface UserMapper{
+    //获取用户盐与哈希值
+    String getSalt(User user);
+    String getHash(User user);
     //用户登录
     User login(User user);
     //新增用户

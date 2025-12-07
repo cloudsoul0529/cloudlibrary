@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -95,6 +96,15 @@
                         </li>
                     </ul>
                 </li>
+                <!-- su0Tmore: 数据统计入口，置底且仅管理员可见 -->
+                <c:if test="${USER_SESSION.role == 'ADMIN'}">
+                    <li class="treeview">
+                        <a href="${pageContext.request.contextPath}/stats/dashboard" target="iframe">
+                            <i class="fa fa-pie-chart"></i>
+                            <span>数据统计</span>
+                        </a>
+                    </li>
+                </c:if>
             </ul>
         </section>
 

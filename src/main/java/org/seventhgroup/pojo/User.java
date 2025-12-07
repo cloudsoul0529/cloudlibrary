@@ -14,9 +14,9 @@ public class User implements Serializable {
     //用户名称
     private String name;
     //密码盐值
-    private String password_salt;
+    private String passwordSalt;
     //密码哈希值
-    private String password_hash;
+    private String passwordHash;
     //密码
     private String password;
     //用户邮箱
@@ -26,9 +26,9 @@ public class User implements Serializable {
     //用户状态
     private String status;
     //注册时间
-    private String hiredate;
+    private String createdate;
     //注销时间
-    private String departuredate;
+    private String deletedate;
 
     public Integer getId() {
         return id;
@@ -52,6 +52,22 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPasswordSalt() {
+        return passwordSalt;
+    }
+
+    public void setPasswordSalt(String passwordSalt) {
+        this.passwordSalt = passwordSalt;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public String getEmail() {
@@ -78,19 +94,19 @@ public class User implements Serializable {
         this.status = status;
     }
 
-    public String getHiredate() {
-        return hiredate;
+    public String getCreatedate() {
+        return createdate;
     }
 
-    public void setHiredate(String hiredate) {
-        this.hiredate = hiredate;
+    public void setCreatedate(String createdate) {
+        this.createdate = createdate;
     }
 
-    public String getDeparturedate() {
-        return departuredate;
+    public String getDeletedate() {
+        return deletedate;
     }
 
-    public void setDeparturedate(String departuredate) {
-        this.departuredate = departuredate;
+    public void setDeletedate(String deletedate) {
+        this.deletedate = deletedate;
     }
 }

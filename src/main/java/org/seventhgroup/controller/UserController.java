@@ -41,7 +41,6 @@ public class UserController {
                 } else {
                     return "redirect:/views/index.jsp";
                 }
-
             }
             request.setAttribute("msg", "用户名或密码错误");
             return "forward:/views/login.jsp";
