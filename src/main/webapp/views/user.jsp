@@ -108,8 +108,8 @@
                         <tr>
                             <td>人员姓名</td>
                             <td><input class="form-control" placeholder="人员姓名" id="adduname" onblur="checkVal()" onfocus="changeVal()" name="name"></td>
-                            <td>企业邮箱</td>
-                            <td><input class="form-control" placeholder="企业邮箱" id="adduemail" onblur="checkVal()" onfocus="changeVal()"name="email"></td>
+                            <td>账户邮箱</td>
+                            <td><input class="form-control" placeholder="账户邮箱" id="adduemail" onblur="checkVal()" onfocus="changeVal()"name="email"></td>
                         </tr>
                         <tr>
                             <td>注册时间</td>
@@ -159,7 +159,7 @@
                             <td><input class="form-control"  readonly name="id" id="uid"></td>
                         </tr>
                         <tr>
-                            <td>企业邮箱</td>
+                            <td>账户邮箱</td>
                             <td><input class="form-control" readonly name="email" id="uemail" >
                             </td>
                             <td>注册时间</td>

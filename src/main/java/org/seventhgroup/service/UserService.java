@@ -21,7 +21,7 @@ public interface UserService{
     User findById(Integer id);
 
 
-    Integer checkName(String name);
+    boolean checkName(String name);
 
-    Integer checkEmail(String email);
+    boolean checkEmail(String email);
 }

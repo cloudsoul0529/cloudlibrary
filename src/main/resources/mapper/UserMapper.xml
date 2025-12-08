@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.seventhgroup.dao.UserMapper">
 
-    <!-- 定义结果映射 -->
+    <!-- 定义User结果映射 -->
     <resultMap id="userMap" type="User">
         <id column="user_id" property="id"/>
         <result column="user_name" property="name"/>
@@ -16,15 +16,17 @@
         <result column="user_status" property="status"/>
         <result column="user_deletedate" property="deletedate"/>
     </resultMap>
+    <!-- 定义UserPasswordDTO结果映射 -->
+    <resultMap id="userPasswordMap" type="UserPasswordDTO">
+        <result column="user_salt" property="passwordSalt"/>
+        <result column="user_hash" property="passwordHash"/>
+    </resultMap>
 
     <!-- 获取用户密码盐与哈希值 -->
-    <select id="getSalt" resultType="java.lang.String">
-        SELECT user_salt
-        FROM user
-        WHERE user_email = #{email}
-    </select>
-    <select id="getHash" resultType="java.lang.String">
-        SELECT user_hash
+    <select id="getPasswordDTO" resultMap="userPasswordMap">
+        SELECT
+            user_salt,
+            user_hash
         FROM user
         WHERE user_email = #{email}
     </select>
@@ -86,15 +88,15 @@
     </select>
 
     <!-- 检查用户名是否已经存在 -->
-    <select id="checkName" resultType="java.lang.Integer">
-        SELECT COUNT(user_name)
+    <select id="checkName" resultType="java.lang.String">
+        SELECT user_name
         FROM user
         WHERE user_name = #{name}
     </select>
 
     <!-- 检查用户邮箱是否已经存在 -->
-    <select id="checkEmail" resultType="java.lang.Integer">
-        SELECT COUNT(user_email)
+    <select id="checkEmail" resultType="java.lang.String">
+        SELECT user_email
         FROM user
         WHERE user_email = #{email}
     </select>

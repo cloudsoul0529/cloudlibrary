@@ -31,19 +31,19 @@ public class MyBatisConfig {
                                                           @Autowired PageInterceptor pageInterceptor) throws IOException {
         SqlSessionFactoryBean ssfb = new SqlSessionFactoryBean();
 
-        // 设置数据源
+        //设置数据源
         ssfb.setDataSource(dataSource);
 
-        // 设置分页插件
+        //设置分页插件
         Interceptor[] plugins = {pageInterceptor};
         ssfb.setPlugins(plugins);
 
-        // 🔥 关键配置：设置XML映射文件路径（resources目录下）
+        //设置XML映射文件路径（resources目录下）
         Resource[] resources = new PathMatchingResourcePatternResolver()
                 .getResources("classpath:mapper/*.xml");
         ssfb.setMapperLocations(resources);
-
-        ssfb.setTypeAliasesPackage("org.seventhgroup.pojo");
+        //给包设置别名
+        ssfb.setTypeAliasesPackage("org.seventhgroup.pojo, org.seventhgroup.dto");
         return ssfb;
     }
 

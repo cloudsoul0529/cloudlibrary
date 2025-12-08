@@ -176,10 +176,10 @@
         book_borrowtime,
         book_returntime
         FROM book
-        WHERE book_borrower = #{borrower}
-        AND (
-        book_status = ${@org.seventhgroup.pojo.Book@BORROWED}
-        OR book_status = ${@org.seventhgroup.pojo.Book@RETURNING}
+        WHERE(
+        (book_borrower = #{borrower} AND book_status = ${@org.seventhgroup.pojo.Book@BORROWED})
+        OR
+        (book_status = ${@org.seventhgroup.pojo.Book@RETURNING})
         )
         <if test="name != null">
             AND book_name LIKE CONCAT('%', #{name}, '%')

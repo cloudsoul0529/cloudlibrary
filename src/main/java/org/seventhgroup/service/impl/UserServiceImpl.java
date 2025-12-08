@@ -3,13 +3,13 @@ package org.seventhgroup.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.seventhgroup.dao.UserMapper;
+import org.seventhgroup.dto.UserPasswordDTO;
 import org.seventhgroup.entity.PageResult;
 import org.seventhgroup.pojo.User;
 import org.seventhgroup.service.UserService;
 import org.seventhgroup.util.SHA256WithSaltUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -17,14 +17,21 @@ import java.util.Date;
 
 @Service
 public class UserServiceImpl  implements UserService {
-    //注入userMapper
     @Autowired
     private UserMapper userMapper;
+
+    /**
+     * @author cloudsoul-ZX
+     * 用户登录
+     */
     //根据用户邮箱获取盐和哈希值，然后验证
     @Override
     public User login(User user) {
-        String salt = userMapper.getSalt(user);
-        String hash = userMapper.getHash(user);
+        //获取盐和哈希值
+        UserPasswordDTO userPasswordDTO = userMapper.getPasswordDTO(user);
+        String salt = userPasswordDTO.getPasswordSalt();
+        String hash = userPasswordDTO.getPasswordHash();
+        //验证成功则登录
         if(SHA256WithSaltUtil.verify(user.getPassword(), salt, hash)){
             return userMapper.login(user);
         }
@@ -32,14 +39,13 @@ public class UserServiceImpl  implements UserService {
     }
 
     /**
-     * 新增用户
-     * @param user 新增的用户信息
+     * @author cloudsoul-ZX
+     * 新增用户（管理员）
      */
     @Override
     public void addUser(User user) {
-        //新增的用户 默认状态都设置为0,即注册状态
         user.setStatus(User.ACTIVE);
-        //设置盐与哈希
+        //设置盐，计算哈希值
         try {
             byte[] salt = SHA256WithSaltUtil.generate16ByteSalt();
             String hash = SHA256WithSaltUtil.encryptWith16ByteSalt(user.getPassword(),salt);
@@ -53,16 +59,13 @@ public class UserServiceImpl  implements UserService {
     }
 
     /**
-     * 根据id办理用户注销
-     * @param id 注销用户的id
+     * @author cloudsoul-ZX
+     * 用户注销
      */
     @Override
     public void delUser(Integer id) {
-        //根据id查询出用户的完整信息
         User user = this.findById(id);
-        //设置用户为注销状态
         user.setStatus(User.DELETED);
-        //设置当天为用户的注销时间
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         user.setDeletedate(dateFormat.format(new Date()));
         userMapper.editUser(user);
@@ -106,8 +109,11 @@ public class UserServiceImpl  implements UserService {
      * @param name 待检查的用户名
      */
     @Override
-    public Integer checkName(String name) {
-        return userMapper.checkName(name);
+    public boolean checkName(String name) {
+        if (userMapper.checkName(name) != null) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -115,7 +121,10 @@ public class UserServiceImpl  implements UserService {
      * @param email 待检查的用户邮箱
      */
     @Override
-    public Integer checkEmail(String email) {
-        return userMapper.checkEmail(email);
+    public boolean checkEmail(String email) {
+        if (userMapper.checkEmail(email) != null) {
+            return true;
+        }
+        return false;
     }
 }
