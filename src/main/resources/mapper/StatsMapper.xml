@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.seventhgroup.dao.StatsMapper">
+
+    <!-- 统计图书总数 -->
+    <select id="selectBookCount" resultType="int">
+        SELECT COUNT(*) FROM book
+    </select>
+
+    <!-- 统计用户总数 -->
+    <select id="selectUserCount" resultType="int">
+        SELECT COUNT(*) FROM user
+    </select>
+
+    <!-- 统计借阅记录总数 -->
+    <select id="selectRecordCount" resultType="int">
+        SELECT COUNT(*) FROM record
+    </select>
+
+    <!-- 联合查询详细借阅数据 (扩展版) -->
+    <select id="selectReportData" resultType="java.util.Map">
+        SELECT
+            record_bookname as bName,
+            record_bookisbn as isbn,
+            record_borrower as uName,
+            record_borrowtime as bTime,
+            record_remandtime as rTime
+        FROM record
+    </select>
+
+</mapper>
