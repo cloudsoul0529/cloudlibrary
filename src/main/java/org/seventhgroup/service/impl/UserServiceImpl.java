@@ -3,13 +3,14 @@ package org.seventhgroup.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.seventhgroup.dao.UserMapper;
-import org.seventhgroup.dto.UserPasswordDTO;
-import org.seventhgroup.entity.PageResult;
+import org.seventhgroup.dto.PasswordResult;
+import org.seventhgroup.dto.PageResult;
 import org.seventhgroup.pojo.User;
 import org.seventhgroup.service.UserService;
 import org.seventhgroup.util.SHA256WithSaltUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -28,9 +29,9 @@ public class UserServiceImpl  implements UserService {
     @Override
     public User login(User user) {
         //获取盐和哈希值
-        UserPasswordDTO userPasswordDTO = userMapper.getPasswordDTO(user);
-        String salt = userPasswordDTO.getPasswordSalt();
-        String hash = userPasswordDTO.getPasswordHash();
+        PasswordResult passwordResult = userMapper.getPasswordResult(user);
+        String salt = passwordResult.getPasswordSalt();
+        String hash = passwordResult.getPasswordHash();
         //验证成功则登录
         if(SHA256WithSaltUtil.verify(user.getPassword(), salt, hash)){
             return userMapper.login(user);
@@ -89,9 +90,9 @@ public class UserServiceImpl  implements UserService {
      */
     @Override
     public PageResult searchUsers(User user, Integer pageNum, Integer pageSize) {
-        // 使用分页插件:
+        //使用分页插件
         PageHelper.startPage(pageNum, pageSize);
-        Page<User> page =  userMapper.searchUsers(user);
+        Page<User> page = userMapper.searchUsers(user);
         return new PageResult(page.getTotal(),page.getResult());
     }
 

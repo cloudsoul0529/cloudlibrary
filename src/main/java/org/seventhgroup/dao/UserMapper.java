@@ -2,7 +2,7 @@ package org.seventhgroup.dao;
 
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.*;
-import org.seventhgroup.dto.UserPasswordDTO;
+import org.seventhgroup.dto.PasswordResult;
 import org.seventhgroup.pojo.User;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserMapper{
     //获取用户盐与哈希值
-    UserPasswordDTO getPasswordDTO(User user);
+    PasswordResult getPasswordResult(User user);
     //用户登录
     User login(User user);
     //新增用户

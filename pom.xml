@@ -23,7 +23,6 @@
                     <include>**/*.properties</include>
                     <include>**/*.yml</include>
                 </includes>
-                <!-- 可选：启用过滤 -->
                 <filtering>true</filtering>
             </resource>
         </resources>
@@ -31,6 +30,7 @@
     <groupId>org.seventhgroup</groupId>
     <artifactId>cloudlibrary</artifactId>
     <version>1.0-SNAPSHOT</version>
+
     <dependencies>
         <!--Spring核心容器-->
         <dependency>
@@ -127,8 +127,6 @@
             <artifactId>jackson-annotations</artifactId>
             <version>2.9.0</version>
         </dependency>
-
-
         <!--日志开始-->
         <!--引入日志的门脸-->
         <dependency>

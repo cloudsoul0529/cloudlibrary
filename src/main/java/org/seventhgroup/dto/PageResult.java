@@ -1,11 +1,13 @@
-package org.seventhgroup.entity;
+package org.seventhgroup.dto;
 
 import java.io.Serializable;
 import java.util.List;
 
 public class PageResult implements Serializable {
-    private long total; 		// 总数
-    private List rows; 		// 返回的数据集合
+    //总数
+    private long total;
+    //返回的数据集合
+    private List rows;
     public PageResult(long total, List rows) {
         super();
         this.total = total;

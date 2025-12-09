@@ -2,8 +2,8 @@ package org.seventhgroup.controller;
 
 import org.seventhgroup.pojo.User;
 import org.seventhgroup.service.UserService;
-import org.seventhgroup.entity.PageResult;
-import org.seventhgroup.entity.Result;
+import org.seventhgroup.dto.PageResult;
+import org.seventhgroup.dto.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -114,6 +114,7 @@ public class UserController {
      */
     @RequestMapping("/search")
     public ModelAndView search(User user, Integer pageNum, Integer pageSize) {
+        //由Controller定义page
         if (pageNum == null) {
             pageNum = 1;
         }

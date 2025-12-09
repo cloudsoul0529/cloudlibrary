@@ -3,7 +3,7 @@ package org.seventhgroup.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.seventhgroup.dao.BookMapper;
-import org.seventhgroup.entity.PageResult;
+import org.seventhgroup.dto.PageResult;
 import org.seventhgroup.pojo.Book;
 import org.seventhgroup.pojo.Record;
 import org.seventhgroup.pojo.User;
@@ -29,14 +29,14 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 根据当前页码和每页需要展示的数据条数，查询最新上架的图书信息
-     * @param pageNum 当前页码
-     * @param pageSize 每页显示数量
      */
     @Override
-    public PageResult selectNewBooks(Integer pageNum, Integer pageSize) {
-        // 设置分页查询的参数，开始分页
+    public PageResult selectNewBooks() {
+        //设置分页查询的参数，开始分页
+        int pageNum = 1;
+        int pageSize = 5;
         PageHelper.startPage(pageNum, pageSize);
-        Page<Book> page=bookMapper.selectNewBooks();
+        Page<Book> page = bookMapper.selectNewBooks();
         return new PageResult(page.getTotal(),page.getResult());
     }
     /**
