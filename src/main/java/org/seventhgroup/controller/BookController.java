@@ -41,13 +41,17 @@ public class BookController {
 @ResponseBody
 @RequestMapping("/findById")
 public Result<Book> findById(String id) {
-    try {
+    try
+    {
         Book book=bookService.findById(id);
-        if(book==null){
+        if(book==null)
+        {
             return new Result(false,"查询图书失败！");
         }
         return new Result(true,"查询图书成功",book);
-    }catch (Exception e){
+    }
+    catch (Exception e)
+    {
         e.printStackTrace();
         return new Result(false,"查询图书失败！");
     }
@@ -63,14 +67,18 @@ public Result borrowBook(Book book, HttpSession session) {
     //获取当前登录的用户姓名
     String pname = ((User) session.getAttribute("USER_SESSION")).getName();
     book.setBorrower(pname);
-    try {
+    try
+    {
         //根据图书的id和用户进行图书借阅
         Integer count = bookService.borrowBook(book);
-        if (count != 1) {
+        if (count != 1)
+        {
             return new Result(false, "借阅图书失败!");
         }
         return new Result(true, "借阅成功，请到行政中心取书!");
-    } catch (Exception e) {
+    }
+    catch (Exception e)
+    {
         e.printStackTrace();
         return new Result(false, "借阅图书失败!");
     }
@@ -84,10 +92,12 @@ public Result borrowBook(Book book, HttpSession session) {
  */
 @RequestMapping("/search")
 public ModelAndView search(Book book, Integer pageNum, Integer pageSize, HttpServletRequest request) {
-    if (pageNum == null) {
+    if (pageNum == null)
+    {
         pageNum = 1;
     }
-    if (pageSize == null) {
+    if (pageSize == null)
+    {
         pageSize = 10;
     }
     //查询到的图书信息
@@ -112,14 +122,19 @@ public ModelAndView search(Book book, Integer pageNum, Integer pageSize, HttpSer
  */
 @ResponseBody
 @RequestMapping("/addBook")
-public Result addBook(Book book) {
-    try {
+public Result addBook(Book book)
+{
+    try
+    {
         Integer count=bookService.addBook(book);
-        if(count!=1){
+        if(count!=1)
+        {
             return new Result(false, "新增图书失败!");
         }
         return new Result(true, "新增图书成功!");
-    }catch (Exception e){
+    }
+    catch (Exception e)
+    {
         e.printStackTrace();
         return new Result(false, "新增图书失败!");
     }
@@ -132,13 +147,17 @@ public Result addBook(Book book) {
 @ResponseBody
 @RequestMapping("/editBook")
 public Result editBook(Book book) {
-    try {
+    try
+    {
         Integer count= bookService.editBook(book);
-        if(count!=1){
+        if(count!=1)
+        {
             return new Result(false, "编辑失败!");
         }
         return new Result(true, "编辑成功!");
-    }catch (Exception e){
+    }
+    catch (Exception e)
+    {
         e.printStackTrace();
         return new Result(false, "编辑失败!");
     }

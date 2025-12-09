@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @author DeadSoup
+ * @author DeadSoup Agony123466
  * @time 2025/11/19 17:06
  */
 
@@ -31,7 +31,8 @@ public class BookServiceImpl implements BookService {
      * 根据当前页码和每页需要展示的数据条数，查询最新上架的图书信息
      */
     @Override
-    public PageResult selectNewBooks() {
+    public PageResult selectNewBooks()
+    {
         //设置分页查询的参数，开始分页
         int pageNum = 1;
         int pageSize = 5;
@@ -44,7 +45,8 @@ public class BookServiceImpl implements BookService {
      * @param id 图书id
      */
     @Override
-    public Book findById(String id) {
+    public Book findById(String id)
+    {
         return bookMapper.findById(id);
     }
 
@@ -54,7 +56,8 @@ public class BookServiceImpl implements BookService {
      * @return
      */
     @Override
-    public Integer borrowBook(Book book) {
+    public Integer borrowBook(Book book)
+    {
         //根据id查询出需要借阅的完整图书信息
         Book b = this.findById(book.getId()+"");
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -75,7 +78,8 @@ public class BookServiceImpl implements BookService {
      * @param pageSize 每页显示数量
      */
     @Override
-    public PageResult search(Book book, Integer pageNum, Integer pageSize) {
+    public PageResult search(Book book, Integer pageNum, Integer pageSize)
+    {
         // 设置分页查询的参数，开始分页
         PageHelper.startPage(pageNum, pageSize);
         Page<Book> page=bookMapper.searchBooks(book);
@@ -87,7 +91,8 @@ public class BookServiceImpl implements BookService {
      * @param book 页面提交的新增图书信息
      */
     @Override
-    public Integer addBook(Book book) {
+    public Integer addBook(Book book)
+    {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         //设置新增图书的上架时间
         book.setUploadTime(dateFormat.format(new Date()));
@@ -99,7 +104,9 @@ public class BookServiceImpl implements BookService {
      * @param book 图书信息
      */
     @Override
-    public Integer editBook(Book book) {
+    public Integer editBook(Book book)
+    {
+
         return bookMapper.editBook(book);
     }
 
