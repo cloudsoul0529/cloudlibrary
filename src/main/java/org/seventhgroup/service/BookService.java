@@ -6,8 +6,8 @@ import org.seventhgroup.pojo.User;
 
 /**
  * 借阅图书接口
- * @author Deadsoup
- * @time 2025/11/19 16:58
+ * @author  Agony123466
+ * @time 2025/12/7 16:58
  */
 public interface BookService {
     //查询最新上架的图书

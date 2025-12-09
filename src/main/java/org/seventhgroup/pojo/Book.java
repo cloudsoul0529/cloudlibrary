@@ -3,28 +3,45 @@ package org.seventhgroup.pojo;
 import java.io.Serializable;
 
 /**
- * @author oxygen
+ * @author oxygen Agony123466
  * @time 2025.11.17
  **/
 public class Book implements Serializable {
+    // 可借阅
+    public static final String AVAILABLE = "0";
+    // 借阅中
+    public static final String BORROWED = "1";
+    // 归还中
+    public static final String RETURNING = "2";
+    // 已下架
+    public static final String REMOVED = "3";
 
-    public static final String AVAILABLE = "0";  // 可借阅
-    public static final String BORROWED = "1";   // 借阅中
-    public static final String RETURNING = "2";  // 归还中
-    public static final String REMOVED = "3";    // 已下架
+    //图书编号
+    private Integer id;
+    //图书编号
+    private String name;
+    //图书标准ISBN编号
+    private String isbn;
+    //图书出版社
+    private String press;
+    //图书作者
+    private String author;
+    //图书页数
+    private Integer pagination;
+    //图书价格
+    private Double price;
+    //图书上架时间
+    private String uploadTime;
+    //图书状态
+    private String status;
+    //图书借阅人
+    private String borrower;
+    //图书借阅时间
+    private String borrowTime;
+    //图书预计归还时间
+    private String returnTime;
 
-    private Integer id;        //图书编号
-    private String name;       //图书名称
-    private String isbn;       //图书标准ISBN编号
-    private String press;      //图书出版社
-    private String author;     //图书作者
-    private Integer pagination;//图书页数
-    private Double price;      //图书价格
-    private String uploadTime; //图书上架时间
-    private String status;     //图书状态
-    private String borrower;   //图书借阅人
-    private String borrowTime; //图书借阅时间
-    private String returnTime; //图书预计归还时间
+
     public Integer getId() {
         return id;
     }
@@ -76,9 +93,7 @@ public class Book implements Serializable {
     public String getStatus() {
         return status;
     }
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public void setStatus(String status) {this.status = status;}
     public String getBorrower() {
         return borrower;
     }
