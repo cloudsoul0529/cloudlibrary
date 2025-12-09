@@ -53,18 +53,28 @@ public class UserServiceImpl  implements UserService {
             String storedSalt = SHA256WithSaltUtil.bytesToBase64(salt);
             user.setPasswordSalt(storedSalt);
             user.setPasswordHash(hash);
+            userMapper.addUser(user);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
-        userMapper.addUser(user);
     }
 
     /**
      * @author cloudsoul-ZX
-     * 用户注销
+     * 编辑用户
+     */
+    @Override
+    public void editUser(User user) {
+        userMapper.editUser(user);
+    }
+
+    /**
+     * @author cloudsoul-ZX
+     * 用户注销（实质编辑用户）
      */
     @Override
     public void delUser(Integer id) {
+        //添加注销时间及状态改为已注销，用户数据仍保存在数据库中
         User user = this.findById(id);
         user.setStatus(User.DELETED);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -73,32 +83,21 @@ public class UserServiceImpl  implements UserService {
     }
 
     /**
-     * 编辑用户信息
-     * @param user 更新之后的用户信息
-     */
-    @Override
-    public void editUser(User user) {
-        userMapper.editUser(user);
-    }
-
-    /**
+     * @author cloudsoul-ZX
      * 搜索用户
-     * @param user 搜索的条件
-     * @param pageNum 当前页码
-     * @param pageSize 每页显示数量
-     * @return
      */
     @Override
     public PageResult searchUsers(User user, Integer pageNum, Integer pageSize) {
         //使用分页插件
         PageHelper.startPage(pageNum, pageSize);
+        //SQL语句被插件改写，返回pageSize条数据，Page包装
         Page<User> page = userMapper.searchUsers(user);
         return new PageResult(page.getTotal(),page.getResult());
     }
 
     /**
-     * 根据用户id查询用户信息
-     * @param id 用户id
+     * @author cloudsoul-ZX
+     * 根据id查询用户
      */
     @Override
     public User findById(Integer id) {
@@ -106,8 +105,8 @@ public class UserServiceImpl  implements UserService {
     }
 
     /**
-     * 检查用户名是否已经存在
-     * @param name 待检查的用户名
+     * @author cloudsoul-ZX
+     * 新增、编辑用户时检查已注册的用户名是否存在
      */
     @Override
     public boolean checkName(String name) {
@@ -118,8 +117,8 @@ public class UserServiceImpl  implements UserService {
     }
 
     /**
-     * 检查用户邮箱是否存储
-     * @param email 待检查的用户邮箱
+     * @author cloudsoul-ZX
+     * 新增、编辑用户时检查已注册的邮箱是否存在
      */
     @Override
     public boolean checkEmail(String email) {

@@ -197,7 +197,7 @@ function findUserById(uid) {
         $("#pw").val(response.password);
         $("#urole").val(response.role);
         $("#uemail").val(response.email);
-        $("#uhire").val(response.hiredate);
+        $("#ucreate").val(response.createdate);
 
     })
 }

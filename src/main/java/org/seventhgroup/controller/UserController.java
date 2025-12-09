@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -28,12 +29,12 @@ public class UserController {
     @RequestMapping("/login")
     public String login(User user, HttpServletRequest request) {
         try {
-            User u = userService.login(user);
-            if (u != null) {
+            User storedUser = userService.login(user);
+            if (storedUser != null) {
                 //存储用户信息
-                request.getSession().setAttribute("USER_SESSION", u);
+                request.getSession().setAttribute("USER_SESSION", storedUser);
                 //根据角色跳转至不同页面
-                String role = u.getRole();
+                String role = storedUser.getRole();
                 if ("ADMIN".equals(role)) {
                     return "redirect:/views/main.jsp";
                 } else {
@@ -57,7 +58,7 @@ public class UserController {
     public String logout(HttpServletRequest request) {
         //销毁Session，清除数据并跳转回登陆页面
         request.getSession().invalidate();
-        return "forward:/views/login.jsp";
+        return "redirect:/views/login.jsp";
     }
 
     /**
@@ -73,22 +74,6 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, "新增失败!");
-        }
-    }
-
-    /**
-     * @author cloudsoul-ZX
-     * 用户注销
-     */
-    @ResponseBody
-    @RequestMapping("/delUser")
-    public Result delUser(Integer id) {
-        try {
-            userService.delUser(id);
-            return new Result(true, "注销办理成功!");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result(false, "注销办理失败!");
         }
     }
 
@@ -110,11 +95,27 @@ public class UserController {
 
     /**
      * @author cloudsoul-ZX
+     * 用户注销（实质编辑用户）
+     */
+    @ResponseBody
+    @RequestMapping("/delUser")
+    public Result delUser(Integer id) {
+        try {
+            userService.delUser(id);
+            return new Result(true, "注销办理成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "注销办理失败!");
+        }
+    }
+
+    /**
+     * @author cloudsoul-ZX
      * 查询用户
      */
     @RequestMapping("/search")
     public ModelAndView search(User user, Integer pageNum, Integer pageSize) {
-        //由Controller定义page
+        //由Controller定义page起始页和条数
         if (pageNum == null) {
             pageNum = 1;
         }
@@ -122,6 +123,7 @@ public class UserController {
             pageSize = 10;
         }
         PageResult pageResult = userService.searchUsers(user, pageNum, pageSize);
+
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/user");
         modelAndView.addObject("pageResult", pageResult);
@@ -132,8 +134,8 @@ public class UserController {
     }
 
     /**
+     * @author cloudsoul-ZX
      * 根据id查询用户
-     * @param id 用户id，用作查询条件
      */
     @ResponseBody
     @RequestMapping("/findById")
@@ -142,8 +144,8 @@ public class UserController {
     }
 
     /**
-     * 检查用户名称是否已经存在
-     * @param name 用户名称
+     * @author cloudsoul-ZX
+     * 新增、编辑用户时检查已注册的用户名是否存在
      */
     @ResponseBody
     @RequestMapping("/checkName")
@@ -157,8 +159,8 @@ public class UserController {
     }
 
     /**
-     * 校验用户的邮箱是否已经存在
-     * @param email 被校验的用户邮箱
+     * @author cloudsoul-ZX
+     * 新增、编辑用户时检查已注册的邮箱是否存在
      */
     @ResponseBody
     @RequestMapping("/checkEmail")

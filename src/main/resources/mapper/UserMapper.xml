@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.seventhgroup.dao.UserMapper">
+<!-- @author cloudsoul-ZX -->
 
     <!-- 定义User结果映射 -->
     <resultMap id="userMap" type="User">
@@ -16,7 +17,7 @@
         <result column="user_status" property="status"/>
         <result column="user_deletedate" property="deletedate"/>
     </resultMap>
-    <!-- 定义UserPasswordDTO结果映射 -->
+    <!-- 定义PasswordResult结果映射 -->
     <resultMap id="userPasswordMap" type="PasswordResult">
         <result column="user_salt" property="passwordSalt"/>
         <result column="user_hash" property="passwordHash"/>
@@ -92,6 +93,7 @@
         SELECT user_name
         FROM user
         WHERE user_name = #{name}
+          AND user_status != ${@org.seventhgroup.pojo.User@DELETED}
     </select>
 
     <!-- 检查用户邮箱是否已经存在 -->
@@ -99,6 +101,7 @@
         SELECT user_email
         FROM user
         WHERE user_email = #{email}
+          AND user_status != ${@org.seventhgroup.pojo.User@DELETED}
     </select>
 
     <!-- 添加用户 -->
