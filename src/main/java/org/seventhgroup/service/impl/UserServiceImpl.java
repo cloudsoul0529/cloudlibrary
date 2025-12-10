@@ -65,7 +65,16 @@ public class UserServiceImpl  implements UserService {
      */
     @Override
     public void editUser(User user) {
-        userMapper.editUser(user);
+        try {
+            byte[] salt = SHA256WithSaltUtil.generate16ByteSalt();
+            String hash = SHA256WithSaltUtil.encryptWith16ByteSalt(user.getPassword(),salt);
+            String storedSalt = SHA256WithSaltUtil.bytesToBase64(salt);
+            user.setPasswordSalt(storedSalt);
+            user.setPasswordHash(hash);
+            userMapper.editUser(user);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

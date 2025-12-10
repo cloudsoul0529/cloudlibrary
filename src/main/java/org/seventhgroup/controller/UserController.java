@@ -33,13 +33,7 @@ public class UserController {
             if (storedUser != null) {
                 //存储用户信息
                 request.getSession().setAttribute("USER_SESSION", storedUser);
-                //根据角色跳转至不同页面
-                String role = storedUser.getRole();
-                if ("ADMIN".equals(role)) {
-                    return "redirect:/views/main.jsp";
-                } else {
-                    return "redirect:/views/index.jsp";
-                }
+                return "redirect:/views/main.jsp";
             }
             request.setAttribute("msg", "用户名或密码错误");
             return "forward:/views/login.jsp";

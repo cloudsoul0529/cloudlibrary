@@ -145,17 +145,11 @@
             <if test="email != null">
                 user_email = #{email},
             </if>
-            <if test="createdate != null">
-                user_createdate = #{createdate},
-            </if>
             <if test="status != null">
                 user_status = #{status},
             </if>
             <if test="role != null">
                 user_role = #{role},
-            </if>
-            <if test="deletedate != null">
-                user_deletedate = #{deletedate},
             </if>
         </set>
         WHERE user_id = #{id}

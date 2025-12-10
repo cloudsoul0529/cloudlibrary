@@ -240,7 +240,7 @@ function checkVal() {
             }else if($.trim(addPw) != ''){
                 if($.trim(addtime) == ''){
                     $("#savemsg").attr("disabled", true);
-                    $("#addmsg").html("入职日期不能为空")
+                    $("#addmsg").html("注册日期不能为空")
                 }else{
                     cg()
                 }
@@ -279,7 +279,7 @@ function saveUser() {
     })
 }
 function delUser(uid) {
-    var r = confirm("确定办理工号：" + uid + "的离职?");
+    var r = confirm("确定办理工号：" + uid + "的注销?");
     if (r) {
         var url = getProjectPath() + "/user/delUser?id=" + uid;
         $.get(url, function (response) {
