@@ -163,7 +163,7 @@
                             <td><input class="form-control" readonly name="email" id="uemail" >
                             </td>
                             <td>注册时间</td>
-                            <td><input class="form-control" readonly name="createdate" id="uhire" ></td>
+                            <td><input class="form-control" readonly name="createdate" id="ucreate" ></td>
                         </tr>
                         <tr>
                             <td>登录密码</td>

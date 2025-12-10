@@ -26,7 +26,10 @@
     <!-- 页面头部 -->
     <header class="main-header">
         <!-- Logo -->
-        <a href="${pageContext.request.contextPath}/views/main.jsp" class="logo">
+        <a href="main.jsp" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>云借阅</b></span>
+            <!-- logo for regular state and mobile devices -->
             <span class="logo-lg"><b>云借阅-图书管理系统</b></span>
         </a>
         <!-- 头部导航 -->
@@ -63,12 +66,14 @@
                         <i class="fa fa-dashboard"></i> <span>首页</span>
                     </a>
                 </li>
-                <!-- 人员管理 -->
-                <li id="admin-login">
-                    <a href="${pageContext.request.contextPath}/user/search" target="iframe">
-                        <i class="fa fa-circle-o"></i>人员管理
-                    </a>
-                </li>
+                <!-- 人员管理（仅管理员可见） -->
+                <c:if test="${USER_SESSION.role == 'ADMIN'}">
+                    <li id="admin-login">
+                        <a href="${pageContext.request.contextPath}/user/search" target="iframe">
+                            <i class="fa fa-circle-o"></i>人员管理
+                        </a>
+                    </li>
+                </c:if>
                 <!-- 图书管理 -->
                 <li class="treeview">
                     <a href="#">
