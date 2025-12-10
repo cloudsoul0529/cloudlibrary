@@ -2,7 +2,7 @@ package org.seventhgroup.pojo;
 
 import java.io.Serializable;
 /**
- * @author oxygen
+ * @author
  * @time 2025.11.17
  * */
 public class Record implements Serializable {

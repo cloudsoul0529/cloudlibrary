@@ -6,7 +6,7 @@ import org.seventhgroup.pojo.Record;
 import org.seventhgroup.pojo.User;
 import org.seventhgroup.dao.RecordMapper;
 import org.seventhgroup.service.RecordService;
-import org.seventhgroup.entity.PageResult;
+import org.seventhgroup.dto.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

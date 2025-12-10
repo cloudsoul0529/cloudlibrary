@@ -1,6 +1,6 @@
 package org.seventhgroup.service;
 
-import org.seventhgroup.entity.PageResult;
+import org.seventhgroup.dto.PageResult;
 import org.seventhgroup.pojo.User;
 
 /*

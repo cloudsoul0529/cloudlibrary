@@ -1,17 +1,17 @@
 package org.seventhgroup.service;
 
-import org.seventhgroup.entity.PageResult;
+import org.seventhgroup.dto.PageResult;
 import org.seventhgroup.pojo.Book;
 import org.seventhgroup.pojo.User;
 
 /**
  * 借阅图书接口
- * @author Deadsoup
- * @time 2025/11/19 16:58
+ * @author  Agony123466
+ * @time 2025/12/7 16:58
  */
 public interface BookService {
     //查询最新上架的图书
-    PageResult selectNewBooks(Integer pageNum, Integer pageSize);
+    PageResult selectNewBooks();
     //根据id查询图书信息
     Book findById(String id);
     //借阅图书

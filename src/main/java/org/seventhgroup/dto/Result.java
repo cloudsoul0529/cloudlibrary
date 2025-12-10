@@ -1,11 +1,15 @@
-package org.seventhgroup.entity;
+package org.seventhgroup.dto;
 
 import java.io.Serializable;
 
+//泛型类，便于包装数据
 public class Result<T> implements Serializable{
-	private boolean success; //是否成功操作成功
-	private String message; //需要传递的信息
-	private T data;         //需要传递的数据
+	//是否操作成功
+	private boolean success;
+	//向前端传递的信息
+	private String message;
+	//向前端传递的数据
+	private T data;
 	public Result(boolean success, String message) {
 		super();
 		this.success=success;
