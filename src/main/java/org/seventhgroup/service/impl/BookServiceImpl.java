@@ -24,51 +24,61 @@ import java.util.Date;
 @Service
 @Transactional
 public class BookServiceImpl implements BookService {
+    // 常量定义（消除魔法值，提升可读性）
+    private static final int DEFAULT_PAGE_NUM = 1;
+    private static final int DEFAULT_PAGE_SIZE = 5;
+    private static final String ROLE_ADMIN = "ADMIN";
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
     @Autowired
     private BookMapper bookMapper;
 
+    @Autowired
+    private RecordService recordService;
+
     /**
-     * 根据当前页码和每页需要展示的数据条数，查询最新上架的图书信息
+     * 查询最新上架图书
      */
     @Override
-    public PageResult selectNewBooks()
-    {
-        //设置分页查询的参数，开始分页
-        int pageNum = 1;
-        int pageSize = 5;
-        PageHelper.startPage(pageNum, pageSize);
+    public PageResult selectNewBooks() {
+        // 设置分页参数（保留原逻辑：第1页，每页5条）
+        PageHelper.startPage(DEFAULT_PAGE_NUM, DEFAULT_PAGE_SIZE);
         Page<Book> page = bookMapper.selectNewBooks();
-        return new PageResult(page.getTotal(),page.getResult());
+        return new PageResult(page.getTotal(), page.getResult());
     }
+
     /**
-     * 根据id查询图书信息
-     * @param id 图书id
+     * 根据ID查询图书 - 优化空值校验、代码注释
      */
     @Override
-    public Book findById(String id)
-    {
+    public Book findById(String id) {
+        // 空值校验
+        if (id == null || id.trim().isEmpty()) {
+            return null;
+        }
         return bookMapper.findById(id);
     }
 
     /**
-     * 借阅图书
-     * @param book
-     * @return
+     * 借阅图书 - 优化注释、空值校验
      */
     @Override
-    public Integer borrowBook(Book book)
-    {
-        //根据id查询出需要借阅的完整图书信息
-        Book b = this.findById(book.getId()+"");
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        //设置当天为借阅时间
-        book.setBorrowTime(dateFormat.format(new Date()));
-        //设置所借阅的图书状态为借阅中
+    public Integer borrowBook(Book book) {
+        // 校验图书ID
+        if (book.getId() == null) {
+            return 0;
+        }
+        // 查询完整图书信息
+        Book targetBook = this.findById(book.getId().toString());
+        if (targetBook == null) {
+            return 0;
+        }
+        // 设置借阅时间和状态
+        book.setBorrowTime(DATE_FORMAT.format(new Date()));
         book.setStatus(Book.BORROWED);
-        //将图书的价格设置在book对象中
-        book.setPrice(b.getPrice());
-        //将图书的上架设置在book对象中
-        book.setUploadTime(b.getUploadTime());
+        // 回填图书基础信息
+        book.setPrice(targetBook.getPrice());
+        book.setUploadTime(targetBook.getUploadTime());
         return bookMapper.editBook(book);
     }
 
@@ -153,9 +163,6 @@ public class BookServiceImpl implements BookService {
         }
         return rb;
     }
-    @Autowired
-//注入RecordService对象
-    private RecordService recordService;
     /**
      * 归还确认
      * @param id 待归还确认的图书id

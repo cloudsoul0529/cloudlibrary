@@ -11,19 +11,25 @@ import java.util.List;
 @ComponentScan({"org.seventhgroup.controller"})
 @EnableWebMvc
 public class SpringMvcConfig  implements WebMvcConfigurer {
+    //将字符串按逗号分割存入List<String>
     @Value("#{'${ignoreUrl}'.split(',')}")
     private List<String> ignoreUrl;
+    //创建拦截器示例
     @Bean
     public ResourcesInterceptor resourcesInterceptor(){
         return new ResourcesInterceptor(ignoreUrl);
     }
-    /*
-     * 在注册的拦截器类中添加自定义拦截器
-     * addPathPatterns()方法设置拦截的路径
-     * excludePathPatterns()方法设置不拦截的路径
-     */
+
+    //registry.addInterceptor(resourcesInterceptor())注册拦截器
+    //.addPathPatterns("/**")设置拦截的路径模式
+    //excludePathPatterns("/css/**","/js/**","/img/**")设置排除的路径模式
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor( resourcesInterceptor()).addPathPatterns("/**").excludePathPatterns("/css/**","/js/**","/img/**");
+        registry.addInterceptor(resourcesInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns(
+                        "/css/**","/js/**","/img/**",
+                        "/views/login.jsp"
+                );
     }
 }

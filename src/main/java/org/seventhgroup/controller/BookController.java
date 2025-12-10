@@ -23,67 +23,74 @@ public class BookController {
     //注入BookService对象
     @Autowired
     private BookService bookService;
+
     /**
-     * 查询最新上架的图书
+     * 新书推荐页面
      */
     @RequestMapping("/selectNewbooks")
     public ModelAndView selectNewbooks() {
-        PageResult pageResult = bookService.selectNewBooks();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/books_new");
-        modelAndView.addObject("pageResult", pageResult);
+        try {
+            PageResult pageResult = bookService.selectNewBooks();
+            modelAndView.addObject("pageResult", pageResult);
+        } catch (Exception e) {
+            e.printStackTrace();
+            modelAndView.addObject("errorMsg", "查询新书失败，请稍后重试");
+        }
         return modelAndView;
     }
+
     /**
-     * 根据图书id查询图书信息
-     * @param id 查询的图书id
+     * 根据ID查询图书 - 优化空值校验、代码注释
      */
     @ResponseBody
     @RequestMapping("/findById")
     public Result<Book> findById(String id) {
-        try
-        {
-            Book book=bookService.findById(id);
-            if(book==null)
-            {
-                return new Result(false,"查询图书失败！");
+        try {
+            // 空值校验
+            if (id == null || id.trim().isEmpty()) {
+                return new Result<>(false, "图书ID不能为空！");
             }
-            return new Result(true,"查询图书成功",book);
-        }
-        catch (Exception e)
-        {
+            Book book = bookService.findById(id);
+            if (book == null) {
+                return new Result<>(false, "查询图书失败！");
+            }
+            return new Result<>(true, "查询图书成功", book);
+        } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false,"查询图书失败！");
+            return new Result<>(false, "查询图书失败！");
         }
     }
+
     /**
-     * 借阅图书
-     * @param book 借阅的图书
-     * @return
+     * 借阅图书 - 优化空值校验、代码注释
      */
     @ResponseBody
     @RequestMapping("/borrowBook")
     public Result borrowBook(Book book, HttpSession session) {
-        //获取当前登录的用户姓名
-        String pname = ((User) session.getAttribute("USER_SESSION")).getName();
-        book.setBorrower(pname);
-        try
-        {
-            //根据图书的id和用户进行图书借阅
+        try {
+            // 校验登录用户
+            User loginUser = (User) session.getAttribute("USER_SESSION");
+            if (loginUser == null) {
+                return new Result(false, "请先登录！");
+            }
+            // 校验图书ID
+            if (book.getId() == null || book.getId().toString().trim().isEmpty()) {
+                return new Result(false, "图书ID不能为空！");
+            }
+            // 设置借阅人
+            book.setBorrower(loginUser.getName());
             Integer count = bookService.borrowBook(book);
-            if (count != 1)
-            {
+            if (count != 1) {
                 return new Result(false, "借阅图书失败!");
             }
             return new Result(true, "借阅成功，请到行政中心取书!");
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, "借阅图书失败!");
         }
     }
-
     /**
      * 分页查询符合条件且未下架图书信息
      * @param book 查询的条件封装到book中
