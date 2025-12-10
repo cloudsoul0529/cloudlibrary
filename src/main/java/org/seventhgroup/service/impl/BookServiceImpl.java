@@ -37,7 +37,7 @@ public class BookServiceImpl implements BookService {
     private RecordService recordService;
 
     /**
-     * 查询最新上架图书 - 仅优化风格，保留原固定分页逻辑
+     * 查询最新上架图书
      */
     @Override
     public PageResult selectNewBooks() {

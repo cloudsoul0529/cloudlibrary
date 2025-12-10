@@ -25,7 +25,7 @@ public class BookController {
     private BookService bookService;
 
     /**
-     * 新书推荐页面 - 仅优化代码风格，移除日志
+     * 新书推荐页面
      */
     @RequestMapping("/selectNewbooks")
     public ModelAndView selectNewbooks() {
