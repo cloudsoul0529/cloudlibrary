@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
  */
 @Mapper
 @Repository
-public interface BookMapper {
+public interface  BookMapper {
 
     // 查询新书（按上传时间降序）
     Page<Book> selectNewBooks();
