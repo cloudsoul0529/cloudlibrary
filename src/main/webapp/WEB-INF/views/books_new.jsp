@@ -105,6 +105,6 @@
 <!-- 数据展示内容区/ -->
 
 <%--引入存放模态窗口的页面--%>
-<jsp:include page="/views/book_modal.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/book_modal.jsp"></jsp:include>
 </body>
 </html>

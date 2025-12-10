@@ -2,8 +2,12 @@ package org.seventhgroup.interceptor;
 
 import org.seventhgroup.pojo.User;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.FlashMap;
+import org.springframework.web.servlet.FlashMapManager;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 public class ResourcesInterceptor extends HandlerInterceptorAdapter {
@@ -16,16 +20,10 @@ public class ResourcesInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         User user = (User) request.getSession().getAttribute("USER_SESSION");
         String uri = request.getRequestURI();
-
-        //检查是否是登录相关请求
-        if (uri.contains("/login")) {
-            return true;
-        }
-
+        //登录请求在注册拦截器时无视
         //如果用户未登录，跳转到登录页
         if (user == null) {
-            request.setAttribute("msg", "您还没有登录，请先登录！");
-            request.getRequestDispatcher("/views/login.jsp").forward(request, response);
+            redirectToLogin(request, response, "您还没有登录，请先登录！");
             return false;
         }
 
@@ -42,10 +40,21 @@ public class ResourcesInterceptor extends HandlerInterceptorAdapter {
                 }
             }
             //其余情跳转至登录页面
-            request.setAttribute("msg", "您没有权限访问该页面！");
-            request.getRequestDispatcher("/views/login.jsp").forward(request, response);
+            redirectToLogin(request, response, "您没有权限访问该页面！");
             return false;
         }
         return false;
+    }
+
+    //FlashMap把数据暂存在Session中，重定向后取出
+    public void redirectToLogin(HttpServletRequest request, HttpServletResponse response, String msg) throws IOException {
+        FlashMapManager flashMapManager = RequestContextUtils.getFlashMapManager(request);
+        if (flashMapManager != null) {
+            FlashMap flashMap = new FlashMap();
+            flashMap.put("msg", msg);
+            flashMapManager.saveOutputFlashMap(flashMap, request, response);
+        }
+        //重定向到登录页面
+        response.sendRedirect(request.getContextPath() + "/toLogin");
     }
 }

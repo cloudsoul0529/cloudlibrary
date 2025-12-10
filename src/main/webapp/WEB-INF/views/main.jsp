@@ -26,7 +26,7 @@
     <!-- 页面头部 -->
     <header class="main-header">
         <!-- Logo -->
-        <a href="main.jsp" class="logo">
+        <a href="${pageContext.request.contextPath}/main" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>云借阅</b></span>
             <!-- logo for regular state and mobile devices -->
@@ -62,7 +62,7 @@
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
                 <li id="admin-index">
-                    <a href="main.jsp">
+                    <a href="${pageContext.request.contextPath}/main">
                         <i class="fa fa-dashboard"></i> <span>首页</span>
                     </a>
                 </li>

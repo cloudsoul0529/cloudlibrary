@@ -103,7 +103,7 @@
 </div>
 <!-- /.box-body -->
 <%--引入存放模态窗口的页面--%>
-<jsp:include page="/views/book_modal.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/book_modal.jsp"></jsp:include>
 
 <!-- 添加和编辑图书的模态窗口 -->
 <div class="modal fade" id="addOrEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"

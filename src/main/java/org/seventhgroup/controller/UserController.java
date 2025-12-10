@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -27,20 +28,21 @@ public class UserController {
      * 用户登录
      */
     @RequestMapping("/login")
-    public String login(User user, HttpServletRequest request) {
+    public String login(User user, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         try {
             User storedUser = userService.login(user);
             if (storedUser != null) {
                 //存储用户信息
                 request.getSession().setAttribute("USER_SESSION", storedUser);
-                return "redirect:/views/main.jsp";
+                return "redirect:/main";
             }
-            request.setAttribute("msg", "用户名或密码错误");
-            return "forward:/views/login.jsp";
+            //addFlashAttribute把数据暂存在Session中，重定向后的下一次请求取出
+            redirectAttributes.addFlashAttribute("msg", "用户名或密码错误");
+            return "redirect:/toLogin";
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("msg", "系统错误");
-            return "forward:/views/login.jsp";
+            redirectAttributes.addFlashAttribute("msg", "系统错误");
+            return "redirect:/toLogin";
         }
     }
 
@@ -50,9 +52,9 @@ public class UserController {
      */
     @RequestMapping("/logout")
     public String logout(HttpServletRequest request) {
-        //销毁Session，清除数据并跳转回登陆页面
+        //销毁Session，清除数据并跳转回登录页面
         request.getSession().invalidate();
-        return "redirect:/views/login.jsp";
+        return "redirect:/toLogin";
     }
 
     /**

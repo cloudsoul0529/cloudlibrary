@@ -1,6 +1,9 @@
 package org.seventhgroup.dao;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +11,8 @@ import java.util.Map;
  * 数据统计持久层接口
  * @author su0Tmore
  */
+@Mapper
+@Repository
 public interface StatsMapper {
 
     // [su0Tmore] 统计图书总数
