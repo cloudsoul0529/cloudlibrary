@@ -46,8 +46,7 @@
         user_deletedate
         FROM user
         WHERE user_email = #{email}
-        <!-- 【修改这里】直接写死！假设 1 代表已删除，0 代表正常 -->
-        AND user_status != '1'
+        AND user_status != ${@org.seventhgroup.pojo.User@DELETED}
     </select>
 
     <!-- 用户搜索查询 -->

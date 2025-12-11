@@ -15,6 +15,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -29,17 +30,12 @@ public class UserServiceImpl implements UserService {
     public User login(User user) {
         // 获取盐和哈希值
         PasswordResult passwordResult = userMapper.getPasswordResult(user);
-
-        // 【新增安全判断】如果查不到用户（passwordResult为null），直接返回null，防止报空指针异常
         if (passwordResult == null) {
             return null;
         }
-
         String salt = passwordResult.getPasswordSalt();
         String hash = passwordResult.getPasswordHash();
-
         // 验证成功则登录
-        // 注意：这里要确保 salt 和 hash 也不为空，虽然正常数据不会为空
         if (salt != null && hash != null && SHA256WithSaltUtil.verify(user.getPassword(), salt, hash)) {
             return userMapper.login(user);
         }
@@ -52,7 +48,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void addUser(User user) {
-        user.setStatus(User.ACTIVE); // 确保这里引用的是 User 类里的常量，或者直接写 "0"
+        user.setStatus(User.ACTIVE);
         // 设置盐，计算哈希值
         try {
             byte[] salt = SHA256WithSaltUtil.generate16ByteSalt();
@@ -69,12 +65,11 @@ public class UserServiceImpl implements UserService {
     /**
      * @author cloudsoul-ZX
      * 编辑用户
-     * 【重点修改】：增加了密码判空逻辑，防止改角色时把密码清空
      */
     @Override
     public void editUser(User user) {
         try {
-            if (user.getPassword() != null && user.getPassword() != "") {
+            if (user.getPassword() != null && !Objects.equals(user.getPassword(), "")) {
                 byte[] salt = SHA256WithSaltUtil.generate16ByteSalt();
                 String hash = SHA256WithSaltUtil.encryptWith16ByteSalt(user.getPassword(),salt);
                 String storedSalt = SHA256WithSaltUtil.bytesToBase64(salt);

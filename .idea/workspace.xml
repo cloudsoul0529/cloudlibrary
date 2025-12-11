@@ -9,11 +9,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="102fc47a-dfa5-488c-a06c-992e2df074ca" name="更改" comment="用户模块、权限拦截进一步完善">
+    <list default="true" id="102fc47a-dfa5-488c-a06c-992e2df074ca" name="更改" comment="添加禁用页面缓存">
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/interceptor/ResourcesInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/interceptor/ResourcesInterceptor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/config/ServletInitConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/config/ServletInitConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/pojo/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/pojo/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/jdbc.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/jdbc.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/UserMapper.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -339,7 +342,8 @@
       <workItem from="1765358616652" duration="15471000" />
       <workItem from="1765426930853" duration="9454000" />
       <workItem from="1765437308342" duration="901000" />
-      <workItem from="1765439349891" duration="6312000" />
+      <workItem from="1765439349891" duration="6629000" />
+      <workItem from="1765461912562" duration="1715000" />
     </task>
     <task id="LOCAL-00001" summary="草稿">
       <option name="closed" value="true" />
@@ -541,7 +545,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765435829890</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="添加禁用页面缓存">
+      <option name="closed" value="true" />
+      <created>1765448037982</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1765448037982</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -613,7 +625,8 @@
     <MESSAGE value="权限拦截模块优化" />
     <MESSAGE value="权限拦截模块完善" />
     <MESSAGE value="用户模块、权限拦截进一步完善" />
-    <option name="LAST_COMMIT_MESSAGE" value="用户模块、权限拦截进一步完善" />
+    <MESSAGE value="添加禁用页面缓存" />
+    <option name="LAST_COMMIT_MESSAGE" value="添加禁用页面缓存" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
