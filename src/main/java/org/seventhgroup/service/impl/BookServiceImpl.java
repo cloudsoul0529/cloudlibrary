@@ -128,20 +128,23 @@ public class BookServiceImpl implements BookService {
      * @param pageSize 每页显示数量
      */
     @Override
-    public PageResult searchBorrowed(Book book, User user, Integer pageNum, Integer pageSize) {
-        // 设置分页查询的参数，开始分页
+    public PageResult searchBorrowed(Book book, User user, Integer pageNum, Integer pageSize, String showType) {
         PageHelper.startPage(pageNum, pageSize);
         Page<Book> page;
-        //将当前登录的用户放入查询条件中
-        book.setBorrower(user.getName());
-        //如果是管理员，查询自己借阅但未归还的图书和所有待确认归还的图书
-        if("ADMIN".equals(user.getRole())){
-            page= bookMapper.selectBorrowed(book);
-        }else {
-            //如果是普通用户，查询自己借阅但未归还的图书
-            page= bookMapper.selectMyBorrowed(book);
+
+        // 逻辑判断：
+        // 1. 如果是普通用户 -> 只能看自己的
+        // 2. 如果是管理员，但主动选择了“只看我的” (showType="my") -> 只能看自己的
+        if (!"ADMIN".equals(user.getRole()) || "my".equals(showType)) {
+            book.setBorrower(user.getName());
+            page = bookMapper.selectMyBorrowed(book);
         }
-        return new PageResult(page.getTotal(),page.getResult());
+        // 3. 否则（管理员 且 没选只看我的） -> 看全部
+        else {
+            page = bookMapper.selectBorrowed(book);
+        }
+
+        return new PageResult(page.getTotal(), page.getResult());
     }
 
     /**

@@ -1,7 +1,9 @@
 package org.seventhgroup.config;
 
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import javax.servlet.Filter;
 public class ServletInitConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     //加载Root容器配置
@@ -20,5 +22,15 @@ public class ServletInitConfig extends AbstractAnnotationConfigDispatcherServlet
     @Override
     protected String[] getServletMappings() {
         return new String[]{"/"};
+    }
+
+    // 配置过滤器，解决中文乱码问题
+    @Override
+    protected javax.servlet.Filter[] getServletFilters() {
+        CharacterEncodingFilter filter = new CharacterEncodingFilter();
+        filter.setEncoding("UTF-8");
+        filter.setForceEncoding(true);
+        // 直接返回 javax.servlet.Filter 数组
+        return new javax.servlet.Filter[]{filter};
     }
 }

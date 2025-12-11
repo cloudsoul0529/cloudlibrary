@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author cloudsoul-ZX
@@ -51,10 +52,12 @@ public class UserController {
      * 注销登录
      */
     @RequestMapping("/logout")
-    public String logout(HttpServletRequest request) {
-        //销毁Session，清除数据并跳转回登录页面
-        request.getSession().invalidate();
-        return "redirect:/toLogin";
+    public String logout(HttpSession session) {
+        // 1. 销毁 Session（这是最关键的一步！彻底清除当前登录人的所有信息）
+        session.invalidate();
+
+        // 2. 重定向回登录页
+        return "login";
     }
 
     /**

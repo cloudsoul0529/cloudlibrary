@@ -20,26 +20,40 @@ public class ResourcesInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         User user = (User) request.getSession().getAttribute("USER_SESSION");
         String uri = request.getRequestURI();
-        //登录请求在注册拦截器时无视
-        //如果用户未登录，跳转到登录页
+
+        // 1. 未登录拦截
         if (user == null) {
+            // 放行登录页面的请求，防止死循环
+            if (uri.contains("/login") || uri.contains("/toLogin")) {
+                return true;
+            }
             redirectToLogin(request, response, "您还没有登录，请先登录！");
             return false;
         }
 
-        //管理员可以访问所有页面
+        // 2. 管理员放行
         if ("ADMIN".equals(user.getRole())) {
             return true;
         }
 
-        //普通用户只能访问允许的页面
+        // 3. 普通用户放行逻辑 【这里是修改重点！】
         if ("USER".equals(user.getRole())) {
+            // A. 先放行核心业务页面
+            if (uri.contains("/main") ||          // 主页
+                    uri.contains("/book/") ||         // 图书模块
+                    uri.contains("/record/") ||       // 借阅记录模块
+                    uri.contains("/user/logout")) {   // 注销
+                return true;
+            }
+
+            // B. 再放行静态资源 (css, js, img)
             for (String allowedUrl : ignoreUrl) {
                 if (uri.contains(allowedUrl)) {
                     return true;
                 }
             }
-            //其余情跳转至登录页面
+
+            // C. 只有访问了不该访问的（比如 /user/addUser），才拦截
             redirectToLogin(request, response, "您没有权限访问该页面！");
             return false;
         }

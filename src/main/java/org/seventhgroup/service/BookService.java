@@ -23,7 +23,7 @@ public interface BookService {
     //编辑图书信息
     Integer editBook(Book book);
     //查询当前借阅的图书
-    PageResult searchBorrowed(Book book, User user, Integer pageNum, Integer pageSize);
+    PageResult searchBorrowed(Book book, User user, Integer pageNum, Integer pageSize, String showType);
     //归还图书
     boolean returnBook(String  id,User user);
     //归还确认

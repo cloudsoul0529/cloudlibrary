@@ -35,18 +35,19 @@
     <!-- 用户登录查询 -->
     <select id="login" resultMap="userMap">
         SELECT
-            user_id,
-            user_name,
-            user_salt,
-            user_hash,
-            user_email,
-            user_createdate,
-            user_role,
-            user_status,
-            user_deletedate
+        user_id,
+        user_name,
+        user_salt,
+        user_hash,
+        user_email,
+        user_createdate,
+        user_role,
+        user_status,
+        user_deletedate
         FROM user
         WHERE user_email = #{email}
-          AND user_status != ${@org.seventhgroup.pojo.User@DELETED}
+        <!-- 【修改这里】直接写死！假设 1 代表已删除，0 代表正常 -->
+        AND user_status != '1'
     </select>
 
     <!-- 用户搜索查询 -->

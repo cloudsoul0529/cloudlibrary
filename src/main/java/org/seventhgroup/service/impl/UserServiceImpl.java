@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
-public class UserServiceImpl  implements UserService {
+public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
@@ -25,15 +25,22 @@ public class UserServiceImpl  implements UserService {
      * @author cloudsoul-ZX
      * 用户登录
      */
-    //根据用户邮箱获取盐和哈希值，然后验证
     @Override
     public User login(User user) {
-        //获取盐和哈希值
+        // 获取盐和哈希值
         PasswordResult passwordResult = userMapper.getPasswordResult(user);
+
+        // 【新增安全判断】如果查不到用户（passwordResult为null），直接返回null，防止报空指针异常
+        if (passwordResult == null) {
+            return null;
+        }
+
         String salt = passwordResult.getPasswordSalt();
         String hash = passwordResult.getPasswordHash();
-        //验证成功则登录
-        if(SHA256WithSaltUtil.verify(user.getPassword(), salt, hash)){
+
+        // 验证成功则登录
+        // 注意：这里要确保 salt 和 hash 也不为空，虽然正常数据不会为空
+        if (salt != null && hash != null && SHA256WithSaltUtil.verify(user.getPassword(), salt, hash)) {
             return userMapper.login(user);
         }
         return null;
@@ -45,11 +52,11 @@ public class UserServiceImpl  implements UserService {
      */
     @Override
     public void addUser(User user) {
-        user.setStatus(User.ACTIVE);
-        //设置盐，计算哈希值
+        user.setStatus(User.ACTIVE); // 确保这里引用的是 User 类里的常量，或者直接写 "0"
+        // 设置盐，计算哈希值
         try {
             byte[] salt = SHA256WithSaltUtil.generate16ByteSalt();
-            String hash = SHA256WithSaltUtil.encryptWith16ByteSalt(user.getPassword(),salt);
+            String hash = SHA256WithSaltUtil.encryptWith16ByteSalt(user.getPassword(), salt);
             String storedSalt = SHA256WithSaltUtil.bytesToBase64(salt);
             user.setPasswordSalt(storedSalt);
             user.setPasswordHash(hash);
@@ -62,16 +69,29 @@ public class UserServiceImpl  implements UserService {
     /**
      * @author cloudsoul-ZX
      * 编辑用户
+     * 【重点修改】：增加了密码判空逻辑，防止改角色时把密码清空
      */
     @Override
     public void editUser(User user) {
         try {
-            byte[] salt = SHA256WithSaltUtil.generate16ByteSalt();
-            String hash = SHA256WithSaltUtil.encryptWith16ByteSalt(user.getPassword(),salt);
-            String storedSalt = SHA256WithSaltUtil.bytesToBase64(salt);
-            user.setPasswordSalt(storedSalt);
-            user.setPasswordHash(hash);
+            // 1. 判断是否需要修改密码
+            // 只有当传入的密码不为 null 且不为空字符串时，才重新生成哈希
+            if (user.getPassword() != null && !user.getPassword().trim().isEmpty()) {
+                byte[] salt = SHA256WithSaltUtil.generate16ByteSalt();
+                String hash = SHA256WithSaltUtil.encryptWith16ByteSalt(user.getPassword(), salt);
+                String storedSalt = SHA256WithSaltUtil.bytesToBase64(salt);
+
+                user.setPasswordSalt(storedSalt);
+                user.setPasswordHash(hash);
+            } else {
+                // 2. 如果密码为空（只改了角色或其他信息）
+                // 显式设置为 null，让 UserMapper.xml 中的 <if test="..."> 跳过这两个字段的更新
+                user.setPasswordSalt(null);
+                user.setPasswordHash(null);
+            }
+
             userMapper.editUser(user);
+
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
@@ -80,14 +100,30 @@ public class UserServiceImpl  implements UserService {
     /**
      * @author cloudsoul-ZX
      * 用户注销（实质编辑用户）
+     * 【重点修改】：注销时修改用户名和邮箱，释放唯一索引
      */
     @Override
     public void delUser(Integer id) {
-        //添加注销时间及状态改为已注销，用户数据仍保存在数据库中
+        // 1. 先查出这个用户
         User user = this.findById(id);
+
+        // 2. 状态改为已注销 (假设 User.DELETED 是 "1")
         user.setStatus(User.DELETED);
+
+        // 3. 设置注销时间
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         user.setDeletedate(dateFormat.format(new Date()));
+
+        // 4. 【关键步骤】给用户名和邮箱加上时间戳后缀，避免占用名额
+        // 这样下次注册同名用户时，就不会报 "Duplicate entry" 错误了
+        long timestamp = System.currentTimeMillis();
+        user.setName(user.getName() + "_del_" + timestamp);
+        user.setEmail(user.getEmail() + "_del_" + timestamp);
+
+        // 5. 确保密码字段为null，防止注销时把密码给改乱了（虽然注销了也没人登，但保持数据干净）
+        user.setPasswordSalt(null);
+        user.setPasswordHash(null);
+
         userMapper.editUser(user);
     }
 
@@ -97,11 +133,9 @@ public class UserServiceImpl  implements UserService {
      */
     @Override
     public PageResult searchUsers(User user, Integer pageNum, Integer pageSize) {
-        //使用分页插件
         PageHelper.startPage(pageNum, pageSize);
-        //SQL语句被插件改写，返回pageSize条数据，Page包装
         Page<User> page = userMapper.searchUsers(user);
-        return new PageResult(page.getTotal(),page.getResult());
+        return new PageResult(page.getTotal(), page.getResult());
     }
 
     /**
@@ -115,25 +149,19 @@ public class UserServiceImpl  implements UserService {
 
     /**
      * @author cloudsoul-ZX
-     * 新增、编辑用户时检查已注册的用户名是否存在
+     * 检查用户名
      */
     @Override
     public boolean checkName(String name) {
-        if (userMapper.checkName(name) != null) {
-            return true;
-        }
-        return false;
+        return userMapper.checkName(name) != null;
     }
 
     /**
      * @author cloudsoul-ZX
-     * 新增、编辑用户时检查已注册的邮箱是否存在
+     * 检查邮箱
      */
     @Override
     public boolean checkEmail(String email) {
-        if (userMapper.checkEmail(email) != null) {
-            return true;
-        }
-        return false;
+        return userMapper.checkEmail(email) != null;
     }
 }

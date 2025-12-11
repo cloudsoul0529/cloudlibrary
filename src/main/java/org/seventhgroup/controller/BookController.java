@@ -176,26 +176,25 @@ public class BookController {
      * @param pageSize 数据列表1页展示多少条数据
      */
     @RequestMapping("/searchBorrowed")
-    public ModelAndView searchBorrowed(Book book,Integer pageNum, Integer pageSize, HttpServletRequest request) {
-        if (pageNum == null) {
-            pageNum = 1;
-        }
-        if (pageSize == null) {
-            pageSize = 10;
-        }
-        //获取当前登录的用户
+    // 1. 方法参数里加上 String showType
+    public ModelAndView searchBorrowed(Book book, Integer pageNum, Integer pageSize, HttpServletRequest request, String showType) {
+        if (pageNum == null) pageNum = 1;
+        if (pageSize == null) pageSize = 10;
         User user = (User) request.getSession().getAttribute("USER_SESSION");
-        PageResult pageResult = bookService.searchBorrowed(book,user, pageNum, pageSize);
+
+        // 2. 调用 Service 时传入 showType
+        PageResult pageResult = bookService.searchBorrowed(book, user, pageNum, pageSize, showType);
+
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/book_borrowed");
-        //将查询到的数据存放在 ModelAndView的对象中
         modelAndView.addObject("pageResult", pageResult);
-        //将查询的参数返回到页面，用于回显到查询的输入框中
         modelAndView.addObject("search", book);
-        //将当前页码返回到页面，用于分页插件的分页显示
         modelAndView.addObject("pageNum", pageNum);
-        //将当前查询的控制器路径返回到页面，页码变化时继续向该路径发送请求
         modelAndView.addObject("gourl", request.getRequestURI());
+
+        // 3. 把 showType 传回给页面，用于判断哪个 Tab 应该是激活状态
+        modelAndView.addObject("showType", showType);
+
         return modelAndView;
     }
     /**

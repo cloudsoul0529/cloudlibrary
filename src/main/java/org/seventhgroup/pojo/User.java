@@ -109,4 +109,5 @@ public class User implements Serializable {
     public void setDeletedate(String deletedate) {
         this.deletedate = deletedate;
     }
+
 }

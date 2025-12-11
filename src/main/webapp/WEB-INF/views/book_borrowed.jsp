@@ -19,13 +19,36 @@
     <h3 class="box-title">当前借阅</h3>
 </div>
 <div class="box-body">
+
+    <c:if test="${USER_SESSION.role =='ADMIN'}">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                    <%-- 判断 showType 是否为 my，决定哪个标签高亮 (active) --%>
+                <li class="${empty showType || showType != 'my' ? 'active' : ''}">
+                    <a href="#" onclick="switchTab('all')">全部借阅</a>
+                </li>
+                <li class="${showType == 'my' ? 'active' : ''}">
+                    <a href="#" onclick="switchTab('my')">我的借阅</a>
+                </li>
+            </ul>
+        </div>
+        <br/>
+    </c:if>
+
     <!--工具栏 数据搜索 -->
     <div class="box-tools pull-right">
         <div class="has-feedback">
-            <form action="${pageContext.request.contextPath}/book/searchBorrowed" method="post">
+            <form id="searchForm" action="${pageContext.request.contextPath}/book/searchBorrowed" method="post">
+                <input type="hidden" name="showType" id="showTypeInput" value="${showType}">
+
                 图书名称：<input name="name" value="${search.name}">&nbsp&nbsp&nbsp&nbsp
                 图书作者：<input name="author" value="${search.author}">&nbsp&nbsp&nbsp&nbsp
-                出版社：<input name="press" value="${search.press}">&nbsp&nbsp&nbsp&nbsp
+
+                <%-- 借阅人搜索框：只有在“全部借阅”模式下才显示，看自己时不需要搜人名 --%>
+                <c:if test="${USER_SESSION.role =='ADMIN' && (empty showType || showType != 'my')}">
+                    借阅人：<input name="borrower" value="${search.borrower}">&nbsp&nbsp&nbsp&nbsp
+                </c:if>
+
                 <input class="btn btn-default" type="submit" value="查询">
             </form>
         </div>
@@ -93,12 +116,26 @@
     pageargs.total = Math.ceil(${pageResult.total}/pageargs.pagesize);
 	/*分页插件当前的页码*/
     pageargs.cur = ${pageNum}
+
+    function switchTab(type) {
+        // 1. 修改隐藏域的值
+        $("#showTypeInput").val(type);
+        // 2. 如果切换到“我的借阅”，把借阅人搜索框清空，防止干扰
+        if(type === 'my') {
+            $("input[name='borrower']").val("");
+        }
+        // 3. 提交表单，重新加载页面
+        $("#searchForm").submit();
+    }
 	/*分页插件页码变化时将跳转到的服务器端的路径*/
 	pageargs.gourl = "${gourl}"
 	/*保存搜索框中的搜索条件，页码变化时携带之前的搜索条件*/
     bookVO.name = "${search.name}"
     bookVO.author = "${search.author}"
     bookVO.press = "${search.press}"
+    bookVO.showType = "${showType}"
+    //防止翻页时丢失借阅人搜索条件
+    bookVO.borrower = "${search.borrower}"
 	/*分页效果*/
     pagination(pageargs);
 </script>

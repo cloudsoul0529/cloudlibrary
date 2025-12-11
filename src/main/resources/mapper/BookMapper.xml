@@ -161,37 +161,64 @@
     </update>
 
     <!-- 查询借阅但未归还的图书和待归还确认的图书 -->
+<!--    <select id="selectBorrowed" resultMap="bookMap">-->
+<!--        SELECT-->
+<!--        book_id,-->
+<!--        book_name,-->
+<!--        book_isbn,-->
+<!--        book_press,-->
+<!--        book_author,-->
+<!--        book_pagination,-->
+<!--        book_price,-->
+<!--        book_uploadtime,-->
+<!--        book_status,-->
+<!--        book_borrower,-->
+<!--        book_borrowtime,-->
+<!--        book_returntime-->
+<!--        FROM book-->
+<!--        WHERE(-->
+<!--        (book_borrower = #{borrower} AND book_status = ${@org.seventhgroup.pojo.Book@BORROWED})-->
+<!--        OR-->
+<!--        (book_status = ${@org.seventhgroup.pojo.Book@RETURNING})-->
+<!--        )-->
+<!--        <if test="name != null">-->
+<!--            AND book_name LIKE CONCAT('%', #{name}, '%')-->
+<!--        </if>-->
+<!--        <if test="press != null">-->
+<!--            AND book_press LIKE CONCAT('%', #{press}, '%')-->
+<!--        </if>-->
+<!--        <if test="author != null">-->
+<!--            AND book_author LIKE CONCAT('%', #{author}, '%')-->
+<!--        </if>-->
+<!--        ORDER BY book_borrowtime-->
+<!--    </select>-->
+
+    <!-- 管理员查询专用：查询所有借出(1)和归还中(2)的书 -->
     <select id="selectBorrowed" resultMap="bookMap">
-        SELECT
-        book_id,
-        book_name,
-        book_isbn,
-        book_press,
-        book_author,
-        book_pagination,
-        book_price,
-        book_uploadtime,
-        book_status,
-        book_borrower,
-        book_borrowtime,
-        book_returntime
-        FROM book
-        WHERE(
-        (book_borrower = #{borrower} AND book_status = ${@org.seventhgroup.pojo.Book@BORROWED})
-        OR
-        (book_status = ${@org.seventhgroup.pojo.Book@RETURNING})
-        )
-        <if test="name != null">
+        SELECT * FROM book
+        WHERE book_status != '0'  <!-- 核心逻辑：只要状态不是0(可借阅)，说明书都在外面，都要查 -->
+
+        <!-- 下面是动态查询条件 -->
+        <if test="name != null and name != ''">
             AND book_name LIKE CONCAT('%', #{name}, '%')
         </if>
-        <if test="press != null">
+        <if test="press != null and press != ''">
             AND book_press LIKE CONCAT('%', #{press}, '%')
         </if>
-        <if test="author != null">
+        <if test="author != null and author != ''">
             AND book_author LIKE CONCAT('%', #{author}, '%')
         </if>
-        ORDER BY book_borrowtime
+
+        <!-- 关键点：借阅人查询。
+             只有当管理员在输入框输了名字，这里才生效。
+             没输名字时 borrower为空，这个条件不执行，就能查出所有人！ -->
+        <if test="borrower != null and borrower != ''">
+            AND book_borrower LIKE CONCAT('%', #{borrower}, '%')
+        </if>
+
+        ORDER BY book_borrowtime DESC
     </select>
+
 
     <!-- 查询借阅但未归还的图书 -->
     <select id="selectMyBorrowed" resultMap="bookMap">
