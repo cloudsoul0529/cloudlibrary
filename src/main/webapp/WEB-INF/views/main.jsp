@@ -26,7 +26,10 @@
     <!-- 页面头部 -->
     <header class="main-header">
         <!-- Logo -->
-        <a href="${pageContext.request.contextPath}/views/main.jsp" class="logo">
+        <a href="${pageContext.request.contextPath}/main" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>云借阅</b></span>
+            <!-- logo for regular state and mobile devices -->
             <span class="logo-lg"><b>云借阅-图书管理系统</b></span>
         </a>
         <!-- 头部导航 -->
@@ -59,16 +62,18 @@
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
                 <li id="admin-index">
-                    <a href="main.jsp">
+                    <a href="${pageContext.request.contextPath}/main">
                         <i class="fa fa-dashboard"></i> <span>首页</span>
                     </a>
                 </li>
-                <!-- 人员管理 -->
-                <li id="admin-login">
-                    <a href="${pageContext.request.contextPath}/user/search" target="iframe">
-                        <i class="fa fa-circle-o"></i>人员管理
-                    </a>
-                </li>
+                <!-- 人员管理（仅管理员可见） -->
+                <c:if test="${USER_SESSION.role == 'ADMIN'}">
+                    <li id="admin-login">
+                        <a href="${pageContext.request.contextPath}/user/search" target="iframe">
+                            <i class="fa fa-circle-o"></i>人员管理
+                        </a>
+                    </li>
+                </c:if>
                 <!-- 图书管理 -->
                 <li class="treeview">
                     <a href="#">
@@ -99,7 +104,8 @@
                 <!-- su0Tmore: 数据统计入口，置底且仅管理员可见 -->
                 <c:if test="${USER_SESSION.role == 'ADMIN'}">
                     <li class="treeview">
-                        <a href="${pageContext.request.contextPath}/stats/dashboard" target="iframe">
+                        <!-- su0Tmore: 使用 new java.util.Date().getTime() 替代 System，兼容性更好 -->
+                        <a href="${pageContext.request.contextPath}/stats/dashboard?t=<%=new java.util.Date().getTime()%>" target="iframe">
                             <i class="fa fa-pie-chart"></i>
                             <span>数据统计</span>
                         </a>

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="org.seventhgroup.dao.RecordMapper">
 
-    <!-- 定义结果映射 -->
-    <resultMap id="recordMap" type="Record">
+    <resultMap id="recordMap" type="org.seventhgroup.pojo.Record">
         <id column="record_id" property="id"/>
         <result column="record_bookname" property="bookname"/>
         <result column="record_bookisbn" property="bookisbn"/>
@@ -15,29 +13,25 @@
     </resultMap>
 
     <!-- 新增借阅记录 -->
-    <insert id="addRecord">
-        insert into record(record_id,record_bookname,record_bookisbn,record_borrower,record_borrowtime,record_remandtime)
-        values (#{id},#{bookname},#{bookisbn},#{borrower},#{borrowTime},#{remandTime})
+    <insert id="addRecord" parameterType="org.seventhgroup.pojo.Record">
+        INSERT INTO record (
+            record_bookname, record_bookisbn, record_borrower, record_borrowtime, record_remandtime
+        ) VALUES (
+                     #{bookname}, #{bookisbn}, #{borrower}, #{borrowTime}, #{remandTime}
+                 )
     </insert>
 
     <!-- 查询借阅记录 -->
     <select id="searchRecords" resultMap="recordMap">
-        SELECT
-        record_id,
-        record_bookname,
-        record_bookisbn,
-        record_borrower,
-        record_borrowtime,
-        record_remandtime
-        FROM record
+        SELECT * FROM record
         WHERE 1 = 1
-        <if test="borrower != null">
+        <if test="borrower != null and borrower != ''">
             AND record_borrower LIKE CONCAT('%', #{borrower}, '%')
         </if>
-        <if test="bookname != null">
+        <if test="bookname != null and bookname != ''">
             AND record_bookname LIKE CONCAT('%', #{bookname}, '%')
         </if>
-        ORDER BY record_remandtime DESC
+        ORDER BY record_id DESC
     </select>
 
 </mapper>

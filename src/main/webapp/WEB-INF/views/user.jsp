@@ -163,7 +163,7 @@
                             <td><input class="form-control" readonly name="email" id="uemail" >
                             </td>
                             <td>注册时间</td>
-                            <td><input class="form-control" readonly name="createdate" id="uhire" ></td>
+                            <td><input class="form-control" readonly name="createdate" id="ucreate" ></td>
                         </tr>
                         <tr>
                             <td>登录密码</td>
@@ -192,7 +192,7 @@
     pageargs.total=Math.ceil(${pageResult.total}/pageargs.pagesize);
     //当前页数
     pageargs.cur=${pageNum}
-     pageargs.gourl="${gourl}"
+    pageargs.gourl="${pageContext.request.contextPath}${gourl}"
     userVO.id="${search.id}"
     userVO.name="${search.name}"
     pagination(pageargs);
