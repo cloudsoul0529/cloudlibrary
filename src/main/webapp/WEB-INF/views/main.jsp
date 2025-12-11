@@ -104,7 +104,8 @@
                 <!-- su0Tmore: 数据统计入口，置底且仅管理员可见 -->
                 <c:if test="${USER_SESSION.role == 'ADMIN'}">
                     <li class="treeview">
-                        <a href="${pageContext.request.contextPath}/stats/dashboard" target="iframe">
+                        <!-- su0Tmore: 使用 new java.util.Date().getTime() 替代 System，兼容性更好 -->
+                        <a href="${pageContext.request.contextPath}/stats/dashboard?t=<%=new java.util.Date().getTime()%>" target="iframe">
                             <i class="fa fa-pie-chart"></i>
                             <span>数据统计</span>
                         </a>

@@ -24,17 +24,27 @@ public class StatsController {
     @Autowired
     private StatsService statsService;
 
-    /**
-     * [su0Tmore] 功能1：展示数据统计看板页面
-     */
     @RequestMapping("/dashboard")
-    public ModelAndView showDashboard() {
-        // 指向 webapp/views/stats_dashboard.jsp
+    public ModelAndView showDashboard(HttpServletResponse response) {
+        // 防缓存
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+
         ModelAndView mav = new ModelAndView("/stats_dashboard");
 
-        // 获取数据
-        Map<String, Integer> data = statsService.getStatsData();
-        mav.addObject("data", data);
+        // 1. 基础数据
+        mav.addObject("data", statsService.getStatsData());
+
+        // 2. 热门藏书 Top 5
+        mav.addObject("top5", statsService.getTop5Books());
+
+        // 3. [关键！] 每日趋势数据
+        // 如果你的 Service 还没写 getDailyTrend 方法，请先去 Service 补上！
+        List<Map<String, Object>> dailyData = statsService.getDailyTrend();
+        mav.addObject("dailyData", dailyData);
+
+        // 4. [之前写的] 借阅明细导出可能用到的数据（如果有的话）
 
         return mav;
     }

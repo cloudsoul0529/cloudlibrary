@@ -4,19 +4,30 @@
 <head>
     <meta charset="utf-8">
     <title>数据统计</title>
+
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/AdminLTE.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/_all-skins.min.css">
-    <!-- 引入 ECharts -->
+
     <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
-<body class="hold-transition skin-red sidebar-mini">
-<!-- [su0Tmore]  -->
+<body class="hold-transition skin-green sidebar-mini">
 <section class="content">
 
-    <!-- 顶部卡片 -->
+    <!-- 顶部操作栏 -->
+    <div class="row" style="margin-bottom: 15px;">
+        <div class="col-md-12 text-right">
+            <a href="${pageContext.request.contextPath}/stats/export" class="btn btn-success">
+                <i class="fa fa-file-excel-o"></i> 导出完整借阅明细 (Excel)
+            </a>
+        </div>
+    </div>
+
+    <!-- 统计卡片 -->
     <div class="row">
         <div class="col-lg-4 col-xs-6">
             <div class="small-box bg-aqua">
@@ -43,58 +54,144 @@
 
     <!-- 图表区 -->
     <div class="row">
+        <!-- 左侧：每日趋势 -->
         <div class="col-md-6">
-            <div class="box box-primary">
-                <div class="box-header with-border"><h3 class="box-title">数据占比</h3></div>
-                <div class="box-body"><div id="chartPie" style="height:350px;"></div></div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="box box-success">
+            <div class="box box-success" id="dailyBox">
                 <div class="box-header with-border">
-                    <h3 class="box-title">数据对比</h3>
+                    <h3 class="box-title"><i class="fa fa-line-chart"></i> 每日借阅趋势</h3>
                     <div class="box-tools pull-right">
-                        <a href="${pageContext.request.contextPath}/stats/export" class="btn btn-sm btn-success"><i class="fa fa-download"></i> 导出报表</a>
+                        <button type="button" class="btn btn-sm btn-success" onclick="exportPDF('dailyBox', '每日借阅趋势')">
+                            <i class="fa fa-file-pdf-o"></i> 导出 PDF
+                        </button>
                     </div>
                 </div>
-                <div class="box-body"><div id="chartBar" style="height:350px;"></div></div>
+                <div class="box-body" style="background-color: #fff;">
+                    <div id="chartDaily" style="height:380px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧：热门 Top 5 -->
+        <div class="col-md-6">
+            <div class="box box-danger" id="top5Box">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-trophy"></i> 热门藏书排行榜 (Top 5)</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-sm btn-danger" onclick="exportPDF('top5Box', '热门藏书Top5')">
+                            <i class="fa fa-file-pdf-o"></i> 导出 PDF
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body" style="background-color: #fff;">
+                    <div id="chartBar" style="height:380px;"></div>
+                    <!-- [su0Tmore] 这里的提示文字已删除 -->
+                </div>
             </div>
         </div>
     </div>
-
 </section>
 
-<!-- 脚本 -->
 <script>
     $(function(){
-        var chartPie = echarts.init(document.getElementById('chartPie'));
-        var optionPie = {
-            tooltip: { trigger: 'item' },
-            legend: { bottom: '0%' },
-            color: ['#00c0ef', '#00a65a', '#f39c12'],
+        // --- 1. 左侧折线图 (简洁版) ---
+        var chartLine = echarts.init(document.getElementById('chartDaily'));
+        var days = []; var counts = [];
+        <c:forEach items="${dailyData}" var="item">
+        days.push('${item.name}'); counts.push(${item.value});
+        </c:forEach>
+        if(days.length === 0) { days=["暂无数据"]; counts=[0]; }
+
+        var optionLine = {
+            tooltip: { trigger: 'axis' },
+            toolbox: {
+                show: true,
+                feature: {
+                    magicType: { show: true, type: ['line', 'bar'] },
+                    saveAsImage: { show: true }
+                },
+                right: '5%'
+            },
+            grid: { left: '3%', right: '5%', bottom: '15%', containLabel: true },
+            dataZoom: [{ type: 'slider', show: true, bottom: 0 }],
+            xAxis: { type: 'category', boundaryGap: false, data: days },
+            yAxis: { type: 'value', minInterval: 1 },
             series: [{
-                type: 'pie', radius: ['40%', '70%'], avoidLabelOverlap: false,
-                itemStyle: { borderRadius: 10, borderColor: '#fff', borderWidth: 2 },
-                label: { show: false },
-                data: [{value: ${data.book}, name: '图书'}, {value: ${data.user}, name: '用户'}, {value: ${data.record}, name: '借阅'}]
+                name: '借阅量', type: 'line', smooth: true,
+                itemStyle: { color: '#00c0ef' },
+                lineStyle: { width: 3, color: '#00c0ef' },
+                areaStyle: {
+                    color: new echarts.graphic.LinearGradient(0,0,0,1,[
+                        {offset:0, color:'rgba(0, 192, 239, 0.5)'},
+                        {offset:1, color:'rgba(0, 192, 239, 0.1)'}
+                    ])
+                },
+                data: counts,
+                markPoint: {
+                    data: [
+                        { type: 'max', name: '最高峰', itemStyle: {color: '#dd4b39'} },
+                        { type: 'min', name: '最低谷', itemStyle: {color: '#00a65a'} }
+                    ]
+                }
             }]
         };
-        chartPie.setOption(optionPie);
+        chartLine.setOption(optionLine);
+
+
+        // --- 2. 右侧 Top 5 (保持不变) ---
+        var bookNames = []; var bookValues = [];
+        <c:forEach items="${top5}" var="item">
+        bookNames.push('${item.name}'); bookValues.push(${item.value});
+        </c:forEach>
+        if(bookNames.length === 0){ bookNames=["暂无"]; bookValues=[0]; }
 
         var chartBar = echarts.init(document.getElementById('chartBar'));
         var optionBar = {
-            tooltip: { trigger: 'axis' },
-            grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-            xAxis: { type: 'category', data: ['图书库存', '注册用户', '借阅记录'] },
-            yAxis: { type: 'value' },
+            tooltip: { trigger: 'item', formatter: '{b}: {c} 次' },
+            grid: { left: '3%', right: '10%', bottom: '3%', containLabel: true },
+            toolbox: {
+                show: true,
+                feature: {
+                    magicType: { show: true, type: ['line', 'bar'] },
+                    saveAsImage: { show: true }
+                },
+                right: '5%'
+            },
+            xAxis: { type: 'value' },
+            yAxis: { type: 'category', data: bookNames, inverse: true },
             series: [{
-                type: 'bar', barWidth: '40%',
-                data: [{value: ${data.book}, itemStyle: {color: '#00c0ef'}}, {value: ${data.user}, itemStyle: {color: '#00a65a'}}, {value: ${data.record}, itemStyle: {color: '#f39c12'}}]
+                name: '借阅量', type: 'bar', data: bookValues,
+                label: { show: true, position: 'right', color: '#666' },
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(0,0,1,0,[
+                        {offset:0,color:'#ff7f50'},
+                        {offset:1,color:'#ff4500'}
+                    ]),
+                    borderRadius: [0, 10, 10, 0]
+                }
             }]
         };
         chartBar.setOption(optionBar);
-        window.onresize = function() { chartPie.resize(); chartBar.resize(); };
+
+        chartBar.on('click', function(params) {
+            var bookName = params.name;
+            var url = "${pageContext.request.contextPath}/book/search?name=" + encodeURIComponent(bookName);
+            window.location.href = url;
+        });
+
+        window.onresize = function() { chartLine.resize(); chartBar.resize(); };
     });
+
+    function exportPDF(elementId, fileName) {
+        var element = document.getElementById(elementId);
+        html2canvas(element, { scale: 2, backgroundColor: "#ffffff" }).then(function(canvas) {
+            var imgData = canvas.toDataURL('image/png');
+            var pdf = new jspdf.jsPDF('l', 'mm', 'a4');
+            var imgWidth = 280;
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+            pdf.save(fileName + "_su0Tmore.pdf");
+        });
+    }
 </script>
 </body>
 </html>
