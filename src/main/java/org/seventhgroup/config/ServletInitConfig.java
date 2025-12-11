@@ -1,8 +1,10 @@
 package org.seventhgroup.config;
 
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.Filter;
+
 public class ServletInitConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     //加载Root容器配置
