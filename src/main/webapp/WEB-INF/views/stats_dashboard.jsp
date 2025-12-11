@@ -92,7 +92,7 @@
 
 <script>
     $(function(){
-        // --- 1. 左侧折线图 ---
+        // --- 1. 左侧折线图 (回归第一版 + 日期显形) ---
         var chartLine = echarts.init(document.getElementById('chartDaily'));
         var days = []; var counts = [];
         <c:forEach items="${dailyData}" var="item">
@@ -102,6 +102,33 @@
 
         var optionLine = {
             tooltip: { trigger: 'axis' },
+            grid: { left: '3%', right: '5%', bottom: '15%', containLabel: true },
+
+            // [su0Tmore] 优化后的 DataZoom
+            dataZoom: [{
+                type: 'slider',
+                show: true,
+                height: 20,              // 保持第一版的纤细
+                bottom: 10,
+                borderColor: 'transparent', // 无边框，干净
+                backgroundColor: '#f5f5f5', // 极淡背景
+                fillerColor: 'rgba(0, 192, 239, 0.2)', // 淡淡的蓝色填充
+                handleStyle: {
+                    color: '#00c0ef',    // 亮蓝色手柄
+                    shadowBlur: 3,
+                    shadowColor: 'rgba(0, 0, 0, 0.2)'
+                },
+                // [关键] 强制显示日期标签，让你知道划到了哪一天
+                textStyle: { color: '#666' },
+                labelFormatter: function (value) {
+                    // value 是索引，通过索引去 days 数组里拿具体的日期字符串
+                    if(days[value]) {
+                        return days[value];
+                    }
+                    return "";
+                }
+            }],
+
             toolbox: {
                 show: true,
                 feature: {
@@ -110,8 +137,7 @@
                 },
                 right: '5%'
             },
-            grid: { left: '3%', right: '5%', bottom: '15%', containLabel: true },
-            dataZoom: [{ type: 'slider', show: true, bottom: 0 }],
+
             xAxis: { type: 'category', boundaryGap: false, data: days },
             yAxis: { type: 'value', minInterval: 1 },
             series: [{
@@ -136,7 +162,7 @@
         chartLine.setOption(optionLine);
 
 
-        // --- 2. 右侧 Top 5  ---
+        // --- 2. 右侧 Top 5 (保持不变) ---
         var bookNames = []; var bookValues = [];
         <c:forEach items="${top5}" var="item">
         bookNames.push('${item.name}'); bookValues.push(${item.value});
@@ -188,7 +214,7 @@
             var imgWidth = 280;
             var imgHeight = canvas.height * imgWidth / canvas.width;
             pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
-            pdf.save(fileName + ".pdf");
+            pdf.save(fileName + "_su0Tmore.pdf");
         });
     }
 </script>
