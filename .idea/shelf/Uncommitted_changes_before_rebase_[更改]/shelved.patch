@@ -1,0 +1,507 @@
+Index: src/main/java/org/seventhgroup/service/UserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.seventhgroup.service;\r\n\r\nimport org.seventhgroup.entity.PageResult;\r\nimport org.seventhgroup.pojo.User;\r\n\r\n/*\r\n用户接口\r\n */\r\npublic interface UserService{\r\n    //通过User的用户账号和用户密码查询用户信息\r\n    User login(User user);\r\n    //添加用户\r\n    void addUser(User user);\r\n    //根据用户id办理用户离职\r\n    void delUser(Integer id);\r\n    //编辑用户信息\r\n    void editUser(User user);\r\n    //搜索用户\r\n    PageResult searchUsers(User user, Integer pageNum, Integer pageSize);\r\n    //根据id查询用户信息\r\n    User findById(Integer id);\r\n\r\n\r\n    Integer checkName(String name);\r\n\r\n    Integer checkEmail(String email);\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/seventhgroup/service/UserService.java b/src/main/java/org/seventhgroup/service/UserService.java
+--- a/src/main/java/org/seventhgroup/service/UserService.java	(revision a7864dc864ac90d18346620717353b945bbf55ba)
++++ b/src/main/java/org/seventhgroup/service/UserService.java	(date 1765179218995)
+@@ -21,7 +21,7 @@
+     User findById(Integer id);
+ 
+ 
+-    Integer checkName(String name);
++    boolean checkName(String name);
+ 
+-    Integer checkEmail(String email);
++    boolean checkEmail(String email);
+ }
+\ No newline at end of file
+Index: src/main/java/org/seventhgroup/service/impl/UserServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.seventhgroup.service.impl;\r\n\r\nimport com.github.pagehelper.Page;\r\nimport com.github.pagehelper.PageHelper;\r\nimport org.seventhgroup.dao.UserMapper;\r\nimport org.seventhgroup.entity.PageResult;\r\nimport org.seventhgroup.pojo.User;\r\nimport org.seventhgroup.service.UserService;\r\nimport org.seventhgroup.util.SHA256WithSaltUtil;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.security.NoSuchAlgorithmException;\r\nimport java.text.DateFormat;\r\nimport java.text.SimpleDateFormat;\r\nimport java.util.Date;\r\n\r\n@Service\r\npublic class UserServiceImpl  implements UserService {\r\n    //注入userMapper\r\n    @Autowired\r\n    private UserMapper userMapper;\r\n    //根据用户邮箱获取盐和哈希值，然后验证\r\n    @Override\r\n    public User login(User user) {\r\n        String salt = userMapper.getSalt(user);\r\n        String hash = userMapper.getHash(user);\r\n        if(SHA256WithSaltUtil.verify(user.getPassword(), salt, hash)){\r\n            return userMapper.login(user);\r\n        }\r\n        return null;\r\n    }\r\n\r\n    /**\r\n     * 新增用户\r\n     * @param user 新增的用户信息\r\n     */\r\n    @Override\r\n    public void addUser(User user) {\r\n        //新增的用户 默认状态都设置为0,即注册状态\r\n        user.setStatus(User.ACTIVE);\r\n        //设置盐与哈希\r\n        try {\r\n            byte[] salt = SHA256WithSaltUtil.generate16ByteSalt();\r\n            String hash = SHA256WithSaltUtil.encryptWith16ByteSalt(user.getPassword(),salt);\r\n            String storedSalt = SHA256WithSaltUtil.bytesToBase64(salt);\r\n            user.setPasswordSalt(storedSalt);\r\n            user.setPasswordHash(hash);\r\n        } catch (NoSuchAlgorithmException e) {\r\n            throw new RuntimeException(e);\r\n        }\r\n        userMapper.addUser(user);\r\n    }\r\n\r\n    /**\r\n     * 根据id办理用户注销\r\n     * @param id 注销用户的id\r\n     */\r\n    @Override\r\n    public void delUser(Integer id) {\r\n        //根据id查询出用户的完整信息\r\n        User user = this.findById(id);\r\n        //设置用户为注销状态\r\n        user.setStatus(User.DELETED);\r\n        //设置当天为用户的注销时间\r\n        DateFormat dateFormat = new SimpleDateFormat(\"yyyy-MM-dd\");\r\n        user.setDeletedate(dateFormat.format(new Date()));\r\n        userMapper.editUser(user);\r\n    }\r\n\r\n    /**\r\n     * 编辑用户信息\r\n     * @param user 更新之后的用户信息\r\n     */\r\n    @Override\r\n    public void editUser(User user) {\r\n        userMapper.editUser(user);\r\n    }\r\n\r\n    /**\r\n     * 搜索用户\r\n     * @param user 搜索的条件\r\n     * @param pageNum 当前页码\r\n     * @param pageSize 每页显示数量\r\n     * @return\r\n     */\r\n    @Override\r\n    public PageResult searchUsers(User user, Integer pageNum, Integer pageSize) {\r\n        // 使用分页插件:\r\n        PageHelper.startPage(pageNum, pageSize);\r\n        Page<User> page =  userMapper.searchUsers(user);\r\n        return new PageResult(page.getTotal(),page.getResult());\r\n    }\r\n\r\n    /**\r\n     * 根据用户id查询用户信息\r\n     * @param id 用户id\r\n     */\r\n    @Override\r\n    public User findById(Integer id) {\r\n        return userMapper.findById(id);\r\n    }\r\n\r\n    /**\r\n     * 检查用户名是否已经存在\r\n     * @param name 待检查的用户名\r\n     */\r\n    @Override\r\n    public Integer checkName(String name) {\r\n        return userMapper.checkName(name);\r\n    }\r\n\r\n    /**\r\n     * 检查用户邮箱是否存储\r\n     * @param email 待检查的用户邮箱\r\n     */\r\n    @Override\r\n    public Integer checkEmail(String email) {\r\n        return userMapper.checkEmail(email);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/seventhgroup/service/impl/UserServiceImpl.java b/src/main/java/org/seventhgroup/service/impl/UserServiceImpl.java
+--- a/src/main/java/org/seventhgroup/service/impl/UserServiceImpl.java	(revision a7864dc864ac90d18346620717353b945bbf55ba)
++++ b/src/main/java/org/seventhgroup/service/impl/UserServiceImpl.java	(date 1765179218988)
+@@ -3,13 +3,13 @@
+ import com.github.pagehelper.Page;
+ import com.github.pagehelper.PageHelper;
+ import org.seventhgroup.dao.UserMapper;
++import org.seventhgroup.dto.UserPasswordDTO;
+ import org.seventhgroup.entity.PageResult;
+ import org.seventhgroup.pojo.User;
+ import org.seventhgroup.service.UserService;
+ import org.seventhgroup.util.SHA256WithSaltUtil;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.stereotype.Service;
+-
+ import java.security.NoSuchAlgorithmException;
+ import java.text.DateFormat;
+ import java.text.SimpleDateFormat;
+@@ -17,14 +17,21 @@
+ 
+ @Service
+ public class UserServiceImpl  implements UserService {
+-    //注入userMapper
+     @Autowired
+     private UserMapper userMapper;
++
++    /**
++     * @author cloudsoul-ZX
++     * 用户登录
++     */
+     //根据用户邮箱获取盐和哈希值，然后验证
+     @Override
+     public User login(User user) {
+-        String salt = userMapper.getSalt(user);
+-        String hash = userMapper.getHash(user);
++        //获取盐和哈希值
++        UserPasswordDTO userPasswordDTO = userMapper.getPasswordDTO(user);
++        String salt = userPasswordDTO.getPasswordSalt();
++        String hash = userPasswordDTO.getPasswordHash();
++        //验证成功则登录
+         if(SHA256WithSaltUtil.verify(user.getPassword(), salt, hash)){
+             return userMapper.login(user);
+         }
+@@ -32,14 +39,13 @@
+     }
+ 
+     /**
+-     * 新增用户
+-     * @param user 新增的用户信息
++     * @author cloudsoul-ZX
++     * 新增用户（管理员）
+      */
+     @Override
+     public void addUser(User user) {
+-        //新增的用户 默认状态都设置为0,即注册状态
+         user.setStatus(User.ACTIVE);
+-        //设置盐与哈希
++        //设置盐，计算哈希值
+         try {
+             byte[] salt = SHA256WithSaltUtil.generate16ByteSalt();
+             String hash = SHA256WithSaltUtil.encryptWith16ByteSalt(user.getPassword(),salt);
+@@ -53,16 +59,13 @@
+     }
+ 
+     /**
+-     * 根据id办理用户注销
+-     * @param id 注销用户的id
++     * @author cloudsoul-ZX
++     * 用户注销
+      */
+     @Override
+     public void delUser(Integer id) {
+-        //根据id查询出用户的完整信息
+         User user = this.findById(id);
+-        //设置用户为注销状态
+         user.setStatus(User.DELETED);
+-        //设置当天为用户的注销时间
+         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+         user.setDeletedate(dateFormat.format(new Date()));
+         userMapper.editUser(user);
+@@ -106,8 +109,11 @@
+      * @param name 待检查的用户名
+      */
+     @Override
+-    public Integer checkName(String name) {
+-        return userMapper.checkName(name);
++    public boolean checkName(String name) {
++        if (userMapper.checkName(name) != null) {
++            return true;
++        }
++        return false;
+     }
+ 
+     /**
+@@ -115,7 +121,10 @@
+      * @param email 待检查的用户邮箱
+      */
+     @Override
+-    public Integer checkEmail(String email) {
+-        return userMapper.checkEmail(email);
++    public boolean checkEmail(String email) {
++        if (userMapper.checkEmail(email) != null) {
++            return true;
++        }
++        return false;
+     }
+ }
+Index: src/main/java/org/seventhgroup/controller/UserController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.seventhgroup.controller;\r\n\r\nimport org.seventhgroup.pojo.User;\r\nimport org.seventhgroup.service.UserService;\r\nimport org.seventhgroup.entity.PageResult;\r\nimport org.seventhgroup.entity.Result;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Controller;\r\nimport org.springframework.web.bind.annotation.RequestMapping;\r\nimport org.springframework.web.bind.annotation.ResponseBody;\r\nimport org.springframework.web.servlet.ModelAndView;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpSession;\r\n\r\n/**\r\n * 用户登录和注销Controller\r\n */\r\n@Controller\r\n@RequestMapping(\"/user\")\r\npublic class UserController {\r\n    //注入userService\r\n    @Autowired\r\n    private UserService userService;\r\n    /*\r\n   用户登录\r\n    */\r\n    @RequestMapping(\"/login\")\r\n    public String login(User user, HttpServletRequest request) {\r\n        try {\r\n            User u = userService.login(user);\r\n            /*\r\n            用户账号和密码是否查询出用户信息\r\n                是：将用户信息存入Session，并跳转到后台首页\r\n                否：Request域中添加提示信息，并转发到登录页面\r\n             */\r\n            if (u != null) {\r\n                request.getSession().setAttribute(\"USER_SESSION\", u);\r\n                String role = u.getRole();\r\n                if (\"ADMIN\".equals(role)) {\r\n                    return \"redirect:/views/main.jsp\";\r\n                } else {\r\n                    return \"redirect:/views/index.jsp\";\r\n                }\r\n            }\r\n            request.setAttribute(\"msg\", \"用户名或密码错误\");\r\n            return \"forward:/views/login.jsp\";\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n            request.setAttribute(\"msg\", \"系统错误\");\r\n            return \"forward:/views/login.jsp\";\r\n        }\r\n    }\r\n\r\n    /*\r\n    注销登录\r\n     */\r\n    @RequestMapping(\"/logout\")\r\n    public String logout(HttpServletRequest request) {\r\n        try {\r\n            HttpSession session = request.getSession();\r\n            //销毁Session\r\n            session.invalidate();\r\n            return \"forward:/views/login.jsp\";\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n            request.setAttribute(\"msg\", \"系统错误\");\r\n            return \"forward:/views/login.jsp\";\r\n        }\r\n    }\r\n\r\n    /**\r\n     * 新增用户\r\n     * @param user 新增的用户信息\r\n     */\r\n    @ResponseBody\r\n    @RequestMapping(\"/addUser\")\r\n    public Result addUser(User user) {\r\n        try {\r\n            userService.addUser(user);\r\n            return new Result(true, \"新增成功!\");\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n            return new Result(false, \"新增失败!\");\r\n        }\r\n    }\r\n\r\n    /**\r\n     * 办理用户离职\r\n     * @param id 离职的用户id\r\n     */\r\n    @ResponseBody\r\n    @RequestMapping(\"/delUser\")\r\n    public Result delUser(Integer id) {\r\n        try {\r\n            userService.delUser(id);\r\n            return new Result(true, \"离职办理成功!\");\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n            return new Result(false, \"离职办理失败!\");\r\n        }\r\n    }\r\n\r\n    /**\r\n     * 修改用户信息\r\n     * @param user 修改的用户信息\r\n     */\r\n    @ResponseBody\r\n    @RequestMapping(\"/editUser\")\r\n    public Result editUser(User user) {\r\n        try {\r\n            userService.editUser(user);\r\n            return new Result(true, \"修改成功!\");\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n            return new Result(false, \"修改失败!\");\r\n        }\r\n    }\r\n\r\n    /**\r\n     * 查询用户\r\n     * @param user 查询的条件\r\n     * @param pageNum  数据列表的当前页码\r\n     * @param pageSize 数据列表1页展示多少条数据\r\n     */\r\n    @RequestMapping(\"/search\")\r\n    public ModelAndView search(User user, Integer pageNum, Integer pageSize) {\r\n        if (pageNum == null) {\r\n            pageNum = 1;\r\n        }\r\n        if (pageSize == null) {\r\n            pageSize = 10;\r\n        }\r\n        PageResult pageResult = userService.searchUsers(user, pageNum, pageSize);\r\n        ModelAndView modelAndView = new ModelAndView();\r\n        modelAndView.setViewName(\"/user\");\r\n        modelAndView.addObject(\"pageResult\", pageResult);\r\n        modelAndView.addObject(\"search\", user);\r\n        modelAndView.addObject(\"pageNum\", pageNum);\r\n        modelAndView.addObject(\"gourl\", \"/user/search\");\r\n        return modelAndView;\r\n    }\r\n\r\n    /**\r\n     * 根据id查询用户\r\n     * @param id 用户id，用作查询条件\r\n     */\r\n    @ResponseBody\r\n    @RequestMapping(\"/findById\")\r\n    public User findById(Integer id) {\r\n        return userService.findById(id);\r\n    }\r\n\r\n    /**\r\n     * 检查用户名称是否已经存在\r\n     * @param name 用户名称\r\n     */\r\n    @ResponseBody\r\n    @RequestMapping(\"/checkName\")\r\n    public Result checkName(String name) {\r\n        Integer count = userService.checkName(name);\r\n        if (count > 0) {\r\n            return new Result(false, \"名字重复!\");\r\n        } else {\r\n            return new Result(true, \"名字可用!\");\r\n        }\r\n    }\r\n\r\n    /**\r\n     * 校验用户的邮箱是否已经存在\r\n     * @param email 被校验的用户邮箱\r\n     */\r\n    @ResponseBody\r\n    @RequestMapping(\"/checkEmail\")\r\n    public Result checkEmail(String email) {\r\n        Integer count = userService.checkEmail(email);\r\n        if (count > 0) {\r\n            return new Result(false, \"邮箱重复!\");\r\n        } else {\r\n            return new Result(true, \"邮箱可用!\");\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/seventhgroup/controller/UserController.java b/src/main/java/org/seventhgroup/controller/UserController.java
+--- a/src/main/java/org/seventhgroup/controller/UserController.java	(revision a7864dc864ac90d18346620717353b945bbf55ba)
++++ b/src/main/java/org/seventhgroup/controller/UserController.java	(date 1765179027662)
+@@ -10,33 +10,31 @@
+ import org.springframework.web.bind.annotation.ResponseBody;
+ import org.springframework.web.servlet.ModelAndView;
+ import javax.servlet.http.HttpServletRequest;
+-import javax.servlet.http.HttpSession;
+ 
+ /**
+- * 用户登录和注销Controller
++ * @author cloudsoul-ZX
++ * 用户登录、查询、编辑、新增、注销
+  */
+ @Controller
+ @RequestMapping("/user")
+ public class UserController {
+-    //注入userService
+     @Autowired
+     private UserService userService;
+-    /*
+-   用户登录
+-    */
++
++    /**
++     * @author cloudsoul-ZX
++     * 用户登录
++     */
+     @RequestMapping("/login")
+     public String login(User user, HttpServletRequest request) {
+         try {
+             User u = userService.login(user);
+-            /*
+-            用户账号和密码是否查询出用户信息
+-                是：将用户信息存入Session，并跳转到后台首页
+-                否：Request域中添加提示信息，并转发到登录页面
+-             */
+             if (u != null) {
++                //存储用户信息
+                 request.getSession().setAttribute("USER_SESSION", u);
++                //根据角色跳转至不同页面
+                 String role = u.getRole();
+-                if ("ADMIN".equals(role)) {
++                if (role.equals("ADMIN")) {
+                     return "redirect:/views/main.jsp";
+                 } else {
+                     return "redirect:/views/index.jsp";
+@@ -51,26 +49,20 @@
+         }
+     }
+ 
+-    /*
+-    注销登录
++    /**
++     * @author cloudsoul-ZX
++     * 注销登录
+      */
+     @RequestMapping("/logout")
+     public String logout(HttpServletRequest request) {
+-        try {
+-            HttpSession session = request.getSession();
+-            //销毁Session
+-            session.invalidate();
+-            return "forward:/views/login.jsp";
+-        } catch (Exception e) {
+-            e.printStackTrace();
+-            request.setAttribute("msg", "系统错误");
+-            return "forward:/views/login.jsp";
+-        }
++        //销毁Session，清除数据并跳转回登陆页面
++        request.getSession().invalidate();
++        return "forward:/views/login.jsp";
+     }
+ 
+     /**
+-     * 新增用户
+-     * @param user 新增的用户信息
++     * @author cloudsoul-ZX
++     * 新增用户（管理员）
+      */
+     @ResponseBody
+     @RequestMapping("/addUser")
+@@ -85,24 +77,24 @@
+     }
+ 
+     /**
+-     * 办理用户离职
+-     * @param id 离职的用户id
++     * @author cloudsoul-ZX
++     * 用户注销
+      */
+     @ResponseBody
+     @RequestMapping("/delUser")
+     public Result delUser(Integer id) {
+         try {
+             userService.delUser(id);
+-            return new Result(true, "离职办理成功!");
++            return new Result(true, "注销办理成功!");
+         } catch (Exception e) {
+             e.printStackTrace();
+-            return new Result(false, "离职办理失败!");
++            return new Result(false, "注销办理失败!");
+         }
+     }
+ 
+     /**
+-     * 修改用户信息
+-     * @param user 修改的用户信息
++     * @author cloudsoul-ZX
++     * 编辑用户（管理员）
+      */
+     @ResponseBody
+     @RequestMapping("/editUser")
+@@ -117,10 +109,8 @@
+     }
+ 
+     /**
++     * @author cloudsoul-ZX
+      * 查询用户
+-     * @param user 查询的条件
+-     * @param pageNum  数据列表的当前页码
+-     * @param pageSize 数据列表1页展示多少条数据
+      */
+     @RequestMapping("/search")
+     public ModelAndView search(User user, Integer pageNum, Integer pageSize) {
+@@ -157,8 +147,8 @@
+     @ResponseBody
+     @RequestMapping("/checkName")
+     public Result checkName(String name) {
+-        Integer count = userService.checkName(name);
+-        if (count > 0) {
++        boolean result = userService.checkName(name);
++        if (result) {
+             return new Result(false, "名字重复!");
+         } else {
+             return new Result(true, "名字可用!");
+@@ -172,8 +162,8 @@
+     @ResponseBody
+     @RequestMapping("/checkEmail")
+     public Result checkEmail(String email) {
+-        Integer count = userService.checkEmail(email);
+-        if (count > 0) {
++        boolean result = userService.checkEmail(email);
++        if (result) {
+             return new Result(false, "邮箱重复!");
+         } else {
+             return new Result(true, "邮箱可用!");
+Index: src/main/webapp/views/login.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" pageEncoding=\"UTF-8\" %>\r\n<html>\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <title>云借阅-图书管理系统</title>\r\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"${pageContext.request.contextPath}/css/webbase.css\"/>\r\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"${pageContext.request.contextPath}/css/pages-login-manage.css\"/>\r\n    <script type=\"text/javascript\" src=\"${pageContext.request.contextPath}/js/jquery.min.js\"></script>\r\n</head>\r\n<body>\r\n<div class=\"loginmanage\">\r\n    <div class=\"py-container\">\r\n        <h4 class=\"manage-title\">云借阅-图书管理系统</h4>\r\n        <div class=\"loginform\">\r\n            <ul class=\"sui-nav nav-tabs tab-wraped\">\r\n                <li class=\"active\">\r\n                    <h3>账户登录</h3>\r\n                </li>\r\n            </ul>\r\n            <div class=\"tab-content tab-wraped\">\r\n                <%--登录提示信息--%>\r\n                <span style=\"color: red\">${msg}</span>\r\n                <div id=\"profile\" class=\"tab-pane  active\">\r\n                    <form id=\"loginform\" class=\"sui-form\" action=\"${pageContext.request.contextPath}/user/login\"\r\n                          method=\"post\">\r\n                        <div class=\"input-prepend\"><span class=\"add-on loginname\">用户名</span>\r\n                            <input type=\"text\" placeholder=\"企业邮箱\" class=\"span2 input-xfat\" name=\"email\">\r\n                        </div>\r\n                        <div class=\"input-prepend\"><span class=\"add-on loginpwd\">密码</span>\r\n                            <input type=\"password\" placeholder=\"请输入密码\" class=\"span2 input-xfat\" name=\"password\">\r\n                        </div>\r\n                        <div class=\"logined\">\r\n                            <a class=\"sui-btn btn-block btn-xlarge btn-danger\"\r\n                               href='javascript:document:loginform.submit();' target=\"_self\">登&nbsp;&nbsp;录</a>\r\n                        </div>\r\n                    </form>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n</body>\r\n<script type=\"text/javascript\">\r\n    /**\r\n     * 登录超时 展示区跳出iframe\r\n     */\r\n    var _topWin = window;\r\n    while (_topWin != _topWin.parent.window) {\r\n        _topWin = _topWin.parent.window;\r\n    }\r\n    if (window != _topWin)\r\n        _topWin.document.location.href = 'login.jsp';\r\n</script>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/views/login.jsp b/src/main/webapp/views/login.jsp
+--- a/src/main/webapp/views/login.jsp	(revision a7864dc864ac90d18346620717353b945bbf55ba)
++++ b/src/main/webapp/views/login.jsp	(date 1765177632249)
+@@ -23,8 +23,8 @@
+                 <div id="profile" class="tab-pane  active">
+                     <form id="loginform" class="sui-form" action="${pageContext.request.contextPath}/user/login"
+                           method="post">
+-                        <div class="input-prepend"><span class="add-on loginname">用户名</span>
+-                            <input type="text" placeholder="企业邮箱" class="span2 input-xfat" name="email">
++                        <div class="input-prepend"><span class="add-on loginname">邮箱</span>
++                            <input type="text" placeholder="账户邮箱" class="span2 input-xfat" name="email">
+                         </div>
+                         <div class="input-prepend"><span class="add-on loginpwd">密码</span>
+                             <input type="password" placeholder="请输入密码" class="span2 input-xfat" name="password">
+Index: src/main/resources/mapper/UserMapper.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<!DOCTYPE mapper\r\n        PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\"\r\n        \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">\r\n<mapper namespace=\"org.seventhgroup.dao.UserMapper\">\r\n\r\n    <!-- 定义结果映射 -->\r\n    <resultMap id=\"userMap\" type=\"User\">\r\n        <id column=\"user_id\" property=\"id\"/>\r\n        <result column=\"user_name\" property=\"name\"/>\r\n        <result column=\"user_salt\" property=\"passwordSalt\"/>\r\n        <result column=\"user_hash\" property=\"passwordHash\"/>\r\n        <result column=\"user_email\" property=\"email\"/>\r\n        <result column=\"user_createdate\" property=\"createdate\"/>\r\n        <result column=\"user_role\" property=\"role\"/>\r\n        <result column=\"user_status\" property=\"status\"/>\r\n        <result column=\"user_deletedate\" property=\"deletedate\"/>\r\n    </resultMap>\r\n\r\n    <!-- 获取用户密码盐与哈希值 -->\r\n    <select id=\"getSalt\" resultType=\"java.lang.String\">\r\n        SELECT user_salt\r\n        FROM user\r\n        WHERE user_email = #{email}\r\n    </select>\r\n    <select id=\"getHash\" resultType=\"java.lang.String\">\r\n        SELECT user_hash\r\n        FROM user\r\n        WHERE user_email = #{email}\r\n    </select>\r\n\r\n    <!-- 用户登录查询 -->\r\n    <select id=\"login\" resultMap=\"userMap\">\r\n        SELECT\r\n            user_id,\r\n            user_name,\r\n            user_salt,\r\n            user_hash,\r\n            user_email,\r\n            user_createdate,\r\n            user_role,\r\n            user_status,\r\n            user_deletedate\r\n        FROM user\r\n        WHERE user_email = #{email}\r\n          AND user_status != ${@org.seventhgroup.pojo.User@DELETED}\r\n    </select>\r\n\r\n    <!-- 用户搜索查询 -->\r\n    <select id=\"searchUsers\" resultMap=\"userMap\">\r\n        SELECT\r\n        user_id,\r\n        user_name,\r\n        user_salt,\r\n        user_hash,\r\n        user_email,\r\n        user_createdate,\r\n        user_role,\r\n        user_status,\r\n        user_deletedate\r\n        FROM user\r\n        WHERE 1 = 1\r\n        <if test=\"id != null\">\r\n            AND user_id LIKE CONCAT('%', #{id}, '%')\r\n        </if>\r\n        <if test=\"name != null\">\r\n            AND user_name LIKE CONCAT('%', #{name}, '%')\r\n        </if>\r\n        ORDER BY user_status\r\n    </select>\r\n\r\n    <!-- 根据用户id查询用户信息 -->\r\n    <select id=\"findById\" resultMap=\"userMap\">\r\n        SELECT\r\n            user_id,\r\n            user_name,\r\n            user_salt,\r\n            user_hash,\r\n            user_email,\r\n            user_createdate,\r\n            user_role,\r\n            user_status,\r\n            user_deletedate\r\n        FROM user\r\n        WHERE user_id = #{id}\r\n    </select>\r\n\r\n    <!-- 检查用户名是否已经存在 -->\r\n    <select id=\"checkName\" resultType=\"java.lang.Integer\">\r\n        SELECT COUNT(user_name)\r\n        FROM user\r\n        WHERE user_name = #{name}\r\n    </select>\r\n\r\n    <!-- 检查用户邮箱是否已经存在 -->\r\n    <select id=\"checkEmail\" resultType=\"java.lang.Integer\">\r\n        SELECT COUNT(user_email)\r\n        FROM user\r\n        WHERE user_email = #{email}\r\n    </select>\r\n\r\n    <!-- 添加用户 -->\r\n    <insert id=\"addUser\">\r\n        INSERT INTO user (\r\n            user_id,\r\n            user_name,\r\n            user_salt,\r\n            user_hash,\r\n            user_email,\r\n            user_createdate,\r\n            user_role,\r\n            user_status,\r\n            user_deletedate\r\n        ) VALUES (\r\n                     #{id},\r\n                     #{name},\r\n                     #{passwordSalt},\r\n                     #{passwordHash},\r\n                     #{email},\r\n                     #{createdate},\r\n                     #{role},\r\n                     #{status},\r\n                     #{deletedate}\r\n                 )\r\n    </insert>\r\n\r\n    <!-- 编辑用户信息 -->\r\n    <update id=\"editUser\" parameterType=\"User\">\r\n        UPDATE user\r\n        <set>\r\n            <if test=\"name != null\">\r\n                user_name = #{name},\r\n            </if>\r\n            <if test=\"passwordSalt != null\">\r\n                user_salt = #{passwordSalt},\r\n            </if>\r\n            <if test=\"passwordHash != null\">\r\n                user_hash = #{passwordHash},\r\n            </if>\r\n            <if test=\"email != null\">\r\n                user_email = #{email},\r\n            </if>\r\n            <if test=\"createdate != null\">\r\n                user_createdate = #{createdate},\r\n            </if>\r\n            <if test=\"status != null\">\r\n                user_status = #{status},\r\n            </if>\r\n            <if test=\"role != null\">\r\n                user_role = #{role},\r\n            </if>\r\n            <if test=\"deletedate != null\">\r\n                user_deletedate = #{deletedate},\r\n            </if>\r\n        </set>\r\n        WHERE user_id = #{id}\r\n    </update>\r\n\r\n</mapper>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/mapper/UserMapper.xml b/src/main/resources/mapper/UserMapper.xml
+--- a/src/main/resources/mapper/UserMapper.xml	(revision a7864dc864ac90d18346620717353b945bbf55ba)
++++ b/src/main/resources/mapper/UserMapper.xml	(date 1765179278575)
+@@ -4,7 +4,7 @@
+         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="org.seventhgroup.dao.UserMapper">
+ 
+-    <!-- 定义结果映射 -->
++    <!-- 定义User结果映射 -->
+     <resultMap id="userMap" type="User">
+         <id column="user_id" property="id"/>
+         <result column="user_name" property="name"/>
+@@ -16,15 +16,17 @@
+         <result column="user_status" property="status"/>
+         <result column="user_deletedate" property="deletedate"/>
+     </resultMap>
++    <!-- 定义UserPasswordDTO结果映射 -->
++    <resultMap id="userPasswordMap" type="UserPasswordDTO">
++        <result column="user_salt" property="passwordSalt"/>
++        <result column="user_hash" property="passwordHash"/>
++    </resultMap>
+ 
+     <!-- 获取用户密码盐与哈希值 -->
+-    <select id="getSalt" resultType="java.lang.String">
+-        SELECT user_salt
+-        FROM user
+-        WHERE user_email = #{email}
+-    </select>
+-    <select id="getHash" resultType="java.lang.String">
+-        SELECT user_hash
++    <select id="getPasswordDTO" resultMap="userPasswordMap">
++        SELECT
++            user_salt,
++            user_hash
+         FROM user
+         WHERE user_email = #{email}
+     </select>
+@@ -86,15 +88,15 @@
+     </select>
+ 
+     <!-- 检查用户名是否已经存在 -->
+-    <select id="checkName" resultType="java.lang.Integer">
+-        SELECT COUNT(user_name)
++    <select id="checkName" resultType="java.lang.String">
++        SELECT user_name
+         FROM user
+         WHERE user_name = #{name}
+     </select>
+ 
+     <!-- 检查用户邮箱是否已经存在 -->
+-    <select id="checkEmail" resultType="java.lang.Integer">
+-        SELECT COUNT(user_email)
++    <select id="checkEmail" resultType="java.lang.String">
++        SELECT user_email
+         FROM user
+         WHERE user_email = #{email}
+     </select>
+Index: .idea/dataSources.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DataSourceManagerImpl\" format=\"xml\" multifile-model=\"true\">\r\n    <data-source source=\"LOCAL\" name=\"@localhost\" uuid=\"87e86e6e-c124-4e0b-9abb-11d2d797589b\">\r\n      <driver-ref>mysql.8</driver-ref>\r\n      <synchronize>true</synchronize>\r\n      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>\r\n      <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>\r\n      <jdbc-additional-properties>\r\n        <property name=\"com.intellij.clouds.kubernetes.db.host.port\" />\r\n        <property name=\"com.intellij.clouds.kubernetes.db.enabled\" value=\"false\" />\r\n        <property name=\"com.intellij.clouds.kubernetes.db.container.port\" />\r\n      </jdbc-additional-properties>\r\n      <working-dir>$ProjectFileDir$</working-dir>\r\n    </data-source>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/dataSources.xml b/.idea/dataSources.xml
+--- a/.idea/dataSources.xml	(revision a7864dc864ac90d18346620717353b945bbf55ba)
++++ b/.idea/dataSources.xml	(date 1765092282843)
+@@ -13,5 +13,17 @@
+       </jdbc-additional-properties>
+       <working-dir>$ProjectFileDir$</working-dir>
+     </data-source>
++    <data-source source="LOCAL" name="@localhost [2]" uuid="b28306a3-078a-449e-add0-173eff438628">
++      <driver-ref>mysql.8</driver-ref>
++      <synchronize>true</synchronize>
++      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
++      <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
++      <jdbc-additional-properties>
++        <property name="com.intellij.clouds.kubernetes.db.host.port" />
++        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
++        <property name="com.intellij.clouds.kubernetes.db.container.port" />
++      </jdbc-additional-properties>
++      <working-dir>$ProjectFileDir$</working-dir>
++    </data-source>
+   </component>
+ </project>
+\ No newline at end of file
+Index: src/main/java/org/seventhgroup/dao/UserMapper.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.seventhgroup.dao;\r\n\r\nimport com.github.pagehelper.Page;\r\nimport org.apache.ibatis.annotations.*;\r\nimport org.seventhgroup.pojo.User;\r\nimport org.springframework.stereotype.Repository;\r\n\r\n/**\r\n * 用户操作接口\r\n */\r\n@Mapper\r\n@Repository\r\npublic interface UserMapper{\r\n    //获取用户盐与哈希值\r\n    String getSalt(User user);\r\n    String getHash(User user);\r\n    //用户登录\r\n    User login(User user);\r\n    //新增用户\r\n    void addUser(User user);\r\n    //编辑用户信息\r\n    void editUser(User user);\r\n    //搜索用户\r\n    Page<User> searchUsers(User user );\r\n    //根据用户id查询用户信息\r\n    User findById(Integer id);\r\n    //检查用户名是否已经存在\r\n    Integer checkName(String name);\r\n    //检查用户邮箱是否已经存在\r\n    Integer checkEmail(String email);\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/seventhgroup/dao/UserMapper.java b/src/main/java/org/seventhgroup/dao/UserMapper.java
+--- a/src/main/java/org/seventhgroup/dao/UserMapper.java	(revision a7864dc864ac90d18346620717353b945bbf55ba)
++++ b/src/main/java/org/seventhgroup/dao/UserMapper.java	(date 1765179027670)
+@@ -2,6 +2,7 @@
+ 
+ import com.github.pagehelper.Page;
+ import org.apache.ibatis.annotations.*;
++import org.seventhgroup.dto.UserPasswordDTO;
+ import org.seventhgroup.pojo.User;
+ import org.springframework.stereotype.Repository;
+ 
+@@ -12,8 +13,7 @@
+ @Repository
+ public interface UserMapper{
+     //获取用户盐与哈希值
+-    String getSalt(User user);
+-    String getHash(User user);
++    UserPasswordDTO getPasswordDTO(User user);
+     //用户登录
+     User login(User user);
+     //新增用户
+@@ -25,7 +25,7 @@
+     //根据用户id查询用户信息
+     User findById(Integer id);
+     //检查用户名是否已经存在
+-    Integer checkName(String name);
++    String checkName(String name);
+     //检查用户邮箱是否已经存在
+-    Integer checkEmail(String email);
++    String checkEmail(String email);
+ }
+\ No newline at end of file
+Index: src/main/java/org/seventhgroup/config/MyBatisConfig.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.seventhgroup.config;\r\n\r\nimport com.github.pagehelper.PageInterceptor;\r\nimport org.apache.ibatis.plugin.Interceptor;\r\nimport org.mybatis.spring.SqlSessionFactoryBean;\r\nimport org.mybatis.spring.mapper.MapperScannerConfigurer;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.context.annotation.Bean;\r\nimport org.springframework.context.annotation.Configuration;\r\nimport org.springframework.core.io.Resource;\r\nimport org.springframework.core.io.support.PathMatchingResourcePatternResolver;\r\nimport javax.sql.DataSource;\r\nimport java.io.IOException;\r\nimport java.util.Properties;\r\n\r\n@Configuration\r\npublic class MyBatisConfig {\r\n\r\n    /**配置PageInterceptor分页插件*/\r\n    @Bean\r\n    public PageInterceptor getPageInterceptor() {\r\n        PageInterceptor pageInterceptor = new PageInterceptor();\r\n        Properties properties = new Properties();\r\n        properties.setProperty(\"value\", \"true\");\r\n        pageInterceptor.setProperties(properties);\r\n        return pageInterceptor;\r\n    }\r\n\r\n    @Bean\r\n    public SqlSessionFactoryBean getSqlSessionFactoryBean(@Autowired DataSource dataSource,\r\n                                                          @Autowired PageInterceptor pageInterceptor) throws IOException {\r\n        SqlSessionFactoryBean ssfb = new SqlSessionFactoryBean();\r\n\r\n        // 设置数据源\r\n        ssfb.setDataSource(dataSource);\r\n\r\n        // 设置分页插件\r\n        Interceptor[] plugins = {pageInterceptor};\r\n        ssfb.setPlugins(plugins);\r\n\r\n        // \uD83D\uDD25 关键配置：设置XML映射文件路径（resources目录下）\r\n        Resource[] resources = new PathMatchingResourcePatternResolver()\r\n                .getResources(\"classpath:mapper/*.xml\");\r\n        ssfb.setMapperLocations(resources);\r\n\r\n        ssfb.setTypeAliasesPackage(\"org.seventhgroup.pojo\");\r\n        return ssfb;\r\n    }\r\n\r\n    @Bean\r\n    public MapperScannerConfigurer getMapperScannerConfigurer(){\r\n        MapperScannerConfigurer msc = new MapperScannerConfigurer();\r\n        msc.setBasePackage(\"org.seventhgroup.dao\");\r\n        return msc;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/seventhgroup/config/MyBatisConfig.java b/src/main/java/org/seventhgroup/config/MyBatisConfig.java
+--- a/src/main/java/org/seventhgroup/config/MyBatisConfig.java	(revision a7864dc864ac90d18346620717353b945bbf55ba)
++++ b/src/main/java/org/seventhgroup/config/MyBatisConfig.java	(date 1765176757565)
+@@ -31,19 +31,19 @@
+                                                           @Autowired PageInterceptor pageInterceptor) throws IOException {
+         SqlSessionFactoryBean ssfb = new SqlSessionFactoryBean();
+ 
+-        // 设置数据源
++        //设置数据源
+         ssfb.setDataSource(dataSource);
+ 
+-        // 设置分页插件
++        //设置分页插件
+         Interceptor[] plugins = {pageInterceptor};
+         ssfb.setPlugins(plugins);
+ 
+-        // 🔥 关键配置：设置XML映射文件路径（resources目录下）
++        //设置XML映射文件路径（resources目录下）
+         Resource[] resources = new PathMatchingResourcePatternResolver()
+                 .getResources("classpath:mapper/*.xml");
+         ssfb.setMapperLocations(resources);
+-
+-        ssfb.setTypeAliasesPackage("org.seventhgroup.pojo");
++        //给包设置别名
++        ssfb.setTypeAliasesPackage("org.seventhgroup.pojo, org.seventhgroup.dto");
+         return ssfb;
+     }
+ 
+Index: src/main/webapp/views/user.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" pageEncoding=\"UTF-8\" %>\r\n<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>\r\n<html>\r\n\r\n<head>\r\n    <!-- 页面meta -->\r\n    <meta charset=\"utf-8\">\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n    <title>人员管理</title>\r\n    <link rel=\"stylesheet\" href=\"${pageContext.request.contextPath}/css/bootstrap.css\">\r\n    <link rel=\"stylesheet\" href=\"${pageContext.request.contextPath}/css/AdminLTE.css\">\r\n    <link rel=\"stylesheet\" href=\"${pageContext.request.contextPath}/css/pagination.css\">\r\n    <script src=\"${pageContext.request.contextPath}/js/jquery.min.js\"></script>\r\n    <script src=\"${pageContext.request.contextPath}/js/bootstrap.js\"></script>\r\n    <script src=\"${pageContext.request.contextPath}/js/pagination.js\"></script>\r\n    <script src=\"${pageContext.request.contextPath}/js/my.js\"></script>\r\n</head>\r\n<body class=\"hold-transition skin-red sidebar-mini\">\r\n<!-- .box-body -->\r\n<div class=\"box-header with-border\">\r\n    <h3 class=\"box-title\">人员管理</h3>\r\n</div>\r\n<div class=\"box-body\">\r\n    <!-- 数据表格 -->\r\n    <div class=\"table-box\">\r\n        <!--工具栏-->\r\n        <div class=\"pull-left\">\r\n            <div class=\"form-group form-inline\">\r\n                <div class=\"btn-group\">\r\n                    <button type=\"button\" class=\"btn btn-default\" title=\"新建\" data-toggle=\"modal\"\r\n                            data-target=\"#addModal\" onclick=\"resetUserFrom()\"><i class=\"fa fa-file-o\" ></i> 新增\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"box-tools pull-right\">\r\n            <div class=\"has-feedback\">\r\n                <form action=\"${pageContext.request.contextPath}/user/search\" method=\"post\">\r\n                    工号：<input name=\"id\" value=\"${user.id}\">&nbsp&nbsp&nbsp&nbsp\r\n                    姓名：<input name=\"name\" value=\"${user.name}\">&nbsp&nbsp&nbsp&nbsp\r\n                    <input class=\"btn btn-default\" type=\"submit\" value=\"查询\">\r\n                </form>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <!--工具栏/-->\r\n    <!--数据列表-->\r\n    <table id=\"dataList\" class=\"table table-bordered table-striped table-hover dataTable text-center\">\r\n        <thead>\r\n        <tr class=\"text-center\">\r\n            <th>工号</th>\r\n            <th>姓名</th>\r\n            <th>邮箱</th>\r\n            <th>注册时间</th>\r\n            <th>注册状态</th>\r\n            <th>操作</th>\r\n        </tr>\r\n        </thead>\r\n        <tbody>\r\n        <c:forEach items=\"${pageResult.rows}\" var=\"user\">\r\n            <tr>\r\n                <td>${user.id}</td>\r\n                <td>${user.name}</td>\r\n                <td>${user.email}</td>\r\n                <td>${user.createdate}</td>\r\n                <td>\r\n                    <c:if test=\"${user.status == 0}\">\r\n                        已注册\r\n                    </c:if>\r\n                    <c:if test=\"${user.status == 1}\">\r\n                        已注销\r\n                    </c:if>\r\n\r\n                </td>\r\n                <td class=\"text-center\">\r\n                    <c:if test=\"${user.status == 0}\">\r\n                        <button type=\"button\" class=\"btn bg-olive btn-xs\" data-toggle=\"modal\" data-target=\"#editModal\"\r\n                                onclick=\"findUserById(${user.id})\">修改\r\n                        </button>\r\n                        &nbsp&nbsp&nbsp&nbsp\r\n                        <button type=\"button\" class=\"btn bg-olive btn-xs\" onclick=\"delUser(${user.id})\">注销</button>\r\n                    </c:if>\r\n\r\n                </td>\r\n            </tr>\r\n        </c:forEach>\r\n        </tbody>\r\n    </table>\r\n    <!--数据列表/-->\r\n    <div id=\"pagination\" class=\"pagination\"></div>\r\n</div>\r\n<!-- 数据表格 /-->\r\n</div>\r\n<!-- /.box-body -->\r\n<tm-pagination conf=\"paginationConf\"></tm-pagination>\r\n\r\n<!-- 新增窗口 -->\r\n<div class=\"modal fade\" id=\"addModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\">\r\n    <div class=\"modal-dialog\">\r\n        <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">×</button>\r\n                <h3 id=\"myModalLabel\">人员信息</h3>\r\n            </div>\r\n            <div class=\"modal-body\">\r\n                <form id=\"addUser\">\r\n                    <table class=\"table table-bordered table-striped\" width=\"800px\">\r\n                        <tr>\r\n                            <td>人员姓名</td>\r\n                            <td><input class=\"form-control\" placeholder=\"人员姓名\" id=\"adduname\" onblur=\"checkVal()\" onfocus=\"changeVal()\" name=\"name\"></td>\r\n                            <td>企业邮箱</td>\r\n                            <td><input class=\"form-control\" placeholder=\"企业邮箱\" id=\"adduemail\" onblur=\"checkVal()\" onfocus=\"changeVal()\"name=\"email\"></td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>注册时间</td>\r\n                            <td><input type=\"date\" class=\"form-control\" name=\"createdate\" id=\"time\"  onchange=\"checkVal()\" onfocus=\"changeVal()\"name=\"createdate\"></td>\r\n                            <td>登录密码</td>\r\n                            <td><input class=\"form-control\" placeholder=\"登录密码\" id=\"addPw\" onblur=\"checkVal()\" onfocus=\"changeVal()\" name=\"password\"></td>\r\n                        </tr>\r\n\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t<td>用户角色</td>\r\n\t\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t\t<select class=\"form-control\" name=\"role\" value=\"USER\">\r\n\t\t\t\t\t\t\t\t\t<option value=\"USER\">普通用户</option>\r\n\t\t\t\t\t\t\t\t\t<option value=\"ADMIN\">管理员</option>\r\n\t\t\t\t\t\t\t\t</select>\r\n\t\t\t\t\t\t\t</td>\r\n                            <td colspan=\"2\"><span style=\"color: red\" id=\"addmsg\"></span></td>\r\n\t\t\t\t\t\t</tr>\r\n                    </table>\r\n                </form>\r\n            </div>\r\n            <div class=\"modal-footer\">\r\n                <button class=\"btn btn-success\" data-dismiss=\"modal\" aria-hidden=\"true\" id=\"savemsg\" disabled=\"true\"\r\n                        onclick=\"saveUser()\">保存\r\n                </button>\r\n                <button class=\"btn btn-default\" data-dismiss=\"modal\" aria-hidden=\"true\">关闭</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<!-- 编辑窗口 -->\r\n<div class=\"modal fade\" id=\"editModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\">\r\n    <div class=\"modal-dialog\">\r\n        <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">×</button>\r\n                <h3 id=\"myModalLabe2\">人员信息</h3>\r\n            </div>\r\n            <div class=\"modal-body\">\r\n                <form id=\"editUser\">\r\n                    <table class=\"table table-bordered table-striped\" width=\"800px\">\r\n\r\n                        <tr>\r\n                            <td>人员姓名</td>\r\n                            <td><input class=\"form-control\"  readonly name=\"name\" id=\"uname\"></td>\r\n                            <td>人员工号</td>\r\n                            <td><input class=\"form-control\"  readonly name=\"id\" id=\"uid\"></td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>企业邮箱</td>\r\n                            <td><input class=\"form-control\" readonly name=\"email\" id=\"uemail\" >\r\n                            </td>\r\n                            <td>注册时间</td>\r\n                            <td><input class=\"form-control\" readonly name=\"createdate\" id=\"uhire\" ></td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>登录密码</td>\r\n                            <td><input class=\"form-control\" type=\"password\"  name=\"password\" id=\"pw\"></td>\r\n\t\t\t\t\t\t\t<td>用户角色</td>\r\n\t\t\t\t\t\t\t<td>\r\n\t\t\t\t\t\t\t\t<select class=\"form-control\" id=\"urole\" name=\"role\" >\r\n\t\t\t\t\t\t\t\t\t<option value=\"USER\">普通用户</option>\r\n\t\t\t\t\t\t\t\t\t<option value=\"ADMIN\">管理员</option>\r\n\t\t\t\t\t\t\t\t</select>\r\n\t\t\t\t\t\t\t</td>\r\n                        </tr>\r\n                    </table>\r\n                </form>\r\n            </div>\r\n            <div class=\"modal-footer\">\r\n                <button class=\"btn btn-success\" data-dismiss=\"modal\" aria-hidden=\"true\" onclick=\"editUser()\">保存</button>\r\n                <button class=\"btn btn-default\" data-dismiss=\"modal\" aria-hidden=\"true\">关闭</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n</body>\r\n<script>\r\n    //总页数\r\n    pageargs.total=Math.ceil(${pageResult.total}/pageargs.pagesize);\r\n    //当前页数\r\n    pageargs.cur=${pageNum}\r\n     pageargs.gourl=\"${gourl}\"\r\n    userVO.id=\"${search.id}\"\r\n    userVO.name=\"${search.name}\"\r\n    pagination(pageargs);\r\n</script>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/views/user.jsp b/src/main/webapp/views/user.jsp
+--- a/src/main/webapp/views/user.jsp	(revision a7864dc864ac90d18346620717353b945bbf55ba)
++++ b/src/main/webapp/views/user.jsp	(date 1765177398752)
+@@ -108,8 +108,8 @@
+                         <tr>
+                             <td>人员姓名</td>
+                             <td><input class="form-control" placeholder="人员姓名" id="adduname" onblur="checkVal()" onfocus="changeVal()" name="name"></td>
+-                            <td>企业邮箱</td>
+-                            <td><input class="form-control" placeholder="企业邮箱" id="adduemail" onblur="checkVal()" onfocus="changeVal()"name="email"></td>
++                            <td>账户邮箱</td>
++                            <td><input class="form-control" placeholder="账户邮箱" id="adduemail" onblur="checkVal()" onfocus="changeVal()"name="email"></td>
+                         </tr>
+                         <tr>
+                             <td>注册时间</td>
+@@ -159,7 +159,7 @@
+                             <td><input class="form-control"  readonly name="id" id="uid"></td>
+                         </tr>
+                         <tr>
+-                            <td>企业邮箱</td>
++                            <td>账户邮箱</td>
+                             <td><input class="form-control" readonly name="email" id="uemail" >
+                             </td>
+                             <td>注册时间</td>

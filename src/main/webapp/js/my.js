@@ -278,10 +278,24 @@ function saveUser() {
         }
     })
 }
+
 function delUser(uid) {
     var r = confirm("确定办理工号：" + uid + "的注销?");
     if (r) {
         var url = getProjectPath() + "/user/delUser?id=" + uid;
+        $.get(url, function (response) {
+            alert(response.message)
+            if (response.success == true) {
+                window.location.href = getProjectPath() + "/user/search";
+            }
+        })
+    }
+}
+
+function recoverUser(uid) {
+    var r = confirm("确定办理工号：" + uid + "的恢复注销?");
+    if (r) {
+        var url = getProjectPath() + "/user/recoverUser?id=" + uid;
         $.get(url, function (response) {
             alert(response.message)
             if (response.success == true) {

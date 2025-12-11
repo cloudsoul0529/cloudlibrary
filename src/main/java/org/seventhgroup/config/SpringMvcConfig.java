@@ -1,27 +1,38 @@
 package org.seventhgroup.config;
 
 import org.seventhgroup.interceptor.ResourcesInterceptor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.web.servlet.config.annotation.*;
+
+import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author cloudsoul
+ */
 @Configuration
 //扫描Controller
 @ComponentScan("org.seventhgroup.controller")
-//读取配置文件
-@PropertySource("classpath:ignoreUrl.properties")
 //开启MVC注解驱动
 @EnableWebMvc
 public class SpringMvcConfig implements WebMvcConfigurer {
-
-    @Value("#{'${ignoreUrl}'.split(',')}")
-    private List<String> ignoreUrl;
+    //普通用户允许访问的路径
+    private final List<String> allowedUrl = Arrays.asList(
+            "/index",
+            "/user/logout",
+            "/book/selectNewbooks",
+            "/book/findById",
+            "/book/borrowBook",
+            "/book/search",
+            "/book/searchBorrowed",
+            "/book/returnBook",
+            "/record/searchRecords"
+    );
 
     //创建拦截器Bean
     @Bean
     public ResourcesInterceptor resourcesInterceptor(){
-        return new ResourcesInterceptor(ignoreUrl);
+        return new ResourcesInterceptor(allowedUrl);
     }
 
     //配置视图解析器
@@ -46,7 +57,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns(
                         "/css/**", "/js/**", "/img/**",
                         "/user/login",
-                        "/toLogin",
+                        "/login",
                         "/"
                 );
     }
@@ -55,6 +66,6 @@ public class SpringMvcConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         //访问"/"时，重定向到登录页
-        registry.addRedirectViewController("/", "/toLogin");
+        registry.addRedirectViewController("/", "/login");
     }
 }

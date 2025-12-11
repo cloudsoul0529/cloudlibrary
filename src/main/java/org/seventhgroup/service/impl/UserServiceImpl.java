@@ -74,72 +74,57 @@ public class UserServiceImpl implements UserService {
     @Override
     public void editUser(User user) {
         try {
-            // 1. 判断是否需要修改密码
-            // 只有当传入的密码不为 null 且不为空字符串时，才重新生成哈希
-            if (user.getPassword() != null && !user.getPassword().trim().isEmpty()) {
+            if (user.getPassword() != null && user.getPassword() != "") {
                 byte[] salt = SHA256WithSaltUtil.generate16ByteSalt();
-                String hash = SHA256WithSaltUtil.encryptWith16ByteSalt(user.getPassword(), salt);
+                String hash = SHA256WithSaltUtil.encryptWith16ByteSalt(user.getPassword(),salt);
                 String storedSalt = SHA256WithSaltUtil.bytesToBase64(salt);
-
                 user.setPasswordSalt(storedSalt);
                 user.setPasswordHash(hash);
-            } else {
-                // 2. 如果密码为空（只改了角色或其他信息）
-                // 显式设置为 null，让 UserMapper.xml 中的 <if test="..."> 跳过这两个字段的更新
-                user.setPasswordSalt(null);
-                user.setPasswordHash(null);
             }
-
             userMapper.editUser(user);
-
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
 
     /**
-     * @author cloudsoul-ZX
      * 用户注销（实质编辑用户）
-     * 【重点修改】：注销时修改用户名和邮箱，释放唯一索引
      */
     @Override
     public void delUser(Integer id) {
-        // 1. 先查出这个用户
+        //添加注销时间及状态改为已注销，用户数据仍保存在数据库中
         User user = this.findById(id);
-
-        // 2. 状态改为已注销 (假设 User.DELETED 是 "1")
         user.setStatus(User.DELETED);
-
-        // 3. 设置注销时间
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         user.setDeletedate(dateFormat.format(new Date()));
-
-        // 4. 【关键步骤】给用户名和邮箱加上时间戳后缀，避免占用名额
-        // 这样下次注册同名用户时，就不会报 "Duplicate entry" 错误了
-        long timestamp = System.currentTimeMillis();
-        user.setName(user.getName() + "_del_" + timestamp);
-        user.setEmail(user.getEmail() + "_del_" + timestamp);
-
-        // 5. 确保密码字段为null，防止注销时把密码给改乱了（虽然注销了也没人登，但保持数据干净）
-        user.setPasswordSalt(null);
-        user.setPasswordHash(null);
-
         userMapper.editUser(user);
     }
 
     /**
-     * @author cloudsoul-ZX
+     * 恢复注销（实质编辑用户）
+     */
+    @Override
+    public void recoverUser(Integer id) {
+        //删除注销时间及状态改为已注册
+        User user = this.findById(id);
+        user.setStatus(User.ACTIVE);
+        user.setDeletedate("cancel");
+        userMapper.editUser(user);
+    }
+
+    /**
      * 搜索用户
      */
     @Override
     public PageResult searchUsers(User user, Integer pageNum, Integer pageSize) {
+        //使用分页插件
         PageHelper.startPage(pageNum, pageSize);
+        //SQL语句被插件改写，返回pageSize条数据，Page包装
         Page<User> page = userMapper.searchUsers(user);
-        return new PageResult(page.getTotal(), page.getResult());
+        return new PageResult(page.getTotal(),page.getResult());
     }
 
     /**
-     * @author cloudsoul-ZX
      * 根据id查询用户
      */
     @Override
@@ -148,20 +133,24 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @author cloudsoul-ZX
-     * 检查用户名
+     * 新增、编辑用户时检查已注册的用户名是否存在
      */
     @Override
     public boolean checkName(String name) {
-        return userMapper.checkName(name) != null;
+        if (userMapper.checkName(name) != null) {
+            return true;
+        }
+        return false;
     }
 
     /**
-     * @author cloudsoul-ZX
-     * 检查邮箱
+     * 新增、编辑用户时检查已注册的邮箱是否存在
      */
     @Override
     public boolean checkEmail(String email) {
-        return userMapper.checkEmail(email) != null;
+        if (userMapper.checkEmail(email) != null) {
+            return true;
+        }
+        return false;
     }
 }

@@ -10,54 +10,52 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * @author cloudsoul
+ */
 public class ResourcesInterceptor extends HandlerInterceptorAdapter {
-    //任意角色都能访问的路径
-    private List<String> ignoreUrl;
-    public ResourcesInterceptor(List<String> ignoreUrl) {
-        this.ignoreUrl = ignoreUrl;
+    //普通用户允许访问的路径
+    private List<String> allowedUrl;
+    public ResourcesInterceptor(List<String> allowedUrl) {
+        this.allowedUrl = allowedUrl;
     }
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        User user = (User) request.getSession().getAttribute("USER_SESSION");
-        String uri = request.getRequestURI();
 
-        // 1. 未登录拦截
+        //禁用页面缓存
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Expires", "0");
+
+        User user = (User) request.getSession().getAttribute("USER_SESSION");
+        //登录请求在注册拦截器时无视
+        //如果用户未登录，跳转到登录页
         if (user == null) {
-            // 放行登录页面的请求，防止死循环
-            if (uri.contains("/login") || uri.contains("/toLogin")) {
-                return true;
-            }
             redirectToLogin(request, response, "您还没有登录，请先登录！");
             return false;
         }
-
-        // 2. 管理员放行
+        //管理员可以访问所有页面
         if ("ADMIN".equals(user.getRole())) {
             return true;
         }
-
-        // 3. 普通用户放行逻辑 【这里是修改重点！】
-        if ("USER".equals(user.getRole())) {
-            // A. 先放行核心业务页面
-            if (uri.contains("/main") ||          // 主页
-                    uri.contains("/book/") ||         // 图书模块
-                    uri.contains("/record/") ||       // 借阅记录模块
-                    uri.contains("/user/logout")) {   // 注销
-                return true;
+        //普通用户只能访问允许的页面
+        else{
+            //剥离URI中的项目名
+            String uri = request.getRequestURI();
+            String contextPath = request.getContextPath();
+            String pureUri = uri.substring(contextPath.length());
+            if (pureUri.isEmpty()) {
+                pureUri = "/";
             }
-
-            // B. 再放行静态资源 (css, js, img)
-            for (String allowedUrl : ignoreUrl) {
-                if (uri.contains(allowedUrl)) {
+            for (String allowedUrl : this.allowedUrl) {
+                if (pureUri.startsWith(allowedUrl)) {
                     return true;
                 }
             }
-
-            // C. 只有访问了不该访问的（比如 /user/addUser），才拦截
+            //其余情跳转至登录页面
             redirectToLogin(request, response, "您没有权限访问该页面！");
             return false;
         }
-        return false;
     }
 
     //FlashMap把数据暂存在Session中，重定向后取出
@@ -69,6 +67,6 @@ public class ResourcesInterceptor extends HandlerInterceptorAdapter {
             flashMapManager.saveOutputFlashMap(flashMap, request, response);
         }
         //重定向到登录页面
-        response.sendRedirect(request.getContextPath() + "/toLogin");
+        response.sendRedirect(request.getContextPath() + "/login");
     }
 }

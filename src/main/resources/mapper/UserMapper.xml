@@ -70,7 +70,7 @@
         <if test="name != null">
             AND user_name LIKE CONCAT('%', #{name}, '%')
         </if>
-        ORDER BY user_status
+        ORDER BY user_status, user_id
     </select>
 
     <!-- 根据用户id查询用户信息 -->
@@ -151,6 +151,9 @@
             </if>
             <if test="role != null">
                 user_role = #{role},
+            </if>
+            <if test='deletedate == "cancel"'>
+                user_deletedate = #{deletedate}
             </if>
         </set>
         WHERE user_id = #{id}

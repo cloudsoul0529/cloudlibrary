@@ -14,6 +14,9 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * @author cloudsoul
+ */
 @Configuration
 public class MyBatisConfig {
 

@@ -13,6 +13,8 @@ public interface UserService{
     void addUser(User user);
     //用户注销
     void delUser(Integer id);
+    //恢复注销
+    void recoverUser(Integer id);
     //编辑用户
     void editUser(User user);
     //搜索用户

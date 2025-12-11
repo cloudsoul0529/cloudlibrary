@@ -41,7 +41,7 @@ public class BookServiceImpl implements BookService {
      */
     @Override
     public PageResult selectNewBooks() {
-        // 设置分页参数（保留原逻辑：第1页，每页5条）
+        // 设置分页参数
         PageHelper.startPage(DEFAULT_PAGE_NUM, DEFAULT_PAGE_SIZE);
         Page<Book> page = bookMapper.selectNewBooks();
         return new PageResult(page.getTotal(), page.getResult());

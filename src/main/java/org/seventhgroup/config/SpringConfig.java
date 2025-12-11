@@ -7,6 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
+/**
+ * @author cloudsoul
+ */
 @Configuration
 @Import({MyBatisConfig.class,JdbcConfig.class})
 @ComponentScan(

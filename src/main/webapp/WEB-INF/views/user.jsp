@@ -50,6 +50,7 @@
         <tr class="text-center">
             <th>工号</th>
             <th>姓名</th>
+            <th>权限</th>
             <th>邮箱</th>
             <th>注册时间</th>
             <th>注册状态</th>
@@ -61,6 +62,14 @@
             <tr>
                 <td>${user.id}</td>
                 <td>${user.name}</td>
+                <td>
+                    <c:if test="${user.role == 'ADMIN'}">
+                        管理员
+                    </c:if>
+                    <c:if test="${user.role == 'USER'}">
+                        普通用户
+                    </c:if>
+                </td>
                 <td>${user.email}</td>
                 <td>${user.createdate}</td>
                 <td>
@@ -70,7 +79,6 @@
                     <c:if test="${user.status == 1}">
                         已注销
                     </c:if>
-
                 </td>
                 <td class="text-center">
                     <c:if test="${user.status == 0}">
@@ -79,6 +87,9 @@
                         </button>
                         &nbsp&nbsp&nbsp&nbsp
                         <button type="button" class="btn bg-olive btn-xs" onclick="delUser(${user.id})">注销</button>
+                    </c:if>
+                    <c:if test="${user.status == 1}">
+                        <button type="button" class="btn bg-olive btn-xs" onclick="recoverUser(${user.id})">恢复</button>
                     </c:if>
 
                 </td>

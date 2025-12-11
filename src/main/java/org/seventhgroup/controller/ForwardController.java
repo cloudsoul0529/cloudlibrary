@@ -10,19 +10,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ForwardController {
     /**
-     * @author cloudsoul-ZX
-     * 转发到主页
+     * 转发到管理员主页
      */
     @RequestMapping("/main")
-    public String showMainPage(){
+    public String showMain(){
         return "main";
     }
     /**
-     * @author cloudsoul-ZX
+     * 转发到普通用户主页
+     */
+    @RequestMapping("/index")
+    public String showIndex(){
+        return "index";
+    }
+    /**
      * 转发到登录页面
      */
-    @RequestMapping("/toLogin")
-    public String toLoginPage() {
+    @RequestMapping("/login")
+    public String showLogin() {
         return "login";
     }
 }

@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="cloudlibrary:war" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="102fc47a-dfa5-488c-a06c-992e2df074ca" name="更改" comment="用户模块、权限拦截进一步完善">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/interceptor/ResourcesInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/interceptor/ResourcesInterceptor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/service/impl/UserServiceImpl.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JUnit4 Test Class" />
+        <option value="Interface" />
+        <option value="spring-beans.schema" />
+        <option value="Class" />
+        <option value="Jsp File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Rebase.Settings">
+    <option name="NEW_BASE" value="origin/main" />
+  </component>
+  <component name="Git.Settings">
+    <excluded-from-favorite>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="master" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </excluded-from-favorite>
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--tags" />
+        <option name="title" value="All" />
+      </GitPushTagMode>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;cloudsoul0529&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/cloudsoul0529/cloudlibrary&quot;,
+    &quot;accountId&quot;: &quot;a1587e0b-a075-4cbd-9a67-3dcc83efa6f6&quot;
+  }
+}</component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="customMavenHome" value="D:\AAACode\2025AutumnTraining\apache-maven-3.6.3" />
+        <option name="localRepository" value="D:\AAACode\2025AutumnTraining\apache-maven-3.6.3\repository" />
+        <option name="mavenHomeTypeForPersistence" value="CUSTOM" />
+        <option name="userSettingsFile" value="D:\AAACode\2025AutumnTraining\apache-maven-3.6.3\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="35UsCl1Vb5kQ0XHp4TjmaTYzxs8" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Maven.cloudlibrary [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.cloudlibrary [package].executor&quot;: &quot;Run&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Tomcat Server.cloudlibrary.executor&quot;: &quot;Run&quot;,
+    &quot;Tomcat Server.cloudlibrary_server.executor&quot;: &quot;Run&quot;,
+    &quot;Tomcat 服务器.cloudlibrary_server.executor&quot;: &quot;Run&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit4&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/java_study&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;D:/AAACode/2025AutumnTraining/cloudlibrary/src/main/java/org/seventhgroup/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.javacompiler&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;应用程序.UserTest.executor&quot;: &quot;Run&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\AAACode\2025AutumnTraining\cloudlibrary\src\main\resources" />
+      <recent name="D:\AAACode\2025AutumnTraining\cloudlibrary" />
+      <recent name="D:\AAACode\2025AutumnTraining\cloudlibrary\src\main" />
+      <recent name="D:\AAACode\2025AutumnTraining\cloudlibrary\src\main\java\org\seventhgroup" />
+      <recent name="D:\AAACode\2025AutumnTraining\cloudlibrary\src\main\java\org\seventhgroup\entity" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\AAACode\2025AutumnTraining\cloudlibrary\src\main\webapp\WEB-INF" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="org.seventhgroup.pojo" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.seventhgroup.controller" />
+      <recent name="org.seventhgroup.entity" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="cloudlibrary" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.5.24" ALTERNATIVE_JRE_ENABLED="false">
+      <option name="BROWSER_ID" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="cloudlibrary:war">
+          <settings>
+            <option name="CONTEXT_PATH" value="/cloudlibrary" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="340cae45-ea7a-4d98-b588-c2b484494b0d" />
+        <option name="JNDI_PORT" value="1090" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="53006" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Profile">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="cloudlibrary:war" />
+        </option>
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.25659.39" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.25659.39" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="StructureViewState">
+    <option name="selectedTab" value="Logical" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="102fc47a-dfa5-488c-a06c-992e2df074ca" name="更改" comment="" />
+      <created>1763175858608</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1763175858608</updated>
+      <workItem from="1763175859593" duration="26000" />
+      <workItem from="1763175916730" duration="144000" />
+      <workItem from="1763176081053" duration="5954000" />
+      <workItem from="1763199045014" duration="2464000" />
+      <workItem from="1763253510998" duration="2004000" />
+      <workItem from="1763255537783" duration="89000" />
+      <workItem from="1763255641278" duration="1512000" />
+      <workItem from="1763257237584" duration="2294000" />
+      <workItem from="1763259811990" duration="498000" />
+      <workItem from="1763260316902" duration="2814000" />
+      <workItem from="1763278869006" duration="724000" />
+      <workItem from="1763279646727" duration="2813000" />
+      <workItem from="1763285247388" duration="4143000" />
+      <workItem from="1763289490120" duration="28000" />
+      <workItem from="1763346533285" duration="209000" />
+      <workItem from="1763346780520" duration="59000" />
+      <workItem from="1763346856612" duration="1091000" />
+      <workItem from="1763368149272" duration="104000" />
+      <workItem from="1763431640346" duration="1250000" />
+      <workItem from="1763437705629" duration="598000" />
+      <workItem from="1763474752458" duration="253000" />
+      <workItem from="1763530203636" duration="1051000" />
+      <workItem from="1763543672416" duration="543000" />
+      <workItem from="1763544431926" duration="641000" />
+      <workItem from="1763545272442" duration="241000" />
+      <workItem from="1763545525598" duration="562000" />
+      <workItem from="1763546869494" duration="4000" />
+      <workItem from="1763546900699" duration="171000" />
+      <workItem from="1763864831183" duration="639000" />
+      <workItem from="1764221081342" duration="319000" />
+      <workItem from="1764307289282" duration="139000" />
+      <workItem from="1764310609661" duration="278000" />
+      <workItem from="1764310911799" duration="1261000" />
+      <workItem from="1764312200154" duration="549000" />
+      <workItem from="1764382269032" duration="6452000" />
+      <workItem from="1764468630791" duration="6593000" />
+      <workItem from="1764494597631" duration="1821000" />
+      <workItem from="1764497069465" duration="617000" />
+      <workItem from="1764736089327" duration="697000" />
+      <workItem from="1764739722356" duration="1201000" />
+      <workItem from="1764752649788" duration="607000" />
+      <workItem from="1764827487073" duration="3193000" />
+      <workItem from="1764830699327" duration="75000" />
+      <workItem from="1764909925902" duration="3293000" />
+      <workItem from="1764923932209" duration="4232000" />
+      <workItem from="1764928199932" duration="1030000" />
+      <workItem from="1764929499913" duration="861000" />
+      <workItem from="1764993567594" duration="135000" />
+      <workItem from="1764993708751" duration="3861000" />
+      <workItem from="1764998773784" duration="5720000" />
+      <workItem from="1765083469185" duration="8721000" />
+      <workItem from="1765092246662" duration="137000" />
+      <workItem from="1765093494499" duration="148000" />
+      <workItem from="1765097524142" duration="391000" />
+      <workItem from="1765098022639" duration="1009000" />
+      <workItem from="1765117764179" duration="2444000" />
+      <workItem from="1765167225868" duration="1308000" />
+      <workItem from="1765174829768" duration="4458000" />
+      <workItem from="1765199255944" duration="251000" />
+      <workItem from="1765199516268" duration="5008000" />
+      <workItem from="1765248767725" duration="7825000" />
+      <workItem from="1765287117820" duration="5048000" />
+      <workItem from="1765295285655" duration="2849000" />
+      <workItem from="1765339600403" duration="4441000" />
+      <workItem from="1765344113177" duration="189000" />
+      <workItem from="1765358616652" duration="15471000" />
+      <workItem from="1765426930853" duration="9454000" />
+      <workItem from="1765437308342" duration="901000" />
+      <workItem from="1765439349891" duration="6312000" />
+    </task>
+    <task id="LOCAL-00001" summary="草稿">
+      <option name="closed" value="true" />
+      <created>1763253572766</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1763253572766</updated>
+    </task>
+    <task id="LOCAL-00002" summary="草稿2">
+      <option name="closed" value="true" />
+      <created>1763257958747</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1763257958747</updated>
+    </task>
+    <task id="LOCAL-00003" summary="草稿3">
+      <option name="closed" value="true" />
+      <created>1763260390337</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1763260390337</updated>
+    </task>
+    <task id="LOCAL-00004" summary="草稿4">
+      <option name="closed" value="true" />
+      <created>1763262198706</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1763262198706</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Controller层">
+      <option name="closed" value="true" />
+      <created>1763287351447</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1763287351447</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Controller层的完善及Service层的文件创建">
+      <option name="closed" value="true" />
+      <created>1763544206667</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1763544206668</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Controller层的完善及Service层的文件创建">
+      <option name="closed" value="true" />
+      <created>1763545586696</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1763545586696</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Controller层的完善及Service层的文件创建">
+      <option name="closed" value="true" />
+      <created>1763545730490</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1763545730490</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Controller层的完善及Service层的文件创建">
+      <option name="closed" value="true" />
+      <created>1763546029751</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1763546029751</updated>
+    </task>
+    <task id="LOCAL-00010" summary="sql脚本文件的创建">
+      <option name="closed" value="true" />
+      <created>1764221186623</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1764221186623</updated>
+    </task>
+    <task id="LOCAL-00011" summary="船新版本">
+      <option name="closed" value="true" />
+      <created>1764312043276</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1764312043276</updated>
+    </task>
+    <task id="LOCAL-00012" summary="船新版本">
+      <option name="closed" value="true" />
+      <created>1764312393601</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1764312393601</updated>
+    </task>
+    <task id="LOCAL-00013" summary="前端完备">
+      <option name="closed" value="true" />
+      <created>1764929109953</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1764929109953</updated>
+    </task>
+    <task id="LOCAL-00014" summary="XML配置方式">
+      <option name="closed" value="true" />
+      <created>1765003760688</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1765003760688</updated>
+    </task>
+    <task id="LOCAL-00015" summary="XML配置方式新">
+      <option name="closed" value="true" />
+      <created>1765003858272</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1765003858272</updated>
+    </task>
+    <task id="LOCAL-00016" summary="数据库更新＋密码加密">
+      <option name="closed" value="true" />
+      <created>1765091987545</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1765091987545</updated>
+    </task>
+    <task id="LOCAL-00017" summary="新增DTO层和加密算法">
+      <option name="closed" value="true" />
+      <created>1765204144067</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1765204144067</updated>
+    </task>
+    <task id="LOCAL-00018" summary="StatsMapper接口调整">
+      <option name="closed" value="true" />
+      <created>1765204510324</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1765204510324</updated>
+    </task>
+    <task id="LOCAL-00019" summary="entity层删去，移至dto层">
+      <option name="closed" value="true" />
+      <created>1765256387844</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1765256387844</updated>
+    </task>
+    <task id="LOCAL-00020" summary="User微改动">
+      <option name="closed" value="true" />
+      <created>1765292091948</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1765292091948</updated>
+    </task>
+    <task id="LOCAL-00021" summary="User改动">
+      <option name="closed" value="true" />
+      <created>1765342377846</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1765342377846</updated>
+    </task>
+    <task id="LOCAL-00022" summary="用户登录模块完成">
+      <option name="closed" value="true" />
+      <created>1765343409217</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1765343409217</updated>
+    </task>
+    <task id="LOCAL-00023" summary="权限拦截模块优化">
+      <option name="closed" value="true" />
+      <created>1765362213272</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1765362213272</updated>
+    </task>
+    <task id="LOCAL-00024" summary="权限拦截模块完善">
+      <option name="closed" value="true" />
+      <created>1765384124701</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1765384124701</updated>
+    </task>
+    <task id="LOCAL-00025" summary="用户模块、权限拦截进一步完善">
+      <option name="closed" value="true" />
+      <created>1765435829890</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1765435829890</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="HEAD" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="草稿" />
+    <MESSAGE value="草稿2" />
+    <MESSAGE value="草稿3" />
+    <MESSAGE value="草稿4" />
+    <MESSAGE value="Controller层" />
+    <MESSAGE value="Merge branch 'main' of https://github.com/cloudsoul0529/cloudlibrary&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/org/seventhgroup/service/impl/BookServiceImp.java&#10;#&#9;src/main/java/org/seventhgroup/service/impl/RecordServiceImp.java" />
+    <MESSAGE value="Controller层的完善及Service层的文件创建" />
+    <MESSAGE value="sql脚本文件的创建" />
+    <MESSAGE value="船新版本" />
+    <MESSAGE value="前端完备" />
+    <MESSAGE value="XML配置方式" />
+    <MESSAGE value="XML配置方式新" />
+    <MESSAGE value="数据库更新＋密码加密" />
+    <MESSAGE value="新增DTO层和加密算法" />
+    <MESSAGE value="StatsMapper接口调整" />
+    <MESSAGE value="entity层删去，移至dto层" />
+    <MESSAGE value="User微改动" />
+    <MESSAGE value="User改动" />
+    <MESSAGE value="用户登录模块完成" />
+    <MESSAGE value="权限拦截模块优化" />
+    <MESSAGE value="权限拦截模块完善" />
+    <MESSAGE value="用户模块、权限拦截进一步完善" />
+    <option name="LAST_COMMIT_MESSAGE" value="用户模块、权限拦截进一步完善" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

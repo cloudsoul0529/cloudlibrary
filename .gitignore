@@ -1,38 +1,24 @@
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-
-### IntelliJ IDEA ###
+# IntelliJ IDEA 配置
+# 先排除所有 .idea 文件
+.idea/
+# 保留需要共享的配置
+!.idea/codeStyles/
+!.idea/inspectionProfiles/
+!.idea/jdk.table.xml
+!.idea/vcs.xml
+# 排除敏感/本地文件
+.idea/workspace.xml
+.idea/misc.xml
 .idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
+.idea/caches/
 .idea/libraries/
-*.iws
+# 模块配置文件
 *.iml
+# 项目编译输出目录
+out/
+# 临时文件
+*.iws
 *.ipr
-
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+# 构建产物（Maven/Gradle 也需排除）
+target/
 build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
-.vscode/
-
-### Mac OS ###
-.DS_Store
