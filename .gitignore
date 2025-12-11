@@ -1,17 +1,5 @@
 # IntelliJ IDEA 配置
-# 先排除所有 .idea 文件
 .idea/
-# 保留需要共享的配置
-!.idea/codeStyles/
-!.idea/inspectionProfiles/
-!.idea/jdk.table.xml
-!.idea/vcs.xml
-# 排除敏感/本地文件
-.idea/workspace.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/caches/
-.idea/libraries/
 # 模块配置文件
 *.iml
 # 项目编译输出目录
