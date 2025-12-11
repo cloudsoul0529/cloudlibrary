@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author cloudsoul-ZX
@@ -55,9 +56,15 @@ public class UserController {
      * 注销登录
      */
     @RequestMapping("/logout")
-    public String logout(HttpServletRequest request) {
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
         //销毁Session，清除数据并跳转回登录页面
         request.getSession().invalidate();
+
+        //禁用页面缓存
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Expires", "0");
+
         return "redirect:/login";
     }
 

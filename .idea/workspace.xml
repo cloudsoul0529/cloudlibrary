@@ -9,27 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="102fc47a-dfa5-488c-a06c-992e2df074ca" name="更改" comment="权限拦截模块完善">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/cloudlibrary_war_exploded.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/config/JdbcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/config/JdbcConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/config/MyBatisConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/config/MyBatisConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/config/ServletInitConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/config/ServletInitConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/config/SpringConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/config/SpringConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/config/SpringMvcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/config/SpringMvcConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/controller/ForwardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/controller/ForwardController.java" afterDir="false" />
+    <list default="true" id="102fc47a-dfa5-488c-a06c-992e2df074ca" name="更改" comment="用户模块、权限拦截进一步完善">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/controller/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/interceptor/ResourcesInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/interceptor/ResourcesInterceptor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/pojo/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/pojo/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/service/impl/BookServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/service/impl/BookServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ignoreUrl.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/jdbc.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/jdbc.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mapper/UserMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/my.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/my.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,43 +101,44 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Downloaded.Files.Path.Enabled": "false",
-    "Maven.cloudlibrary [clean].executor": "Run",
-    "Maven.cloudlibrary [package].executor": "Run",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Tomcat Server.cloudlibrary.executor": "Run",
-    "Tomcat Server.cloudlibrary_server.executor": "Run",
-    "Tomcat 服务器.cloudlibrary_server.executor": "Run",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit4",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4": "",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/java_study",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "D:/AAACode/2025AutumnTraining/cloudlibrary/src/main/java/org/seventhgroup/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler",
-    "vue.rearranger.settings.migration": "true",
-    "应用程序.UserTest.executor": "Run"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Maven.cloudlibrary [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.cloudlibrary [package].executor&quot;: &quot;Run&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Tomcat Server.cloudlibrary.executor&quot;: &quot;Run&quot;,
+    &quot;Tomcat Server.cloudlibrary_server.executor&quot;: &quot;Run&quot;,
+    &quot;Tomcat 服务器.cloudlibrary_server.executor&quot;: &quot;Run&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit4&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/java_study&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;D:/AAACode/2025AutumnTraining/cloudlibrary/src/main/java/org/seventhgroup/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.javacompiler&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;应用程序.UserTest.executor&quot;: &quot;Run&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\AAACode\2025AutumnTraining\cloudlibrary\src\main\resources" />
@@ -183,7 +168,7 @@
       <deployment>
         <artifact name="cloudlibrary:war">
           <settings>
-            <option name="CONTEXT_PATH" value="/cloudlibrary_war" />
+            <option name="CONTEXT_PATH" value="/cloudlibrary" />
           </settings>
         </artifact>
       </deployment>
@@ -352,7 +337,9 @@
       <workItem from="1765339600403" duration="4441000" />
       <workItem from="1765344113177" duration="189000" />
       <workItem from="1765358616652" duration="15471000" />
-      <workItem from="1765426930853" duration="8783000" />
+      <workItem from="1765426930853" duration="9454000" />
+      <workItem from="1765437308342" duration="901000" />
+      <workItem from="1765439349891" duration="6312000" />
     </task>
     <task id="LOCAL-00001" summary="草稿">
       <option name="closed" value="true" />
@@ -546,7 +533,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765384124701</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="用户模块、权限拦截进一步完善">
+      <option name="closed" value="true" />
+      <created>1765435829890</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1765435829890</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -617,7 +612,8 @@
     <MESSAGE value="用户登录模块完成" />
     <MESSAGE value="权限拦截模块优化" />
     <MESSAGE value="权限拦截模块完善" />
-    <option name="LAST_COMMIT_MESSAGE" value="权限拦截模块完善" />
+    <MESSAGE value="用户模块、权限拦截进一步完善" />
+    <option name="LAST_COMMIT_MESSAGE" value="用户模块、权限拦截进一步完善" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

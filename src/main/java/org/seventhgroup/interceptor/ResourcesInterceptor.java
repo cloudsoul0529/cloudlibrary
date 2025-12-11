@@ -21,6 +21,12 @@ public class ResourcesInterceptor extends HandlerInterceptorAdapter {
     }
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+        //禁用页面缓存
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Expires", "0");
+
         User user = (User) request.getSession().getAttribute("USER_SESSION");
         //登录请求在注册拦截器时无视
         //如果用户未登录，跳转到登录页
