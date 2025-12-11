@@ -17,6 +17,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * @author cloudsoul
+ */
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired

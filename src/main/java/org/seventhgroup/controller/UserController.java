@@ -35,15 +35,21 @@ public class UserController {
             if (storedUser != null) {
                 //存储用户信息
                 request.getSession().setAttribute("USER_SESSION", storedUser);
-                return "redirect:/main";
+                //根据用户角色跳转至不同页面
+                if ("ADMIN".equals(storedUser.getRole())) {
+                    return "redirect:/main";
+                }
+                else{
+                    return "redirect:/index";
+                }
             }
             //addFlashAttribute把数据暂存在Session中，重定向后的下一次请求取出
             redirectAttributes.addFlashAttribute("msg", "用户名或密码错误");
-            return "redirect:/toLogin";
+            return "redirect:/login";
         } catch (Exception e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("msg", "系统错误");
-            return "redirect:/toLogin";
+            return "redirect:/login";
         }
     }
 
@@ -53,11 +59,10 @@ public class UserController {
      */
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
-        // 1. 销毁 Session（这是最关键的一步！彻底清除当前登录人的所有信息）
+        //销毁 Session
         session.invalidate();
-
-        // 2. 重定向回登录页
-        return "login";
+        //重定向回登录页
+        return "redirect:/login";
     }
 
     /**

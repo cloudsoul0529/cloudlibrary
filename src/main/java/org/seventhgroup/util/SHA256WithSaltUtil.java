@@ -6,6 +6,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 
+/**
+ * @author cloudsoul
+ */
 public class SHA256WithSaltUtil {
 
     // 盐值长度：16字节
