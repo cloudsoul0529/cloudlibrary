@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 
 /**
  * 数据库连接池配置类
+ * @author cloudsoul
  */
 @Configuration
 // 加载数据库配置文件

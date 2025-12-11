@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author cloudsoul-ZX
- * 用户登录、查询、编辑、新增、注销
+ * 用户登录、查询、编辑、新增、注销、恢复
  */
 @Controller
 @RequestMapping("/user")
@@ -24,7 +24,6 @@ public class UserController {
     private UserService userService;
 
     /**
-     * @author cloudsoul-ZX
      * 用户登录
      */
     @RequestMapping("/login")
@@ -34,31 +33,35 @@ public class UserController {
             if (storedUser != null) {
                 //存储用户信息
                 request.getSession().setAttribute("USER_SESSION", storedUser);
-                return "redirect:/main";
+                //根据不同权限跳转至不同界面
+                if ("ADMIN".equals(storedUser.getRole())) {
+                    return "redirect:/main";
+                }
+                else{
+                    return "redirect:/index";
+                }
             }
             //addFlashAttribute把数据暂存在Session中，重定向后的下一次请求取出
             redirectAttributes.addFlashAttribute("msg", "用户名或密码错误");
-            return "redirect:/toLogin";
+            return "redirect:/login";
         } catch (Exception e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("msg", "系统错误");
-            return "redirect:/toLogin";
+            return "redirect:/login";
         }
     }
 
     /**
-     * @author cloudsoul-ZX
      * 注销登录
      */
     @RequestMapping("/logout")
     public String logout(HttpServletRequest request) {
         //销毁Session，清除数据并跳转回登录页面
         request.getSession().invalidate();
-        return "redirect:/toLogin";
+        return "redirect:/login";
     }
 
     /**
-     * @author cloudsoul-ZX
      * 新增用户（管理员）
      */
     @ResponseBody
@@ -74,7 +77,6 @@ public class UserController {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 编辑用户（管理员）
      */
     @ResponseBody
@@ -90,7 +92,6 @@ public class UserController {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 用户注销（实质编辑用户）
      */
     @ResponseBody
@@ -106,7 +107,22 @@ public class UserController {
     }
 
     /**
-     * @author cloudsoul-ZX
+     * 恢复注销（实质编辑用户）
+     */
+    @ResponseBody
+    @RequestMapping("/recoverUser")
+    public Result recoverUser(Integer id) {
+        try {
+            userService.recoverUser(id);
+            return new Result(true, "恢复办理成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "恢复办理失败!");
+        }
+    }
+
+
+    /**
      * 查询用户
      */
     @RequestMapping("/search")
@@ -130,7 +146,6 @@ public class UserController {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 根据id查询用户
      */
     @ResponseBody
@@ -140,7 +155,6 @@ public class UserController {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 新增、编辑用户时检查已注册的用户名是否存在
      */
     @ResponseBody
@@ -155,7 +169,6 @@ public class UserController {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 新增、编辑用户时检查已注册的邮箱是否存在
      */
     @ResponseBody

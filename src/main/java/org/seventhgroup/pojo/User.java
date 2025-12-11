@@ -21,7 +21,7 @@ public class User implements Serializable {
     private String password;
     //用户邮箱
     private String email;
-    //用户角色（管理员："ADMIN"，工作人员："WORKER"，普通用户："USER"）
+    //用户角色（管理员："ADMIN"，普通用户："USER"）
     private String role;
     //用户状态
     private String status;

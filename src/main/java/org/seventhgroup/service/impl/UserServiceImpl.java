@@ -16,13 +16,15 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * @author cloudsoul
+ */
 @Service
 public class UserServiceImpl  implements UserService {
     @Autowired
     private UserMapper userMapper;
 
     /**
-     * @author cloudsoul-ZX
      * 用户登录
      */
     //根据用户邮箱获取盐和哈希值，然后验证
@@ -40,7 +42,6 @@ public class UserServiceImpl  implements UserService {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 新增用户（管理员）
      */
     @Override
@@ -60,7 +61,6 @@ public class UserServiceImpl  implements UserService {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 编辑用户
      */
     @Override
@@ -78,7 +78,6 @@ public class UserServiceImpl  implements UserService {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 用户注销（实质编辑用户）
      */
     @Override
@@ -92,7 +91,18 @@ public class UserServiceImpl  implements UserService {
     }
 
     /**
-     * @author cloudsoul-ZX
+     * 恢复注销（实质编辑用户）
+     */
+    @Override
+    public void recoverUser(Integer id) {
+        //删除注销时间及状态改为已注册
+        User user = this.findById(id);
+        user.setStatus(User.ACTIVE);
+        user.setDeletedate("cancel");
+        userMapper.editUser(user);
+    }
+
+    /**
      * 搜索用户
      */
     @Override
@@ -105,7 +115,6 @@ public class UserServiceImpl  implements UserService {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 根据id查询用户
      */
     @Override
@@ -114,7 +123,6 @@ public class UserServiceImpl  implements UserService {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 新增、编辑用户时检查已注册的用户名是否存在
      */
     @Override
@@ -126,7 +134,6 @@ public class UserServiceImpl  implements UserService {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 新增、编辑用户时检查已注册的邮箱是否存在
      */
     @Override
