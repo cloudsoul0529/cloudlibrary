@@ -202,7 +202,7 @@
                 AND book_status = #{status}
             </if>
             <if test="status == null or status == ''">
-                AND book_status != '0'
+                AND book_status IN('1','2')
             </if>
 
             <if test="name != null and name != ''">
