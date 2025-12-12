@@ -220,4 +220,8 @@ public class BookServiceImpl implements BookService {
             this.returnConfirm(id);
         }
     }
+    @Override
+    public Integer getConfirmCount() {
+        return bookMapper.countByStatus("2");
+    }
 }

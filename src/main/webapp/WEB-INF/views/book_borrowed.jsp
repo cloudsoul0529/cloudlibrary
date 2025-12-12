@@ -29,7 +29,13 @@
                 </li>
                     <%-- 待归还确认 Tab --%>
                 <li class="${showType == 'confirm' ? 'active' : ''}">
-                    <a href="#" onclick="switchTab('confirm')">待归还确认 <span class="badge bg-red">!</span></a>
+                    <a href="#" onclick="switchTab('confirm')">
+                        待归还确认
+                            <%-- 【修改】：只有数量大于0才显示徽章 --%>
+                        <c:if test="${confirmCount > 0}">
+                            <span class="badge bg-red">${confirmCount}</span>
+                        </c:if>
+                    </a>
                 </li>
                 <li class="${showType == 'my' ? 'active' : ''}">
                     <a href="#" onclick="switchTab('my')">我的借阅</a>

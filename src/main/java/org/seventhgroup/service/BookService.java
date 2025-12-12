@@ -30,4 +30,6 @@ public interface BookService {
     Integer returnConfirm(String id);
     // 批量确认归还
     void batchReturnConfirm(String[] ids);
+
+    Integer getConfirmCount();
 }

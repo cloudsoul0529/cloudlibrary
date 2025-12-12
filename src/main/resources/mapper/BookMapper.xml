@@ -251,5 +251,9 @@
         </if>
         ORDER BY book_borrowtime
     </select>
+    <!-- 统计待归还确认的数量 -->
+    <select id="countByStatus" resultType="java.lang.Integer">
+        SELECT count(*) FROM book WHERE book_status = #{status}
+    </select>
 
 </mapper>

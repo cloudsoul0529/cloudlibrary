@@ -195,6 +195,11 @@ public class BookController {
         // 3. 把 showType 传回给页面，用于判断哪个 Tab 应该是激活状态
         modelAndView.addObject("showType", showType);
 
+        //管理员可以看到未确认归还图书界面
+        if ("ADMIN".equals(user.getRole())) {
+            Integer confirmCount = bookService.getConfirmCount();
+            modelAndView.addObject("confirmCount", confirmCount);
+        }
         return modelAndView;
     }
     /**

@@ -32,4 +32,6 @@ public interface  BookMapper {
 
     // 查询借阅但未归还的图书
     Page<Book> selectMyBorrowed(Book book);
+    //查询未确认归还的图书的数目
+    Integer countByStatus(String status);
 }
