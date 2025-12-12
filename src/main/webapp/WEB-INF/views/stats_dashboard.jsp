@@ -18,7 +18,6 @@
 <body class="hold-transition skin-green sidebar-mini">
 <section class="content">
 
-    <!-- 顶部操作栏 -->
     <div class="row" style="margin-bottom: 15px;">
         <div class="col-md-12 text-right">
             <a href="${pageContext.request.contextPath}/stats/export" class="btn btn-success">
@@ -27,7 +26,6 @@
         </div>
     </div>
 
-    <!-- 统计卡片 -->
     <div class="row">
         <div class="col-lg-4 col-xs-6">
             <div class="small-box bg-aqua">
@@ -52,9 +50,7 @@
         </div>
     </div>
 
-    <!-- 图表区 -->
     <div class="row">
-        <!-- 左侧：每日趋势 -->
         <div class="col-md-6">
             <div class="box box-success" id="dailyBox">
                 <div class="box-header with-border">
@@ -71,7 +67,6 @@
             </div>
         </div>
 
-        <!-- 右侧：热门 Top 5 -->
         <div class="col-md-6">
             <div class="box box-danger" id="top5Box">
                 <div class="box-header with-border">
@@ -92,7 +87,6 @@
 
 <script>
     $(function(){
-        // --- 1. 左侧折线图 (回归第一版 + 日期显形) ---
         var chartLine = echarts.init(document.getElementById('chartDaily'));
         var days = []; var counts = [];
         <c:forEach items="${dailyData}" var="item">
@@ -103,41 +97,15 @@
         var optionLine = {
             tooltip: { trigger: 'axis' },
             grid: { left: '3%', right: '5%', bottom: '15%', containLabel: true },
-
-            // [su0Tmore] 优化后的 DataZoom
             dataZoom: [{
-                type: 'slider',
-                show: true,
-                height: 20,              // 保持第一版的纤细
-                bottom: 10,
-                borderColor: 'transparent', // 无边框，干净
-                backgroundColor: '#f5f5f5', // 极淡背景
-                fillerColor: 'rgba(0, 192, 239, 0.2)', // 淡淡的蓝色填充
-                handleStyle: {
-                    color: '#00c0ef',    // 亮蓝色手柄
-                    shadowBlur: 3,
-                    shadowColor: 'rgba(0, 0, 0, 0.2)'
-                },
-                // [关键] 强制显示日期标签，让你知道划到了哪一天
+                type: 'slider', show: true, height: 20, bottom: 10,
+                borderColor: 'transparent', backgroundColor: '#f5f5f5',
+                fillerColor: 'rgba(0, 192, 239, 0.2)',
+                handleStyle: { color: '#00c0ef', shadowBlur: 3, shadowColor: 'rgba(0, 0, 0, 0.2)' },
                 textStyle: { color: '#666' },
-                labelFormatter: function (value) {
-                    // value 是索引，通过索引去 days 数组里拿具体的日期字符串
-                    if(days[value]) {
-                        return days[value];
-                    }
-                    return "";
-                }
+                labelFormatter: function (value) { return days[value] ? days[value] : ""; }
             }],
-
-            toolbox: {
-                show: true,
-                feature: {
-                    magicType: { show: true, type: ['line', 'bar'] },
-                    saveAsImage: { show: true }
-                },
-                right: '5%'
-            },
-
+            toolbox: { show: true, feature: { magicType: { show: true, type: ['line', 'bar'] }, saveAsImage: { show: true } }, right: '5%' },
             xAxis: { type: 'category', boundaryGap: false, data: days },
             yAxis: { type: 'value', minInterval: 1 },
             series: [{
@@ -150,19 +118,12 @@
                         {offset:1, color:'rgba(0, 192, 239, 0.1)'}
                     ])
                 },
-                data: counts,
-                markPoint: {
-                    data: [
-                        { type: 'max', name: '最高峰', itemStyle: {color: '#dd4b39'} },
-                        { type: 'min', name: '最低谷', itemStyle: {color: '#00a65a'} }
-                    ]
-                }
+                data: counts
             }]
         };
         chartLine.setOption(optionLine);
 
 
-        // --- 2. 右侧 Top 5 (保持不变) ---
         var bookNames = []; var bookValues = [];
         <c:forEach items="${top5}" var="item">
         bookNames.push('${item.name}'); bookValues.push(${item.value});
@@ -173,15 +134,8 @@
         var optionBar = {
             tooltip: { trigger: 'item', formatter: '{b}: {c} 次' },
             grid: { left: '3%', right: '10%', bottom: '3%', containLabel: true },
-            toolbox: {
-                show: true,
-                feature: {
-                    magicType: { show: true, type: ['line', 'bar'] },
-                    saveAsImage: { show: true }
-                },
-                right: '5%'
-            },
-            xAxis: { type: 'value' },
+            toolbox: { show: true, feature: { magicType: { show: true, type: ['line', 'bar'] }, saveAsImage: { show: true } }, right: '5%' },
+            xAxis: { type: 'value', minInterval: 1 },
             yAxis: { type: 'category', data: bookNames, inverse: true },
             series: [{
                 name: '借阅量', type: 'bar', data: bookValues,
