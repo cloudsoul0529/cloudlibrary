@@ -32,13 +32,12 @@ public class StatsServiceImpl implements StatsService {
         return statsMapper.selectReportData();
     }
 
-    // [su0Tmore] 实现获取热门图书逻辑
+    // [su0Tmore] 获取热门图书
     @Override
     public List<Map<String, Object>> getTop5Books() {
-        // 调用刚才写好的 Mapper 方法
         return statsMapper.selectTop5Books();
     }
-
+    // [su0Tmore] 获取每日借阅趋势
     @Override
     public List<Map<String, Object>> getDailyTrend() {
         return statsMapper.selectDailyTrend();

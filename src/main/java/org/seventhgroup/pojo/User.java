@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @author cloudsoul-ZX
  */
 public class User implements Serializable {
-    public static final String ACTIVE = "0";//正常状态
+    public static final String ACTIVE = "0";//注册状态
     public static final String DELETED = "1";//注销状态
     //用户id
     private Integer id;

@@ -1,9 +1,10 @@
 package org.seventhgroup.dto;
 
-//DTO封装密码盐与哈希值
+//封装密码盐与哈希值
 public class PasswordResult {
     private String passwordSalt;
     private String passwordHash;
+
     public String getPasswordSalt() {
         return passwordSalt;
     }

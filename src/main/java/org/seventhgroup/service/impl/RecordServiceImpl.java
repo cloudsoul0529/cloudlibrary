@@ -39,8 +39,8 @@ public class RecordServiceImpl implements RecordService {
         // 1. 开启分页
         PageHelper.startPage(pageNum, pageSize);
 
-        // 2. 权限控制：如果不是管理员，强制只查自己的借阅记录
-        if (user != null && !"ADMIN".equals(user.getRole())) {
+        // 2. 普通用户只能查自己的借阅记录
+        if (user != null && "USER".equals(user.getRole())) {
             record.setBorrower(user.getName());
         }
 

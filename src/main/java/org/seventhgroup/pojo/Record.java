@@ -8,9 +8,6 @@ import java.io.Serializable;
  * @author sooooya838
  */
 public class Record implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
     //记录ID
     private Integer id;
     //书名

@@ -5,17 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.OutputStream;
+
+
 
 @Controller
 @RequestMapping("/stats")
@@ -39,18 +38,15 @@ public class StatsController {
         // 2. 热门藏书 Top 5
         mav.addObject("top5", statsService.getTop5Books());
 
-        // 3. [关键！] 每日趋势数据
-        // 如果你的 Service 还没写 getDailyTrend 方法，请先去 Service 补上！
+        // 3. 每日趋势数据
         List<Map<String, Object>> dailyData = statsService.getDailyTrend();
         mav.addObject("dailyData", dailyData);
-
-        // 4. [之前写的] 借阅明细导出可能用到的数据（如果有的话）
 
         return mav;
     }
 
     /**
-     * [su0Tmore] 功能2：导出Excel
+     * [su0Tmore] 导出Excel
      */
     @RequestMapping("/export")
     public void exportReport(HttpServletResponse response) {

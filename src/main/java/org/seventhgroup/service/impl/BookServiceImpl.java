@@ -12,6 +12,7 @@ import org.seventhgroup.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,10 +25,9 @@ import java.util.Date;
 @Service
 @Transactional
 public class BookServiceImpl implements BookService {
-    // 常量定义（消除魔法值，提升可读性）
+    // 常量定义
     private static final int DEFAULT_PAGE_NUM = 1;
     private static final int DEFAULT_PAGE_SIZE = 5;
-    private static final String ROLE_ADMIN = "ADMIN";
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
@@ -48,11 +48,10 @@ public class BookServiceImpl implements BookService {
     }
 
     /**
-     * 根据ID查询图书 - 优化空值校验、代码注释
+     * 根据ID查询图书
      */
     @Override
     public Book findById(String id) {
-        // 空值校验
         if (id == null || id.trim().isEmpty()) {
             return null;
         }
@@ -60,7 +59,7 @@ public class BookServiceImpl implements BookService {
     }
 
     /**
-     * 借阅图书 - 优化注释、空值校验
+     * 借阅图书
      */
     @Override
     public Integer borrowBook(Book book) {
@@ -137,14 +136,14 @@ public class BookServiceImpl implements BookService {
             book.setBorrower(user.getName());
             page = bookMapper.selectMyBorrowed(book);
         }
-        // 2. 管理员选了“待归还确认” (新增逻辑) -> 只查状态为 2 的
+        // 2. 管理员选了“待归还确认” -> 只查归还中的
         else if ("confirm".equals(showType)) {
-            book.setStatus("2"); // 2代表归还中
+            book.setStatus(Book.RETURNING);
             page = bookMapper.selectBorrowed(book);
         }
         // 3. 管理员选了“全部借阅” -> 查所有
         else {
-            book.setStatus(null); // 查所有 != 0 的
+            book.setStatus(null);
             page = bookMapper.selectBorrowed(book);
         }
 
@@ -222,6 +221,6 @@ public class BookServiceImpl implements BookService {
     }
     @Override
     public Integer getConfirmCount() {
-        return bookMapper.countByStatus("2");
+        return bookMapper.countByStatus(Book.RETURNING);
     }
 }

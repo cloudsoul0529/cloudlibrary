@@ -19,7 +19,7 @@
         SELECT COUNT(*) FROM record
     </select>
 
-    <!-- 联合查询详细借阅数据 (扩展版) -->
+    <!-- 联合查询详细借阅数据 -->
     <select id="selectReportData" resultType="java.util.Map">
         SELECT
             record_bookname as bName,
@@ -30,4 +30,25 @@
         FROM record
     </select>
 
+    <!-- 统计热门图书 -->
+    <select id="selectTop5Books" resultType="java.util.Map">
+        SELECT
+        record_bookname as name,
+        COUNT(*) as value
+        FROM record
+        GROUP BY record_bookname
+        ORDER BY value DESC
+        LIMIT 5
+    </select>
+
+    <!-- 统计每日借阅趋势 -->
+    <select id="selectDailyTrend" resultType="java.util.Map">
+        SELECT
+            LEFT(record_borrowtime, 10) as name,
+            COUNT(*) as value
+        FROM record
+        WHERE record_borrowtime IS NOT NULL AND record_borrowtime != ''
+        GROUP BY name
+        ORDER BY name
+    </select>
 </mapper>

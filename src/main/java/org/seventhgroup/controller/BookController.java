@@ -42,13 +42,12 @@ public class BookController {
     }
 
     /**
-     * 根据ID查询图书 - 优化空值校验、代码注释
+     * 根据ID查询图书
      */
     @ResponseBody
     @RequestMapping("/findById")
     public Result<Book> findById(String id) {
         try {
-            // 空值校验
             if (id == null || id.trim().isEmpty()) {
                 return new Result<>(false, "图书ID不能为空！");
             }
@@ -64,7 +63,7 @@ public class BookController {
     }
 
     /**
-     * 借阅图书 - 优化空值校验、代码注释
+     * 借阅图书
      */
     @ResponseBody
     @RequestMapping("/borrowBook")
@@ -176,13 +175,16 @@ public class BookController {
      * @param pageSize 数据列表1页展示多少条数据
      */
     @RequestMapping("/searchBorrowed")
-    // 1. 方法参数里加上 String showType
     public ModelAndView searchBorrowed(Book book, Integer pageNum, Integer pageSize, HttpServletRequest request, String showType) {
-        if (pageNum == null) pageNum = 1;
-        if (pageSize == null) pageSize = 10;
+        if (pageNum == null) {
+            pageNum = 1;
+        }
+        if (pageSize == null) {
+            pageSize = 10;
+        }
         User user = (User) request.getSession().getAttribute("USER_SESSION");
 
-        // 2. 调用 Service 时传入 showType
+        //根据showType查询不同记录
         PageResult pageResult = bookService.searchBorrowed(book, user, pageNum, pageSize, showType);
 
         ModelAndView modelAndView = new ModelAndView();
@@ -192,7 +194,7 @@ public class BookController {
         modelAndView.addObject("pageNum", pageNum);
         modelAndView.addObject("gourl", request.getRequestURI());
 
-        // 3. 把 showType 传回给页面，用于判断哪个 Tab 应该是激活状态
+        //把showType传回给页面，用于判断哪个Tab应该是激活状态
         modelAndView.addObject("showType", showType);
 
         //管理员可以看到未确认归还图书界面
@@ -246,7 +248,7 @@ public class BookController {
      */
     @ResponseBody
     @RequestMapping("/batchReturnConfirm")
-    public Result batchReturnConfirm(String ids) { // 接收逗号分隔的字符串
+    public Result batchReturnConfirm(String ids) {
         try {
             if(ids == null || "".equals(ids)){
                 return new Result(false, "请选择要确认的图书！");

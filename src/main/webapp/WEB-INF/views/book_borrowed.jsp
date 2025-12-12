@@ -31,7 +31,7 @@
                 <li class="${showType == 'confirm' ? 'active' : ''}">
                     <a href="#" onclick="switchTab('confirm')">
                         待归还确认
-                            <%-- 【修改】：只有数量大于0才显示徽章 --%>
+                            <%-- 只有数量大于0才显示标识 --%>
                         <c:if test="${confirmCount > 0}">
                             <span class="badge bg-red">${confirmCount}</span>
                         </c:if>
@@ -75,7 +75,7 @@
         <table id="dataList" class="table table-bordered table-striped table-hover dataTable text-center">
             <thead>
             <tr>
-                <%-- 【新增】如果是待确认模式，显示全选框 --%>
+                <%-- 如果是待确认模式，显示全选框 --%>
                 <c:if test="${showType == 'confirm'}">
                     <th class="text-center">
                         <input type="checkbox" id="selall" onclick="allSelect()">
@@ -96,7 +96,7 @@
             <tbody>
             <c:forEach items="${pageResult.rows}" var="book">
                 <tr>
-                        <%-- 【新增】如果是待确认模式，显示每一行的复选框 --%>
+                        <%-- 如果是待确认模式，显示每一行的复选框 --%>
                     <c:if test="${showType == 'confirm'}">
                         <td class="text-center">
                             <input type="checkbox" name="ids" value="${book.id}">
@@ -119,7 +119,7 @@
                     <td>${book.borrowTime}</td>
                     <td>${book.returnTime}</td>
 
-                        <%-- 操作栏逻辑重构 --%>
+                        <%-- 操作栏 --%>
                     <td class="text-center">
                             <%-- 情况1：书籍状态是“借阅中”(1) --%>
                         <c:if test="${book.status == '1'}">
@@ -178,13 +178,13 @@
             $("#searchForm").submit();
         }
 
-    // 【新增】全选/全不选
+    // 全选/全不选
     function allSelect() {
         var isChecked = $("#selall").prop("checked");
         $("input[name='ids']").prop("checked", isChecked);
     }
 
-    // 【新增】批量确认逻辑
+    // 批量确认逻辑
     function batchConfirm() {
         // 1. 获取所有选中的id
         var ids = "";
