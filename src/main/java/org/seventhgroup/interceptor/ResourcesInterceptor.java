@@ -42,14 +42,8 @@ public class ResourcesInterceptor extends HandlerInterceptorAdapter {
         else{
             //剥离URI中的项目名
             String uri = request.getRequestURI();
-            System.out.println(">>>>>>>>>>>uri+" + uri);
-            System.out.println(">>>>>>>>>>>uri+" + uri);
-            System.out.println(">>>>>>>>>>>uri+" + uri);
             String contextPath = request.getContextPath();
             String pureUri = uri.substring(contextPath.length());
-            System.out.println(">>>>>>>>>>>uri+" + pureUri);
-            System.out.println(">>>>>>>>>>>uri+" + pureUri);
-            System.out.println(">>>>>>>>>>>uri+" + pureUri);
             if (pureUri.isEmpty()) {
                 pureUri = "/";
             }

@@ -3,12 +3,12 @@ package org.seventhgroup.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.seventhgroup.dao.BookMapper;
+import org.seventhgroup.dao.RecordMapper;
 import org.seventhgroup.dto.PageResult;
 import org.seventhgroup.pojo.Book;
 import org.seventhgroup.pojo.Record;
 import org.seventhgroup.pojo.User;
 import org.seventhgroup.service.BookService;
-import org.seventhgroup.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +34,7 @@ public class BookServiceImpl implements BookService {
     private BookMapper bookMapper;
 
     @Autowired
-    private RecordService recordService;
+    private RecordMapper recordMapper;
 
     /**
      * 查询最新上架图书
@@ -191,7 +191,7 @@ public class BookServiceImpl implements BookService {
         Integer count= bookMapper.editBook(book);
         //如果归还确认成功，则新增借阅记录
         if(count==1){
-            return  recordService.addRecord(record);
+            return  recordMapper.addRecord(record);
         }
         return 0;
     }

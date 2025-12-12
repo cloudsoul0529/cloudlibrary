@@ -1,6 +1,7 @@
 package org.seventhgroup.service;
 
 import org.seventhgroup.dto.PageResult;
+import org.seventhgroup.dto.Result;
 import org.seventhgroup.pojo.User;
 
 /**
@@ -12,7 +13,7 @@ public interface UserService{
     //添加用户
     void addUser(User user);
     //用户注销
-    void delUser(Integer id);
+    Result delUser(Integer id);
     //恢复注销
     void recoverUser(Integer id);
     //编辑用户

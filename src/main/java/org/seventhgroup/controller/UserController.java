@@ -105,11 +105,26 @@ public class UserController {
     @RequestMapping("/delUser")
     public Result delUser(Integer id) {
         try {
-            userService.delUser(id);
-            return new Result(true, "注销办理成功!");
+            return userService.delUser(id);
         } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, "注销办理失败!");
+        }
+    }
+
+    /**
+     * @author cloudsoul-ZX
+     * 用户恢复（实质编辑用户）
+     */
+    @ResponseBody
+    @RequestMapping("/recoverUser")
+    public Result recoverUser(Integer id) {
+        try {
+            userService.recoverUser(id);
+            return new Result(true, "恢复办理成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "恢复办理失败!");
         }
     }
 

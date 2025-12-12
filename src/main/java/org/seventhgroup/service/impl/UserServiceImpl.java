@@ -2,9 +2,12 @@ package org.seventhgroup.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.seventhgroup.dao.BookMapper;
 import org.seventhgroup.dao.UserMapper;
 import org.seventhgroup.dto.PasswordResult;
 import org.seventhgroup.dto.PageResult;
+import org.seventhgroup.dto.Result;
+import org.seventhgroup.pojo.Book;
 import org.seventhgroup.pojo.User;
 import org.seventhgroup.service.UserService;
 import org.seventhgroup.util.SHA256WithSaltUtil;
@@ -15,6 +18,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -25,6 +29,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private BookMapper bookMapper;
     /**
      * @author cloudsoul-ZX
      * 用户登录
@@ -89,13 +95,23 @@ public class UserServiceImpl implements UserService {
      * 用户注销（实质编辑用户）
      */
     @Override
-    public void delUser(Integer id) {
-        //添加注销时间及状态改为已注销，用户数据仍保存在数据库中
+    public Result delUser(Integer id) {
         User user = this.findById(id);
-        user.setStatus(User.DELETED);
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        user.setDeletedate(dateFormat.format(new Date()));
-        userMapper.editUser(user);
+        Book book = new Book();
+        book.setBorrower(user.getName());
+        List<Book> borrowedBook = bookMapper.selectMyBorrowed(book);
+        //若该用户无借阅未还或未确认的书，执行注销
+        if (borrowedBook.isEmpty()) {
+            //添加注销时间及状态改为已注销，用户数据仍保存在数据库中
+            user.setStatus(User.DELETED);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            user.setDeletedate(dateFormat.format(new Date()));
+            userMapper.editUser(user);
+            return new Result(true, "注销办理成功!");
+        }
+        else{
+            return new Result(false, "该用户有图书未归还或确认！");
+        }
     }
 
     /**
