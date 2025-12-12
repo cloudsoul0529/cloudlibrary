@@ -85,7 +85,7 @@
         <if test="author != null">
             AND book_author LIKE CONCAT('%', #{author}, '%')
         </if>
-        ORDER BY book_borrowtime
+        ORDER BY book_status, book_borrowtime, book_uploadtime
     </select>
 
     <!-- 新增图书 -->
@@ -159,39 +159,6 @@
         </trim>
         WHERE book_id = #{id}
     </update>
-
-    <!-- 查询借阅但未归还的图书和待归还确认的图书 -->
-<!--    <select id="selectBorrowed" resultMap="bookMap">-->
-<!--        SELECT-->
-<!--        book_id,-->
-<!--        book_name,-->
-<!--        book_isbn,-->
-<!--        book_press,-->
-<!--        book_author,-->
-<!--        book_pagination,-->
-<!--        book_price,-->
-<!--        book_uploadtime,-->
-<!--        book_status,-->
-<!--        book_borrower,-->
-<!--        book_borrowtime,-->
-<!--        book_returntime-->
-<!--        FROM book-->
-<!--        WHERE(-->
-<!--        (book_borrower = #{borrower} AND book_status = ${@org.seventhgroup.pojo.Book@BORROWED})-->
-<!--        OR-->
-<!--        (book_status = ${@org.seventhgroup.pojo.Book@RETURNING})-->
-<!--        )-->
-<!--        <if test="name != null">-->
-<!--            AND book_name LIKE CONCAT('%', #{name}, '%')-->
-<!--        </if>-->
-<!--        <if test="press != null">-->
-<!--            AND book_press LIKE CONCAT('%', #{press}, '%')-->
-<!--        </if>-->
-<!--        <if test="author != null">-->
-<!--            AND book_author LIKE CONCAT('%', #{author}, '%')-->
-<!--        </if>-->
-<!--        ORDER BY book_borrowtime-->
-<!--    </select>-->
 
     <!-- 管理员查询：通用查询 (支持指定状态) -->
     <select id="selectBorrowed" resultMap="bookMap">
