@@ -132,15 +132,19 @@ public class BookServiceImpl implements BookService {
         PageHelper.startPage(pageNum, pageSize);
         Page<Book> page;
 
-        // 逻辑判断：
-        // 1. 如果是普通用户 -> 只能看自己的
-        // 2. 如果是管理员，但主动选择了“只看我的” (showType="my") -> 只能看自己的
+        // 1. 普通用户 或 管理员选了“我的借阅” -> 查自己
         if (!"ADMIN".equals(user.getRole()) || "my".equals(showType)) {
             book.setBorrower(user.getName());
             page = bookMapper.selectMyBorrowed(book);
         }
-        // 3. 否则（管理员 且 没选只看我的） -> 看全部
+        // 2. 管理员选了“待归还确认” (新增逻辑) -> 只查状态为 2 的
+        else if ("confirm".equals(showType)) {
+            book.setStatus("2"); // 2代表归还中
+            page = bookMapper.selectBorrowed(book);
+        }
+        // 3. 管理员选了“全部借阅” -> 查所有
         else {
+            book.setStatus(null); // 查所有 != 0 的
             page = bookMapper.selectBorrowed(book);
         }
 
@@ -209,5 +213,11 @@ public class BookServiceImpl implements BookService {
         //设置图书归还确认的当天为图书归还时间
         record.setRemandTime(dateFormat.format(new Date()));
         return record;
+    }
+    @Override
+    public void batchReturnConfirm(String[] ids) {
+        for (String id : ids) {
+            this.returnConfirm(id);
+        }
     }
 }

@@ -236,5 +236,22 @@ public class BookController {
             return new Result(false, "确认失败!");
         }
     }
-
+    /**
+     * 批量确认归还
+     */
+    @ResponseBody
+    @RequestMapping("/batchReturnConfirm")
+    public Result batchReturnConfirm(String ids) { // 接收逗号分隔的字符串
+        try {
+            if(ids == null || "".equals(ids)){
+                return new Result(false, "请选择要确认的图书！");
+            }
+            String[] idArray = ids.split(",");
+            bookService.batchReturnConfirm(idArray);
+            return new Result(true, "批量确认成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "批量确认失败！");
+        }
+    }
 }

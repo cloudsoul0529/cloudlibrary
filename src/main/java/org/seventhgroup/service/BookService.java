@@ -28,5 +28,6 @@ public interface BookService {
     boolean returnBook(String  id,User user);
     //归还确认
     Integer returnConfirm(String id);
-
+    // 批量确认归还
+    void batchReturnConfirm(String[] ids);
 }
