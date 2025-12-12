@@ -74,10 +74,10 @@
                 <td>${user.createdate}</td>
                 <td>
                     <c:if test="${user.status == 0}">
-                        已注册
+                        <span class="label label-success">已注册</span>
                     </c:if>
                     <c:if test="${user.status == 1}">
-                        已注销
+                        <span class="label label-warning">已注销</span>
                     </c:if>
                 </td>
                 <td class="text-center">

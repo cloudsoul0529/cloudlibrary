@@ -98,10 +98,8 @@ public class StatsController {
                 row.createCell(4).setCellValue(rTime);
             }
 
-            // 6. [关键一步] 自动调整列宽，让内容不被遮挡
             for (int i = 0; i < headers.length; i++) {
                 sheet.autoSizeColumn(i);
-                // 稍微再宽一点点，视觉更舒服
                 sheet.setColumnWidth(i, sheet.getColumnWidth(i) + 1024);
             }
 

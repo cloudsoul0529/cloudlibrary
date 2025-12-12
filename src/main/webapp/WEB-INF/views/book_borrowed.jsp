@@ -108,8 +108,12 @@
                     <td>${book.press}</td>
                     <td>${book.isbn}</td>
                     <td>
-                        <c:if test="${book.status == '1'}"><span style="color: red">借阅中</span></c:if>
-                        <c:if test="${book.status == '2'}"><span style="color: orange">归还确认中</span></c:if>
+                        <c:if test="${book.status == '1'}">
+                            <span class="label label-warning">借阅中</span>
+                        </c:if>
+                        <c:if test="${book.status == '2'}">
+                            <span class="label label-info">归还中</span>
+                        </c:if>
                     </td>
                     <td>${book.borrower}</td>
                     <td>${book.borrowTime}</td>
