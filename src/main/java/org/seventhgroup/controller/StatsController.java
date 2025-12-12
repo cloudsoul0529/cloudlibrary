@@ -25,10 +25,6 @@ public class StatsController {
 
     @RequestMapping("/dashboard")
     public ModelAndView showDashboard(HttpServletResponse response) {
-        // 防缓存
-        response.setHeader("Pragma", "no-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0);
 
         ModelAndView mav = new ModelAndView("/stats_dashboard");
 

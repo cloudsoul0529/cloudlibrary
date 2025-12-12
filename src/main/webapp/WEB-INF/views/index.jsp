@@ -26,7 +26,7 @@
   <!-- 页面头部 -->
   <header class="main-header">
     <!-- Logo -->
-    <a href="${pageContext.request.contextPath}/index" class="logo">
+    <a href="${pageContext.request.contextPath}/index?t=<%=new java.util.Date().getTime()%>" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>云借阅</b></span>
       <!-- logo for regular state and mobile devices -->
@@ -44,7 +44,7 @@
             </a>
           </li>
           <li class="dropdown user user-menu">
-            <a href="${pageContext.request.contextPath}/user/logout">
+            <a href="${pageContext.request.contextPath}/user/logout?t=<%=new java.util.Date().getTime()%>">
               <span class="hidden-xs">注销</span>
             </a>
           </li>
@@ -62,23 +62,23 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li id="admin-index">
-          <a href="${pageContext.request.contextPath}/index">
+          <a href="${pageContext.request.contextPath}/index?t=<%=new java.util.Date().getTime()%>">
             <i class="fa fa-dashboard"></i> <span>首页</span>
           </a>
         </li>
 
         <li>
-          <a href="${pageContext.request.contextPath}/book/search" target="iframe">
+          <a href="${pageContext.request.contextPath}/book/search?t=<%=new java.util.Date().getTime()%>" target="iframe">
             <i class="fa fa-circle-o"></i>图书借阅
           </a>
         </li>
         <li>
-          <a href="${pageContext.request.contextPath}/book/searchBorrowed" target="iframe">
+          <a href="${pageContext.request.contextPath}/book/searchBorrowed?t=<%=new java.util.Date().getTime()%>" target="iframe">
             <i class="fa fa-circle-o"></i>当前借阅
           </a>
         </li>
         <li>
-          <a href="${pageContext.request.contextPath}/record/searchRecords" target="iframe">
+          <a href="${pageContext.request.contextPath}/record/searchRecords?t=<%=new java.util.Date().getTime()%>" target="iframe">
             <i class="fa fa-circle-o"></i>借阅记录
           </a>
         </li>

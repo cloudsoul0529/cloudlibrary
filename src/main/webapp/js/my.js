@@ -371,8 +371,11 @@ function recoverUser(uid) {
         name: ''
     }
 
-//数据展示页面分页插件的页码发送变化时执行
+//数据展示页面分页插件的页码发生变化时执行
     function changePage(pageNo, pageSize) {
+        if (pageNo == null) {
+            pageNo = 1;
+        }
         pageargs.cur = pageNo;
         pageargs.pagesize = pageSize;
         document.write("<form action=" + pageargs.gourl + " method=post name=form1 style='display:none'>");

@@ -26,7 +26,7 @@
     <!-- 页面头部 -->
     <header class="main-header">
         <!-- Logo -->
-        <a href="${pageContext.request.contextPath}/main" class="logo">
+        <a href="${pageContext.request.contextPath}/main?t=<%=new java.util.Date().getTime()%>" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>云借阅</b></span>
             <!-- logo for regular state and mobile devices -->
@@ -62,14 +62,14 @@
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
                 <li id="admin-index">
-                    <a href="${pageContext.request.contextPath}/main">
+                    <a href="${pageContext.request.contextPath}/main?t=<%=new java.util.Date().getTime()%>">
                         <i class="fa fa-dashboard"></i> <span>首页</span>
                     </a>
                 </li>
                 <!-- 人员管理（仅管理员可见） -->
                 <c:if test="${USER_SESSION.role == 'ADMIN'}">
                     <li id="admin-login">
-                        <a href="${pageContext.request.contextPath}/user/search" target="iframe">
+                        <a href="${pageContext.request.contextPath}/user/search?t=<%=new java.util.Date().getTime()%>" target="iframe">
                             <i class="fa fa-circle-o"></i>人员管理
                         </a>
                     </li>
@@ -85,17 +85,17 @@
                     </a>
                     <ul class="treeview-menu">
                         <li>
-                            <a href="${pageContext.request.contextPath}/book/search" target="iframe">
+                            <a href="${pageContext.request.contextPath}/book/search?t=<%=new java.util.Date().getTime()%>" target="iframe">
                                 <i class="fa fa-circle-o"></i>图书借阅
                             </a>
                         </li>
                         <li>
-                            <a href="${pageContext.request.contextPath}/book/searchBorrowed" target="iframe">
+                            <a href="${pageContext.request.contextPath}/book/searchBorrowed?t=<%=new java.util.Date().getTime()%>" target="iframe">
                                 <i class="fa fa-circle-o"></i>当前借阅
                             </a>
                         </li>
                         <li>
-                            <a href="${pageContext.request.contextPath}/record/searchRecords" target="iframe">
+                            <a href="${pageContext.request.contextPath}/record/searchRecords?t=<%=new java.util.Date().getTime()%>" target="iframe">
                                 <i class="fa fa-circle-o"></i>借阅记录
                             </a>
                         </li>
@@ -104,7 +104,6 @@
                 <!-- su0Tmore: 数据统计入口，置底且仅管理员可见 -->
                 <c:if test="${USER_SESSION.role == 'ADMIN'}">
                     <li class="treeview">
-                        <!-- su0Tmore: 使用 new java.util.Date().getTime() 替代 System，兼容性更好 -->
                         <a href="${pageContext.request.contextPath}/stats/dashboard?t=<%=new java.util.Date().getTime()%>" target="iframe">
                             <i class="fa fa-pie-chart"></i>
                             <span>数据统计</span>

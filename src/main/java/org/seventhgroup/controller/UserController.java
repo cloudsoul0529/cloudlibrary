@@ -133,7 +133,7 @@ public class UserController {
      * 查询用户
      */
     @RequestMapping("/search")
-    public ModelAndView search(User user, Integer pageNum, Integer pageSize) {
+    public ModelAndView search(User user, Integer pageNum, Integer pageSize, HttpServletRequest request) {
         //由Controller定义page起始页和条数
         if (pageNum == null) {
             pageNum = 1;
@@ -148,7 +148,7 @@ public class UserController {
         modelAndView.addObject("pageResult", pageResult);
         modelAndView.addObject("search", user);
         modelAndView.addObject("pageNum", pageNum);
-        modelAndView.addObject("gourl", "/user/search");
+        modelAndView.addObject("gourl", request.getRequestURI());
         return modelAndView;
     }
 

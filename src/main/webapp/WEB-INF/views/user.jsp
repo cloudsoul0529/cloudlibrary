@@ -203,7 +203,7 @@
     pageargs.total=Math.ceil(${pageResult.total}/pageargs.pagesize);
     //当前页数
     pageargs.cur=${pageNum}
-    pageargs.gourl="${pageContext.request.contextPath}${gourl}"
+    pageargs.gourl="${gourl}"
     userVO.id="${search.id}"
     userVO.name="${search.name}"
     pagination(pageargs);

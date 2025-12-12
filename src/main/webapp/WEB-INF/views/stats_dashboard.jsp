@@ -84,7 +84,6 @@
                 </div>
                 <div class="box-body" style="background-color: #fff;">
                     <div id="chartBar" style="height:380px;"></div>
-                    <!-- [su0Tmore] 这里的提示文字已删除 -->
                 </div>
             </div>
         </div>
@@ -93,7 +92,7 @@
 
 <script>
     $(function(){
-        // --- 1. 左侧折线图 (简洁版) ---
+        // --- 1. 左侧折线图 ---
         var chartLine = echarts.init(document.getElementById('chartDaily'));
         var days = []; var counts = [];
         <c:forEach items="${dailyData}" var="item">
@@ -137,7 +136,7 @@
         chartLine.setOption(optionLine);
 
 
-        // --- 2. 右侧 Top 5 (保持不变) ---
+        // --- 2. 右侧 Top 5  ---
         var bookNames = []; var bookValues = [];
         <c:forEach items="${top5}" var="item">
         bookNames.push('${item.name}'); bookValues.push(${item.value});
@@ -189,7 +188,7 @@
             var imgWidth = 280;
             var imgHeight = canvas.height * imgWidth / canvas.width;
             pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
-            pdf.save(fileName + "_su0Tmore.pdf");
+            pdf.save(fileName + ".pdf");
         });
     }
 </script>
