@@ -20,6 +20,8 @@ public class SpringMvcConfig implements WebMvcConfigurer {
     private final List<String> allowedUrl = Arrays.asList(
             "/index",
             "/user/logout",
+            "/user/delUser",
+            "/user/editUser",
             "/book/selectNewbooks",
             "/book/findById",
             "/book/borrowBook",
@@ -56,8 +58,11 @@ public class SpringMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns(
                         "/css/**", "/js/**", "/img/**",
+                        "/user/checkEmail",
+                        "/user/register",
                         "/user/login",
                         "/login",
+                        "/register",
                         "/"
                 );
     }

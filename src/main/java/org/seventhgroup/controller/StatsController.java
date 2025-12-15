@@ -26,15 +26,20 @@ public class StatsController {
     @RequestMapping("/dashboard")
     public ModelAndView showDashboard(HttpServletResponse response) {
 
+        //禁用页面缓存
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Expires", "0");
+
         ModelAndView mav = new ModelAndView("/stats_dashboard");
 
-        // 1. 基础数据
+        //基础数据
         mav.addObject("data", statsService.getStatsData());
 
-        // 2. 热门藏书 Top 5
+        //热门藏书Top5
         mav.addObject("top5", statsService.getTop5Books());
 
-        // 3. 每日趋势数据
+        //每日趋势数据
         List<Map<String, Object>> dailyData = statsService.getDailyTrend();
         mav.addObject("dailyData", dailyData);
 
@@ -47,14 +52,14 @@ public class StatsController {
     @RequestMapping("/export")
     public void exportReport(HttpServletResponse response) {
         try {
-            // 1. 获取数据
+            //获取数据
             List<Map<String, Object>> list = statsService.getReportList();
 
-            // 2. 创建一个 Excel 工作簿
+            //创建Excel工作簿
             Workbook workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet("借阅报表");
 
-            // 3. 设置表头样式 (加粗 + 居中)
+            //设置表头样式(加粗+居中)
             CellStyle headerStyle = workbook.createCellStyle();
             Font font = workbook.createFont();
             font.setBold(true); // 字体加粗
@@ -62,7 +67,7 @@ public class StatsController {
             headerStyle.setFont(font);
             headerStyle.setAlignment(HorizontalAlignment.CENTER); // 水平居中
 
-            // 4. 创建表头行 (第0行)
+            //创建表头行(第0行)
             Row headerRow = sheet.createRow(0);
             String[] headers = {"图书名称", "标准ISBN", "借阅用户", "借阅时间", "应还时间"};
             for (int i = 0; i < headers.length; i++) {
@@ -71,12 +76,12 @@ public class StatsController {
                 cell.setCellStyle(headerStyle);
             }
 
-            // 5. 填充数据行
+            //填充数据行
             int rowNum = 1;
             for (Map<String, Object> map : list) {
                 Row row = sheet.createRow(rowNum++);
 
-                // 获取数据 (防空指针)
+                //获取数据(防空指针)
                 String bName = map.get("bName") != null ? map.get("bName").toString() : "";
                 String isbn = map.get("isbn") != null ? map.get("isbn").toString() : "";
                 String uName = map.get("uName") != null ? map.get("uName").toString() : "";
@@ -95,7 +100,7 @@ public class StatsController {
                 sheet.setColumnWidth(i, sheet.getColumnWidth(i) + 1024);
             }
 
-            // 7. 导出文件
+            //导出文件
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             String fileName = URLEncoder.encode("借阅报表.xlsx", "UTF-8");
             response.setHeader("Content-Disposition", "attachment; filename=" + fileName);

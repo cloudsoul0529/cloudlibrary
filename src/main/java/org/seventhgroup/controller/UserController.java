@@ -44,7 +44,7 @@ public class UserController {
                 }
             }
             //addFlashAttribute把数据暂存在Session中，重定向后的下一次请求取出
-            redirectAttributes.addFlashAttribute("msg", "用户名或密码错误");
+            redirectAttributes.addFlashAttribute("msg", "邮箱或密码错误");
             return "redirect:/login";
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,6 +67,22 @@ public class UserController {
 
     /**
      * @author cloudsoul-ZX
+     * 用户注册
+     */
+    @RequestMapping("/register")
+    public String register(User user, RedirectAttributes redirectAttributes) {
+        try {
+            userService.addUser(user);
+            return "redirect:/login";
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("msg", "注册失败！");
+            return "redirect:/register";
+        }
+    }
+
+    /**
+     * @author cloudsoul-ZX
      * 新增用户（管理员）
      */
     @ResponseBody
@@ -83,7 +99,7 @@ public class UserController {
 
     /**
      * @author cloudsoul-ZX
-     * 编辑用户（管理员）
+     * 编辑用户
      */
     @ResponseBody
     @RequestMapping("/editUser")
@@ -99,7 +115,23 @@ public class UserController {
 
     /**
      * @author cloudsoul-ZX
-     * 用户注销（实质编辑用户）
+     * 编辑信息
+     */
+    @ResponseBody
+    @RequestMapping("/editMyself")
+    public Result editMyself(User user) {
+        try {
+            userService.editUser(user);
+            return new Result(true, "修改成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "修改失败!");
+        }
+    }
+
+    /**
+     * @author cloudsoul-ZX
+     * 用户注销
      */
     @ResponseBody
     @RequestMapping("/delUser")
@@ -108,13 +140,13 @@ public class UserController {
             return userService.delUser(id);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "注销办理失败!");
+            return new Result(false, "注销失败!");
         }
     }
 
     /**
      * @author cloudsoul-ZX
-     * 用户恢复（实质编辑用户）
+     * 用户恢复（管理员）
      */
     @ResponseBody
     @RequestMapping("/recoverUser")
@@ -160,21 +192,6 @@ public class UserController {
     @RequestMapping("/findById")
     public User findById(Integer id) {
         return userService.findById(id);
-    }
-
-    /**
-     * @author cloudsoul-ZX
-     * 新增、编辑用户时检查已注册的用户名是否存在
-     */
-    @ResponseBody
-    @RequestMapping("/checkName")
-    public Result checkName(String name) {
-        boolean result = userService.checkName(name);
-        if (result) {
-            return new Result(false, "名字重复!");
-        } else {
-            return new Result(true, "名字可用!");
-        }
     }
 
     /**

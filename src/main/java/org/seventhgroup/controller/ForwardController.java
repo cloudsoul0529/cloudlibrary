@@ -30,4 +30,11 @@ public class ForwardController {
     public String showLogin() {
         return "login";
     }
+    /**
+     * 转发到注册页面
+     */
+    @RequestMapping("/register")
+    public String showRegister() {
+        return "register";
+    }
 }

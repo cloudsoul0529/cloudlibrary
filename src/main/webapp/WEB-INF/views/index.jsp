@@ -37,15 +37,33 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <li class="dropdown user user-menu">
-            <a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="${pageContext.request.contextPath}/img/user.jpg" class="user-image"
                    alt="User Image">
               <span class="hidden-xs">${USER_SESSION.name}</span>
             </a>
+            <ul class="dropdown-menu">
+              <li class="user-header">
+                <img src="${pageContext.request.contextPath}/img/user.jpg" class="img-circle"
+                     alt="User Image">
+                <p>
+                  ${USER_SESSION.name}
+                  <small>${USER_SESSION.email}</small>
+                </p>
+              </li>
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="#" class="btn btn-default btn-flat" data-toggle="modal" data-target="#editSelfModal">修改信息</a>
+                </div>
+                <div class="pull-right">
+                  <a href="javascript:deleteMyself(${USER_SESSION.id})" class="btn btn-danger btn-flat">账户注销</a>
+                </div>
+              </li>
+            </ul>
           </li>
           <li class="dropdown user user-menu">
             <a href="${pageContext.request.contextPath}/user/logout?t=<%=new java.util.Date().getTime()%>">
-              <span class="hidden-xs">注销</span>
+              <span class="hidden-xs">退出</span>
             </a>
           </li>
         </ul>
@@ -94,5 +112,73 @@
             frameborder="0" src="${pageContext.request.contextPath}/book/selectNewbooks"></iframe>
   </div>
 </div>
+
+<!-- 个人信息修改 -->
+<div class="modal fade" id="editSelfModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">修改个人信息</h3>
+      </div>
+      <div class="modal-body">
+        <form id="editSelfForm">
+          <input type="hidden" name="id" value="${USER_SESSION.id}">
+          <input type="hidden" name="role" value="${USER_SESSION.role}">
+          <input type="hidden" name="status" value="${USER_SESSION.status}">
+          <input type="hidden" name="email" value="${USER_SESSION.email}">
+          <table class="table table-bordered table-striped" width="800px">
+            <tr>
+              <td>用户姓名</td>
+              <td>
+                <input class="form-control" name="name" value="${USER_SESSION.name}" placeholder="请输入姓名">
+              </td>
+            </tr>
+            <tr>
+              <td>登录密码</td>
+              <td>
+                <input class="form-control" type="password" name="password" placeholder="不修改则留空">
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success" onclick="updateSelfInfo()">保存</button>
+        <button class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function deleteMyself(userId) {
+    var r = confirm("您确定要注销当前账号吗？\n注销后您将无法登录！");
+    if (r == true) {
+      var url = "${pageContext.request.contextPath}/user/delUser";
+      $.post(url, {id: userId}, function(response) {
+        if (response.success == true) {
+          window.location.href = "${pageContext.request.contextPath}/user/logout?t=<%=new java.util.Date().getTime()%>";
+        } else {
+          alert(response.message);
+        }
+      }, "json");
+    }
+  }
+
+  function updateSelfInfo() {
+    var r = confirm("是否确认保存修改？保存后需重新登录！");
+    if (r == true) {
+      var url = "${pageContext.request.contextPath}/user/editUser";
+      var data = $("#editSelfForm").serialize();
+      $.post(url, data, function(response) {
+        alert(response.message);
+        if(response.success) {
+          window.location.href = "${pageContext.request.contextPath}/user/logout?t=<%=new java.util.Date().getTime()%>";
+        }
+      }, "json");
+    }
+  }
+</script>
 </body>
 </html>

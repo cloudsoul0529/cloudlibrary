@@ -30,6 +30,7 @@
             user_hash
         FROM user
         WHERE user_email = #{email}
+          AND user_status != ${@org.seventhgroup.pojo.User@DELETED}
     </select>
 
     <!-- 用户登录查询 -->
@@ -46,7 +47,7 @@
         user_deletedate
         FROM user
         WHERE user_email = #{email}
-        AND user_status != ${@org.seventhgroup.pojo.User@DELETED}
+          AND user_status != ${@org.seventhgroup.pojo.User@DELETED}
     </select>
 
     <!-- 用户搜索查询 -->
@@ -88,20 +89,11 @@
         WHERE user_id = #{id}
     </select>
 
-    <!-- 检查用户名是否已经存在 -->
-    <select id="checkName" resultType="java.lang.String">
-        SELECT user_name
-        FROM user
-        WHERE user_name = #{name}
-          AND user_status != ${@org.seventhgroup.pojo.User@DELETED}
-    </select>
-
     <!-- 检查用户邮箱是否已经存在 -->
     <select id="checkEmail" resultType="java.lang.String">
         SELECT user_email
         FROM user
         WHERE user_email = #{email}
-          AND user_status != ${@org.seventhgroup.pojo.User@DELETED}
     </select>
 
     <!-- 添加用户 -->
@@ -152,7 +144,7 @@
                 user_role = #{role},
             </if>
             <if test='deletedate == "cancel"'>
-                user_deletedate = #{deletedate}
+                user_deletedate = NULL
             </if>
         </set>
         WHERE user_id = #{id}

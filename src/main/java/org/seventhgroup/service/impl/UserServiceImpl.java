@@ -19,7 +19,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author cloudsoul
@@ -53,11 +52,15 @@ public class UserServiceImpl implements UserService {
 
     /**
      * @author cloudsoul-ZX
-     * 新增用户（管理员）
+     * 新增用户
      */
     @Override
     public void addUser(User user) {
         user.setStatus(User.ACTIVE);
+        if (user.getCreatedate() == null || user.getCreatedate().isEmpty()) {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            user.setCreatedate(dateFormat.format(new Date()));
+        }
         // 设置盐，计算哈希值
         try {
             byte[] salt = SHA256WithSaltUtil.generate16ByteSalt();
@@ -78,7 +81,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void editUser(User user) {
         try {
-            if (user.getPassword() != null && !Objects.equals(user.getPassword(), "")) {
+            if (user.getName() != null && !"".equals(user.getName().trim())) {
+                user.setName(user.getName());
+            }
+            if (user.getEmail() != null && !"".equals(user.getEmail().trim())) {
+                user.setEmail(user.getEmail());
+            }
+            if (user.getPassword() != null && !"".equals(user.getPassword().trim())) {
                 byte[] salt = SHA256WithSaltUtil.generate16ByteSalt();
                 String hash = SHA256WithSaltUtil.encryptWith16ByteSalt(user.getPassword(),salt);
                 String storedSalt = SHA256WithSaltUtil.bytesToBase64(salt);
@@ -86,13 +95,14 @@ public class UserServiceImpl implements UserService {
                 user.setPasswordHash(hash);
             }
             userMapper.editUser(user);
-        } catch (NoSuchAlgorithmException e) {
+        }
+        catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
 
     /**
-     * 用户注销（实质编辑用户）
+     * 用户注销
      */
     @Override
     public Result delUser(Integer id) {
@@ -107,15 +117,15 @@ public class UserServiceImpl implements UserService {
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             user.setDeletedate(dateFormat.format(new Date()));
             userMapper.editUser(user);
-            return new Result(true, "注销办理成功!");
+            return new Result(true, "注销成功!");
         }
         else{
-            return new Result(false, "该用户有图书未归还或确认！");
+            return new Result(false, "用户有图书未归还或确认！");
         }
     }
 
     /**
-     * 恢复注销（实质编辑用户）
+     * 恢复注销
      */
     @Override
     public void recoverUser(Integer id) {

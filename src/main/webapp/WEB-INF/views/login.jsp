@@ -33,6 +33,11 @@
                             <a class="sui-btn btn-block btn-xlarge btn-danger"
                                href='javascript:document:loginform.submit();' target="_self">登&nbsp;&nbsp;录</a>
                         </div>
+                        <div style="text-align: right; margin-top: 15px;">
+                            <a href="${pageContext.request.contextPath}/register?t=<%=new java.util.Date().getTime()%>" style="color: #666; text-decoration: none;">
+                                没有账号？<span style="color: #d9534f;">立即注册</span>
+                            </a>
+                        </div>
                     </form>
                 </div>
             </div>

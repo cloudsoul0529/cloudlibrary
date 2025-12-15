@@ -228,7 +228,6 @@ function checkVal() {
         $("#savemsg").attr("disabled", true);
         $("#addmsg").html("姓名不能为空")
     } else {
-        checkName(adduname);
         if ($.trim(adduemail) == '') {
             $("#savemsg").attr("disabled", true);
             $("#addmsg").html("邮箱不能为空")
@@ -247,16 +246,6 @@ function checkVal() {
             }
         }
     }
-}
-
-function checkName(name, email) {
-    var url = getProjectPath()+"/user/checkName?name=" + name;
-    $.post(url, function (response) {
-        if (response.success != true) {
-            $("#savemsg").attr("disabled", true);
-            $("#addmsg").html(response.message)
-        }
-    })
 }
 
 function checkEmail(email) {

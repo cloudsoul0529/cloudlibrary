@@ -6,7 +6,7 @@
     <!-- 页面meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>人员管理</title>
+    <title>用户管理</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/AdminLTE.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/pagination.css">
@@ -18,7 +18,7 @@
 <body class="hold-transition skin-red sidebar-mini">
 <!-- .box-body -->
 <div class="box-header with-border">
-    <h3 class="box-title">人员管理</h3>
+    <h3 class="box-title">用户管理</h3>
 </div>
 <div class="box-body">
     <!-- 数据表格 -->
@@ -36,7 +36,7 @@
         <div class="box-tools pull-right">
             <div class="has-feedback">
                 <form action="${pageContext.request.contextPath}/user/search" method="post">
-                    工号：<input name="id" value="${user.id}">&nbsp&nbsp&nbsp&nbsp
+                    ID：<input name="id" value="${user.id}">&nbsp&nbsp&nbsp&nbsp
                     姓名：<input name="name" value="${user.name}">&nbsp&nbsp&nbsp&nbsp
                     <input class="btn btn-default" type="submit" value="查询">
                 </form>
@@ -48,7 +48,7 @@
     <table id="dataList" class="table table-bordered table-striped table-hover dataTable text-center">
         <thead>
         <tr class="text-center">
-            <th>工号</th>
+            <th>ID</th>
             <th>姓名</th>
             <th>权限</th>
             <th>邮箱</th>
@@ -111,14 +111,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h3 id="myModalLabel">人员信息</h3>
+                <h3 id="myModalLabel">用户信息</h3>
             </div>
             <div class="modal-body">
                 <form id="addUser">
                     <table class="table table-bordered table-striped" width="800px">
                         <tr>
-                            <td>人员姓名</td>
-                            <td><input class="form-control" placeholder="人员姓名" id="adduname" onblur="checkVal()" onfocus="changeVal()" name="name"></td>
+                            <td>用户姓名</td>
+                            <td><input class="form-control" placeholder="用户姓名" id="adduname" onblur="checkVal()" onfocus="changeVal()" name="name"></td>
                             <td>账户邮箱</td>
                             <td><input class="form-control" placeholder="账户邮箱" id="adduemail" onblur="checkVal()" onfocus="changeVal()"name="email"></td>
                         </tr>
@@ -157,16 +157,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h3 id="myModalLabe2">人员信息</h3>
+                <h3 id="myModalLabe2">用户信息</h3>
             </div>
             <div class="modal-body">
                 <form id="editUser">
                     <table class="table table-bordered table-striped" width="800px">
-
                         <tr>
-                            <td>人员姓名</td>
-                            <td><input class="form-control"  readonly name="name" id="uname"></td>
-                            <td>人员工号</td>
+                            <td>用户姓名</td>
+                            <td><input class="form-control" name="name" id="uname"></td>
+                            <td>用户ID</td>
                             <td><input class="form-control"  readonly name="id" id="uid"></td>
                         </tr>
                         <tr>
@@ -178,7 +177,7 @@
                         </tr>
                         <tr>
                             <td>登录密码</td>
-                            <td><input class="form-control" type="password"  name="password" id="pw"></td>
+                            <td><input class="form-control" type="password"  name="password" id="pw" placeholder="不修改则留空"></td>
 							<td>用户角色</td>
 							<td>
 								<select class="form-control" id="urole" name="role" >
