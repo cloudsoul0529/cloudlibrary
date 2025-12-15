@@ -213,59 +213,109 @@ function editUser() {
 }
 
 
-function changeVal() {
-    $("#addmsg").html("")
+function showInputError(inputSelector, msg) {
+    var input = $(inputSelector);
+    input.val("");                  // 清空值
+    $("#addmsg").html("");          // 清空旧的外部提示（如果有）
+    input.attr("placeholder", msg); // 修改 placeholder 为错误信息
+    input.addClass("error-placeholder"); // 变红
+    $("#savemsg").attr("disabled", true); // 禁用按钮
 }
 
+// 2. 通用样式恢复函数
+function resetInputError(selector, defaultMsg) {
+    var input = $(selector);
+    if (input.hasClass("error-placeholder")) {
+        input.removeClass("error-placeholder"); // 去掉红色
+        input.attr("placeholder", defaultMsg);  // 恢复默认提示
+    }
+    $("#savemsg").attr("disabled", false); // 恢复按钮
+}
+
+// 3. 主校验流程
 function checkVal() {
     $("#savemsg").attr("disabled", false);
-    $("#addmsg").html("")
+    $("#addmsg").html("");
+
     var adduname = $("#adduname").val();
     var adduemail = $("#adduemail").val();
     var addPw = $("#addPw").val();
     var addtime = $("#time").val();
+
+    // 姓名校验
     if ($.trim(adduname) == '') {
-        $("#savemsg").attr("disabled", true);
-        $("#addmsg").html("姓名不能为空")
-    } else {
-        if ($.trim(adduemail) == '') {
-            $("#savemsg").attr("disabled", true);
-            $("#addmsg").html("邮箱不能为空")
-        } else if ($.trim(adduemail) != '') {
-            checkEmail(adduemail);
-                if ($.trim(addPw) == '') {
-                $("#savemsg").attr("disabled", true);
-                $("#addmsg").html("密码不能为空")
-            }else if($.trim(addPw) != ''){
-                if($.trim(addtime) == ''){
-                    $("#savemsg").attr("disabled", true);
-                    $("#addmsg").html("注册日期不能为空")
-                }else{
-                    cg()
-                }
-            }
-        }
+        showInputError("#adduname", "姓名不能为空");
+        return;
+    }
+    // 邮箱校验
+    if ($.trim(adduemail) == '') {
+        showInputError("#adduemail", "邮箱不能为空");
+        return;
+    }
+    // 密码校验
+    if ($.trim(addPw) == '') {
+        showInputError("#addPw", "密码不能为空");
+        return;
+    }
+    // 日期校验 (尝试在框内报错，如不支持请改回 alert)
+    if ($.trim(addtime) == '') {
+        // 如果是日期选择器，placeholder可能无效，这里尝试一下
+        showInputError("#time", "注册日期不能为空");
+        return;
+    }
+
+    // 邮箱查重 & 提交前置检查
+    if ($.trim(adduemail) != '') {
+        checkEmail(adduemail);
+        // 如果有 cg() 函数处理日期逻辑，调用它
+        if(typeof cg === "function") cg();
     }
 }
 
+// 4. 邮箱后台查重
 function checkEmail(email) {
-    var url = getProjectPath()+"/user/checkEmail?email=" + email;
+    var url = getProjectPath() + "/user/checkEmail?email=" + email;
     $.post(url, function (response) {
         if (response.success != true) {
-            $("#savemsg").attr("disabled", true);
-            $("#addmsg").html(response.message)
+            // 后台返回重复，直接在输入框报错
+            showInputError("#adduemail", response.message);
         }
-    })
+    });
 }
 
+// 5. 【关键】事件监听：点击输入框时恢复正常
+$(function() {
+    // 姓名框
+    $("#adduname").focus(function() {
+        resetInputError(this, "请输入姓名");
+    });
+    // 邮箱框
+    $("#adduemail").focus(function() {
+        resetInputError(this, "请输入邮箱");
+    });
+    // 密码框
+    $("#addPw").focus(function() {
+        resetInputError(this, "请输入密码");
+    });
+    // 日期框
+    $("#time").focus(function() {
+        resetInputError(this, "请选择日期");
+    });
+});
+
+// 6. 业务操作函数保持原样引用
 function saveUser() {
-    var url =getProjectPath()+"/user/addUser";
+    // 提交前最后再校验一次，防止直接点按钮
+    var adduname = $("#adduname").val();
+    if(adduname == "") { checkVal(); return; }
+
+    var url = getProjectPath() + "/user/addUser";
     $.post(url, $("#addUser").serialize(), function (response) {
         alert(response.message)
         if (response.success == true) {
-            window.location.href =  getProjectPath()+"/user/search";
+            window.location.href = getProjectPath() + "/user/search";
         }
-    })
+    });
 }
 
 function delUser(uid) {
@@ -293,6 +343,9 @@ function recoverUser(uid) {
         })
     }
 }
+
+// 占位函数，防止报错
+function changeVal() {}
 //获取当前项目的名称
     function getProjectPath() {
         //获取主机地址之后的目录，如： cloudlibrary/admin/books.jsp
