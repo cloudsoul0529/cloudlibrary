@@ -22,7 +22,7 @@ public interface StatsMapper {
             "ORDER BY temp.date_str ASC")
     List<Map<String, Object>> selectDailyTrend();
 
-    // [su0Tmore] 统计热门图书 Top 5
+    // [su0Tmore] 统计热门图书 Top5
     @Select("SELECT temp.book_name as name, COUNT(*) as value FROM (" +
             "  SELECT record_bookname as book_name FROM record " +
             "  UNION ALL " +
