@@ -2,21 +2,20 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="cloudlibrary:war" />
+      <artifact name="cloudlibrary:war exploded" />
     </artifacts-to-build>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="102fc47a-dfa5-488c-a06c-992e2df074ca" name="更改" comment="细微修正，记得改数据库密码">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" />
+    <list default="true" id="102fc47a-dfa5-488c-a06c-992e2df074ca" name="更改" comment="细微修正">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[更改]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase___.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/controller/StatsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/controller/StatsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/seventhgroup/dao/StatsMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/seventhgroup/dao/StatsMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/jdbc.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/jdbc.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/book_borrowed.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/book_borrowed.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/books.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/books.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/StatsMapper.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,12 +66,12 @@
     &quot;assignee&quot;: &quot;cloudsoul0529&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/cloudsoul0529/cloudlibrary.git",
-    "accountId": "fe278f8a-a3e2-41f3-ae98-e9d62eeaaf8b"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/cloudsoul0529/cloudlibrary.git&quot;,
+    &quot;accountId&quot;: &quot;22db5d80-2c0b-4097-bb87-a303a85347dc&quot;
   }
-}]]></component>
+}</component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
     <option name="FILTER_WARNINGS" value="false" />
@@ -98,6 +97,7 @@
 }</component>
   <component name="ProjectId" id="35UsCl1Vb5kQ0XHp4TjmaTYzxs8" />
   <component name="ProjectLevelVcsManager">
+    <OptionsSetting value="false" id="Update" />
     <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -117,10 +117,11 @@
     "RunOnceActivity.git.unshallow": "true",
     "Tomcat Server.cloudlibrary.executor": "Run",
     "Tomcat Server.cloudlibrary_server.executor": "Run",
+    "Tomcat 服务器.cloudlibrary.executor": "Run",
     "Tomcat 服务器.cloudlibrary_server.executor": "Run",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit4",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4": "",
-    "git-widget-placeholder": "oxygen",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/java_study",
     "node.js.detected.package.eslint": "true",
@@ -129,10 +130,10 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "onboarding.tips.debug.path": "D:/AAACode/2025AutumnTraining/cloudlibrary/src/main/java/org/seventhgroup/Main.java",
-    "project.structure.last.edited": "Modules",
+    "project.structure.last.edited": "工件",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "settings.editor.selected.configurable": "MavenSettings",
     "vue.rearranger.settings.migration": "true",
     "应用程序.UserTest.executor": "Run"
   },
@@ -164,14 +165,27 @@
       <recent name="org.seventhgroup.entity" />
     </key>
   </component>
+  <component name="RunDashboard">
+    <option name="configurationStatuses">
+      <map>
+        <entry key="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory">
+          <value>
+            <map>
+              <entry key="cloudlibrary" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="RunManager">
     <configuration name="cloudlibrary" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.5.24" ALTERNATIVE_JRE_ENABLED="false">
-      <option name="BROWSER_ID" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+      <option name="BROWSER_ID" value="37cae5b9-e8b2-4949-9172-aafa37fbc09c" />
       <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
-        <artifact name="cloudlibrary:war">
+        <artifact name="cloudlibrary:war exploded">
           <settings>
-            <option name="CONTEXT_PATH" value="/cloudlibrary" />
+            <option name="CONTEXT_PATH" value="/cloudlibrary_war_exploded" />
           </settings>
         </artifact>
       </deployment>
@@ -250,7 +264,7 @@
       <method v="2">
         <option name="Make" enabled="true" />
         <option name="BuildArtifacts" enabled="true">
-          <artifact name="cloudlibrary:war" />
+          <artifact name="cloudlibrary:war exploded" />
         </option>
       </method>
     </configuration>
@@ -258,8 +272,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.27812.49" />
-        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.27812.49" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28238.7" />
+        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-IU-252.28238.7" />
       </set>
     </attachedChunks>
   </component>
@@ -346,6 +360,17 @@
       <workItem from="1765461912562" duration="2489000" />
       <workItem from="1765464973493" duration="1708000" />
       <workItem from="1765468053658" duration="662000" />
+      <workItem from="1765538077242" duration="438000" />
+      <workItem from="1765538828933" duration="6000" />
+      <workItem from="1765550728990" duration="1648000" />
+      <workItem from="1765553203972" duration="463000" />
+      <workItem from="1765553682236" duration="3839000" />
+      <workItem from="1765557561046" duration="1134000" />
+      <workItem from="1765595104569" duration="837000" />
+      <workItem from="1765597327333" duration="462000" />
+      <workItem from="1765673969674" duration="5653000" />
+      <workItem from="1765800420968" duration="67000" />
+      <workItem from="1765860257613" duration="2255000" />
     </task>
     <task id="LOCAL-00001" summary="草稿">
       <option name="closed" value="true" />
@@ -563,7 +588,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765463846058</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="细微修正">
+      <option name="closed" value="true" />
+      <created>1765558050311</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1765558050311</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -667,7 +700,8 @@
     <MESSAGE value="用户模块、权限拦截进一步完善" />
     <MESSAGE value="添加禁用页面缓存" />
     <MESSAGE value="细微修正，记得改数据库密码" />
-    <option name="LAST_COMMIT_MESSAGE" value="细微修正，记得改数据库密码" />
+    <MESSAGE value="细微修正" />
+    <option name="LAST_COMMIT_MESSAGE" value="细微修正" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
