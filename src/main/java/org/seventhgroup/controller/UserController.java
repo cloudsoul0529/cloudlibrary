@@ -115,22 +115,6 @@ public class UserController {
 
     /**
      * @author cloudsoul-ZX
-     * 编辑信息
-     */
-    @ResponseBody
-    @RequestMapping("/editMyself")
-    public Result editMyself(User user) {
-        try {
-            userService.editUser(user);
-            return new Result(true, "修改成功!");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result(false, "修改失败!");
-        }
-    }
-
-    /**
-     * @author cloudsoul-ZX
      * 用户注销
      */
     @ResponseBody

@@ -215,24 +215,23 @@ function editUser() {
 
 function showInputError(inputSelector, msg) {
     var input = $(inputSelector);
-    input.val("");                  // 清空值
-    $("#addmsg").html("");          // 清空旧的外部提示（如果有）
-    input.attr("placeholder", msg); // 修改 placeholder 为错误信息
-    input.addClass("error-placeholder"); // 变红
-    $("#savemsg").attr("disabled", true); // 禁用按钮
+    input.val("");
+    $("#addmsg").html("");
+    input.attr("placeholder", msg);
+    input.addClass("error-placeholder");
+    $("#savemsg").attr("disabled", true);
 }
 
-// 2. 通用样式恢复函数
+//通用样式恢复函数
 function resetInputError(selector, defaultMsg) {
     var input = $(selector);
     if (input.hasClass("error-placeholder")) {
-        input.removeClass("error-placeholder"); // 去掉红色
-        input.attr("placeholder", defaultMsg);  // 恢复默认提示
+        input.removeClass("error-placeholder");
+        input.attr("placeholder", defaultMsg);
     }
-    $("#savemsg").attr("disabled", false); // 恢复按钮
+    $("#savemsg").attr("disabled", false);
 }
 
-// 3. 主校验流程
 function checkVal() {
     $("#savemsg").attr("disabled", false);
     $("#addmsg").html("");
@@ -240,72 +239,53 @@ function checkVal() {
     var adduname = $("#adduname").val();
     var adduemail = $("#adduemail").val();
     var addPw = $("#addPw").val();
-    var addtime = $("#time").val();
 
-    // 姓名校验
+    //姓名校验
     if ($.trim(adduname) == '') {
         showInputError("#adduname", "姓名不能为空");
         return;
     }
-    // 邮箱校验
+    //邮箱校验
     if ($.trim(adduemail) == '') {
         showInputError("#adduemail", "邮箱不能为空");
         return;
     }
-    // 密码校验
+    //密码校验
     if ($.trim(addPw) == '') {
         showInputError("#addPw", "密码不能为空");
         return;
     }
-    // 日期校验 (尝试在框内报错，如不支持请改回 alert)
-    if ($.trim(addtime) == '') {
-        // 如果是日期选择器，placeholder可能无效，这里尝试一下
-        showInputError("#time", "注册日期不能为空");
-        return;
-    }
-
-    // 邮箱查重 & 提交前置检查
+    //邮箱查重&提交前置检查
     if ($.trim(adduemail) != '') {
         checkEmail(adduemail);
-        // 如果有 cg() 函数处理日期逻辑，调用它
         if(typeof cg === "function") cg();
     }
 }
 
-// 4. 邮箱后台查重
+//邮箱后台查重
 function checkEmail(email) {
     var url = getProjectPath() + "/user/checkEmail?email=" + email;
     $.post(url, function (response) {
         if (response.success != true) {
-            // 后台返回重复，直接在输入框报错
             showInputError("#adduemail", response.message);
         }
     });
 }
 
-// 5. 【关键】事件监听：点击输入框时恢复正常
+//点击输入框时恢复正常
 $(function() {
-    // 姓名框
     $("#adduname").focus(function() {
         resetInputError(this, "请输入姓名");
     });
-    // 邮箱框
     $("#adduemail").focus(function() {
         resetInputError(this, "请输入邮箱");
     });
-    // 密码框
     $("#addPw").focus(function() {
         resetInputError(this, "请输入密码");
     });
-    // 日期框
-    $("#time").focus(function() {
-        resetInputError(this, "请选择日期");
-    });
 });
 
-// 6. 业务操作函数保持原样引用
 function saveUser() {
-    // 提交前最后再校验一次，防止直接点按钮
     var adduname = $("#adduname").val();
     if(adduname == "") { checkVal(); return; }
 
@@ -344,7 +324,6 @@ function recoverUser(uid) {
     }
 }
 
-// 占位函数，防止报错
 function changeVal() {}
 //获取当前项目的名称
     function getProjectPath() {
