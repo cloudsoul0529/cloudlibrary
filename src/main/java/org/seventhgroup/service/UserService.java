@@ -22,8 +22,6 @@ public interface UserService{
     PageResult searchUsers(User user, Integer pageNum, Integer pageSize);
     //根据id查询用户信息
     User findById(Integer id);
-    //检查已注册的用户名是否存在
-    boolean checkName(String name);
     //检查已注册的邮箱是否存在
     boolean checkEmail(String email);
 }

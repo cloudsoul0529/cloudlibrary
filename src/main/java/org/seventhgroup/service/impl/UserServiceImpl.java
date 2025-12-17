@@ -31,7 +31,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private BookMapper bookMapper;
     /**
-     * @author cloudsoul-ZX
      * 用户登录
      */
     @Override
@@ -51,11 +50,11 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 新增用户
      */
     @Override
     public void addUser(User user) {
+        //设置用户状态与注册日期
         user.setStatus(User.ACTIVE);
         if (user.getCreatedate() == null || user.getCreatedate().isEmpty()) {
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -75,12 +74,12 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 编辑用户
      */
     @Override
     public void editUser(User user) {
         try {
+            //输入值不为空再修改
             if (user.getName() != null && !"".equals(user.getName().trim())) {
                 user.setName(user.getName());
             }
@@ -154,17 +153,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Integer id) {
         return userMapper.findById(id);
-    }
-
-    /**
-     * 新增、编辑用户时检查已注册的用户名是否存在
-     */
-    @Override
-    public boolean checkName(String name) {
-        if (userMapper.checkName(name) != null) {
-            return true;
-        }
-        return false;
     }
 
     /**

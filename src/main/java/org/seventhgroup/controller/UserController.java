@@ -25,7 +25,6 @@ public class UserController {
     private UserService userService;
 
     /**
-     * @author cloudsoul-ZX
      * 用户登录
      */
     @RequestMapping("/login")
@@ -54,7 +53,6 @@ public class UserController {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 注销登录
      */
     @RequestMapping("/logout")
@@ -66,7 +64,6 @@ public class UserController {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 用户注册
      */
     @RequestMapping("/register")
@@ -82,8 +79,7 @@ public class UserController {
     }
 
     /**
-     * @author cloudsoul-ZX
-     * 新增用户（管理员）
+     * 新增用户
      */
     @ResponseBody
     @RequestMapping("/addUser")
@@ -98,7 +94,6 @@ public class UserController {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 编辑用户
      */
     @ResponseBody
@@ -114,7 +109,6 @@ public class UserController {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 用户注销
      */
     @ResponseBody
@@ -129,7 +123,6 @@ public class UserController {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 用户恢复（管理员）
      */
     @ResponseBody
@@ -145,7 +138,6 @@ public class UserController {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 查询用户
      */
     @RequestMapping("/search")
@@ -169,7 +161,6 @@ public class UserController {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 根据id查询用户
      */
     @ResponseBody
@@ -179,7 +170,6 @@ public class UserController {
     }
 
     /**
-     * @author cloudsoul-ZX
      * 新增、编辑用户时检查已注册的邮箱是否存在
      */
     @ResponseBody
