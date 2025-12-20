@@ -160,6 +160,15 @@
         WHERE book_id = #{id}
     </update>
 
+    <!-- 查询该用户逾期未还图书的数量 -->
+    <!-- 假设 book_returntime 是 'yyyy-MM-dd' 格式的字符串 -->
+    <select id="countOverdue" resultType="java.lang.Integer">
+        SELECT count(*) FROM book
+        WHERE book_borrower = #{borrower}
+        AND book_status IN ('1', '2') <!-- 借出或归还确认中 -->
+        AND book_returntime &lt; #{today} <!-- 小于今天 -->
+    </select>
+
     <!-- 管理员查询：通用查询 (支持指定状态) -->
     <select id="selectBorrowed" resultMap="bookMap">
         SELECT * FROM book

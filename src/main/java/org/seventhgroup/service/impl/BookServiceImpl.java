@@ -36,6 +36,16 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private RecordMapper recordMapper;
 
+    @Override
+    public boolean hasOverdueBooks(User user) {
+        // 获取今天的日期 yyyy-MM-dd
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String today = dateFormat.format(new Date());
+
+        // 查询
+        Integer count = bookMapper.countOverdue(user.getName(), today);
+        return count != null && count > 0;
+    }
     /**
      * 查询最新上架图书
      */

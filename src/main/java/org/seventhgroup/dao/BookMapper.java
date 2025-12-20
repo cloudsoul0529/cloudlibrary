@@ -2,6 +2,7 @@ package org.seventhgroup.dao;
 
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.seventhgroup.pojo.Book;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface  BookMapper {
+    // 统计逾期数量
+    Integer countOverdue(@Param("borrower") String borrower, @Param("today") String today);
 
     // 查询新书（按上传时间降序）
     Page<Book> selectNewBooks();

@@ -40,7 +40,28 @@ public class BookController {
         }
         return modelAndView;
     }
-
+    /**
+     * 检查是否有逾期图书 (AJAX调用)
+     */
+    @ResponseBody
+    @RequestMapping("/checkOverdue")
+    public Result checkOverdue(HttpSession session) {
+        User user = (User) session.getAttribute("USER_SESSION");
+        if (user == null) {
+            return new Result(false, "未登录");
+        }
+        try {
+            boolean isOverdue = bookService.hasOverdueBooks(user);
+            if (isOverdue) {
+                return new Result(true, "有逾期");
+            } else {
+                return new Result(false, "无逾期");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "查询出错");
+        }
+    }
     /**
      * 根据ID查询图书
      */

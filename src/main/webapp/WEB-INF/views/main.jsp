@@ -21,6 +21,121 @@
     </script>
 </head>
 
+<style>
+    /* 右下角弹窗样式 */
+    #overdue-toast {
+        position: fixed;
+        bottom: 20px;
+        right: -350px;
+        width: 320px;
+        background-color: #fff;
+
+        border-top: 3px solid #dd4b39;
+        border-radius: 3px;
+
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        z-index: 9999;
+        transition: right 0.5s ease-in-out;
+        font-family: 'Source Sans Pro', sans-serif;
+    }
+    .toast-header {
+        padding: 15px;
+        background-color: #f8f8f8;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .toast-title {
+        font-weight: bold;
+        color: #dd4b39;
+        font-size: 16px;
+    }
+    .toast-close {
+        cursor: pointer;
+        font-size: 20px;
+        color: #999;
+    }
+    .toast-body {
+        padding: 20px 15px;
+        color: #333;
+        font-size: 14px;
+    }
+    .toast-btn {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-top: 10px;
+        background-color: #dd4b39;
+        color: white;
+        text-decoration: none;
+        border-radius: 3px;
+        font-size: 12px;
+    }
+    .toast-btn:hover { background-color: #c63c2c; color: #fff; }
+</style>
+
+<div id="overdue-toast">
+    <div class="toast-header">
+        <span class="toast-title"><i class="fa fa-warning"></i> 逾期提醒</span>
+        <span class="toast-close" onclick="closeToast()">&times;</span>
+    </div>
+    <div class="toast-body">
+        您有图书已逾期未归还！请尽快前往归还。
+        <div style="text-align: right">
+            <%-- 点击跳转到当前借阅页面 --%>
+                <a href="javascript:void(0)" onclick="goToBorrowed()" class="toast-btn">去查看</a>
+<%--            <a href="${pageContext.request.contextPath}/book/searchBorrowed" class="toast-btn">去查看</a>--%>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 1. 关闭弹窗
+    function closeToast() {
+        $("#overdue-toast").css("right", "-350px");
+        sessionStorage.setItem("overdueNotified", "true");
+    }
+
+    // 2. 显示弹窗
+    function showToast() {
+        // if(sessionStorage.getItem("overdueNotified") === "true") return;
+
+        $("#overdue-toast").css("right", "20px");
+    }
+
+    // 3. 跳转到借阅页面
+    function goToBorrowed() {
+        // 目标地址
+        var targetUrl = "${pageContext.request.contextPath}/book/searchBorrowed";
+
+        var iframe = document.getElementById("iframe");
+
+        if (iframe) {
+            iframe.src = targetUrl;
+            closeToast();
+        } else {
+            window.location.href = targetUrl;
+        }
+    }
+
+    // 4. 核心检查逻辑
+    function checkOverdueLogic() {
+        $.post("${pageContext.request.contextPath}/book/checkOverdue", function(res) {
+            if (res.success) {
+                showToast();
+            }
+        }, "json");
+    }
+
+    // 5. 定时器
+    $(function() {
+        // 登录/加载页面后，延迟1秒检查一次
+        setTimeout(checkOverdueLogic, 1000);
+        // 每分钟检查一次
+        setInterval(checkOverdueLogic, 60000);
+    });
+</script>
+
 <body class="hold-transition skin-green sidebar-mini">
 <div class="wrapper">
     <!-- 页面头部 -->
@@ -119,7 +234,7 @@
                         </li>
                     </ul>
                 </li>
-                <!-- su0Tmore: 数据统计入口，置底且仅管理员可见 -->
+                <!-- 数据统计入口，置底且仅管理员可见 -->
                 <c:if test="${USER_SESSION.role == 'ADMIN'}">
                     <li class="treeview">
                         <a href="${pageContext.request.contextPath}/stats/dashboard?t=<%=new java.util.Date().getTime()%>" target="iframe">
