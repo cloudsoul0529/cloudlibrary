@@ -106,7 +106,7 @@
     // 3. 跳转到借阅页面
     function goToBorrowed() {
         // 目标地址
-        var targetUrl = "${pageContext.request.contextPath}/book/searchBorrowed";
+        var targetUrl = "${pageContext.request.contextPath}/book/searchBorrowed?showType=my";
 
         var iframe = document.getElementById("iframe");
 
